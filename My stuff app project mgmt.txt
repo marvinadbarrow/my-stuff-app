@@ -1,0 +1,163 @@
+
+
+For each component to get a 'view items' button, you need to update the container.location_contents array with the new item,  when setting the new item with setListItems(). This might be where you can use immer; otherwise you'll have to do update the array, and then the 'contents' object (check the react site for this process) DONE!
+
+POPULATE container.local_contents
+That array needs to be populated with item name, item id and the optional 'item total'. Then the application will re-render and, since the array is no longer empty, once user returns to the main page, the container that just had items added to it should show how many items are in the container, and the view button will appear.  DONE!
+
+Populate VS create
+These are the two steps; the first one is the initial creation of the location object, which is then used to load the container onto the shelf, and then the second process is the creation of items within the location and update the object with those items.  So, of course, you need to get into the container in the first place to be able to add items to it.  So perhaps, you can have a place items button on the main container, because there's no point having a 'view items' button if there are no items; that doesn't make any sense.  DONE!
+
+
+DELETE button: 
+A delete button needs to be added to the list items also  DONE!
+
+
+
+
+
+
+
+COPY JSX FOR INPUT FORM
+        <form className='new-location-form' id="location-creation-form" onSubmit={createLocation}>
+            <label htmlFor="new-location-text">New Location</label>
+          <input value={location} id='new-location-text' type="text" placeholder='Add location' 
+          onChange={e => setLocation(e.target.value)}
+            />
+    
+    <button type="submit" className="add-location"
+
+    >Add</button>
+    </form>
+        
+        <h2 className="locations-title">My Locations</h2>
+
+Today's tasks - 5 August
+
+- Get save 'container' array to local storage -EASY
+- function for the deletion of items within a location - DONE
+- checkbox for delete button (to prevent accidental deletion)
+-  search for items and how to display search results. 
+- deal with duplicate items or locations
+- auto updates while searching. 
+- voice search
+
+implementation ----
+Save entries to local storage (this should be automatic, but I don't know yet if the item lists will load) 
+
+After deleting all items from a location, check that container button changes from view items to add items and the delete button is reintroduced - DONE!
+
+
+
+
+
+
+
+Today's tasks -  6 August
+
+
+Inside main locations have containers which can be clicked into, and inside THOSE is where new items will be added (russian doll style)
+Containers vs unboxed
+have a 'general' view where you can see 'everything' listed under headings. Or a view entire location button and perhaps a 'go to' location on each area. 
+CASE CONVERSION - convert everything to title case using regular expressions. 
+
+
+
+Today's tasks 9 august
+Solved Back button issue where child container name was showing where parent container name should have been showing.  For example, when viewing section inside a man area, say, Chest Main, the name displayed at the top of the page is CHEST MAIN. If you then click into the box with the name 'TOP' you navigate to that box and the word 'TOP' displays to indicate you are in that box.  But when you navigate back to the parent, CHEST MAIN, the wording showing is TOP.  This occurred because the page was taking the current value for 'areaSpecific' which  is not re-rendered when you exit that area.  So in the back to previous view function I created a variable for the parent container of the current container (call that variable 'parent'), sent that variable as a prarameter of closeSection(), which executes in the main app, and inside that 'APP' function, execute setAreaSpecific(parent), which will change the container name to parent, so that when that page is displayed the parent name of the section you were just in will display.  And because you are in the parent of the section you just exited; the name at the top of the page matches your location.  
+
+So, navigation from box viewer (inside a section) to section viewer has been solved
+Now, navigation from box items (inside a box) to box viewer. DONE!
+
+BUT, navigation from section viewer down to box does not render the box name on screen so change that first.  DONE!
+
+ALL NAVIGATIONS CORRECTLY LABELING PAGE LOCATIONS
+
+
+NEXT PROBLEM - 
+All boxes, with the exception of one of them, are displaying the wrong contents; that of the excluded box. 
+This may be caused by viewing the contents of and backing out of the excluded box.  When you then try to view the contents of other boxes, the contents of the initially viewed box are shown, irrespective of the box clicked.  
+
+UPDATE to above problem: 
+Even when refreshing the page all of the viewed boxes are still displaying the same content.  It may be because I'm using a zero index somewhere to render box items.  I can't remember where it is right now so will have to look for it. 
+
+ISSUE found.  The issue seems to be with the 'indexOfBox' variable which is used to tell the map function which box items to map and return.  For some reason, at the moment that number stays the same (3) but that needs to change somewhere. 
+
+Yep, the index of box is referring to one specific box and that's why the map is rendering the same items irrespective of the clicked box.  'indexOfBox' is the wrong value. 
+
+ANOTHER ISSUE - using array indexes as references to help find elements. 
+This is a bad idea because, once the element is assigned a position number, if the object is deleted, any object beyond that object will have a number that is out of sync with its actual position number in the array.  For instance, if your object was assigned the number 'zero', because it was the first item created, then the list item after it will be assigned 'one'.  But, when you delete the first the item assigned the number zero, the second item, which will now take position zero, still has the number 'one' assigned to it.  So if you search for the item using that number, the wrong item will be returned. This will only ever work if you only delete the final element of a list, because there are no subsequent array items to shift downward.  An alternative fix would be to assign numbers to elements based on the position of the array element that refers to them.  But that seems computationally heavy. 
+
+This requires a complete re-work
+
+PROPOSED SOLUTION - 
+Instead of using the parent index, use the parent id, then there's no mistaking. 
+Remove all references to object index position in referring array, because deletion of the object will cause issues. DONE!
+
+15 August tasks -----------------------------------------------------------
+Delete Item and delete box functions COMPLETE
+Created an array to hold all created items as objects containing all information about the item, box id, section id and location id, and a copy of the item's object, containing item name, item id, parent box name and parent box id. This array is updated each time a new item is created, or if an existing item is deleted. 
+
+Add search inputt and button (maybe even have a unique page for search)
+
+Added a start page with two buttons, a 'search items' button which takes you to a form for entering search details, and a 'view/edit locations' button which takes you to view locations where you can add to the inventory.  
+
+On the search form I've added a 'back to start page' button which returns user to the start page. 
+
+On the main locations area I've added the same back to start page button that returns user to the start page. 
+
+MANUAL SEARCH COMPLETED. 
+
+Delete section function COMPLETED. 
+
+21 AUGUST ----------------------------------------
+
+FOUND ANOTHER ISSUE
+Boxes doubling up in display all items output. 
+Just realized that if you add an item, and then immediately click the display all boxes button, a duplicate of the box you entered the item into is created.  So check what happens on adding an item. 
+If you go into the box and delete everything, then both boxes disappear from the display all items
+
+Noted that removing the last entry that caused the duplicate actually removes the entire double (interesting) 
+Noted that the issue does not repeat if you add a second entry and immediately clicked the display all button. 
+Also noted that it appears to not matter whether you click the button or not.  Will try this on other areas. 
+So it's definitely not happening in all areas, so I assume it might have something to do with when I created those items.  Maybe  there's some configuration in older items that's causing this problem.  I just noticed that the newest added section doesn't have this issue. 
+
+DEFINITELY AN ISSUE WITH boxes CREATED BEFORE CERTAIN UPDATES. 
+I emptied and deleted a few boxes, recreated them and re-added items, and that solved the issue. 
+
+NO issue sections:
+Floor space
+Desk shelf 2
+HDD ENCLOSURE
+desk-bottom shelf:
+Unboxed
+
+
+
+ISSUE BOXES
+desk-bottom shelf:
+Micro ATX:
+
+GA-F2A68HM-HD2 Motherboard
+AeroCool 500 W 80 Plus
+HyperX FURY Series 8GB DDR3
+AMD APU A6-6400K Black
+
+
+
+RK61 mech keyboard packaging
+
+
+COMPLETED SECTIONS
+floor space
+desk bottom shelf
+
+
+
+
+
+
+
+
+
+"
