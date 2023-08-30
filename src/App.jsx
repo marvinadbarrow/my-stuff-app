@@ -387,7 +387,7 @@ console.log(parentContents)
       everySection.item_name == sectionName ?   number++ : number = number;
     });
     
-    // if number < 1, no duplicate name was found so create new item object, item array, location object and container and run state again
+    // if number < 1, no duplicate name was found so create new section object, item array, location object and container and run state again
 if(number < 1){
 
 // generate a new item from the input value text. 
@@ -395,8 +395,21 @@ let newAddedSection =  {
   id: v4(),
   section_name: sectionName,
   container_name: containerName,
-  section_contents: [], // container for all box object
+  section_contents: [
+    // automaticall add a new box inside the section, which will have the name 'unboxed' so that if no boxes are to be used in the section the items can be placed in the 'unboxed' area
+    {
+    id: v4(), // box id
+    box_name: 'unboxed',
+    parent_section_name: sectionName, // section parent name
+    parent_container_id: '',  // section parent index
+    box_contents: [], // container for items in box
+   }
+  
+  ], // container for all box object
  }
+
+ // now set the id of the newly created section of the property of  parent_container_id which is a property of the newly created box inside of the section
+ newAddedSection.section_contents.parent_container_id = newAddedSection.id
  
 // Create a new section array from old and add new section
 const newLocationContents = [...container[containerIndex].location_contents, newAddedSection]
@@ -548,7 +561,7 @@ function openAllLocations (area){
 <h1 className="app-title">Find My Stuff App</h1>
 
 {viewArea == "all section items" &&
-<AllItemsViewer allSectionItems={allSectionItems} sectionItems={sectionItems}  openAllLocations={openAllLocations} openSection={openSection} container={container} openSearch={openSearch}  openLocation={openLocation}/>
+<AllItemsViewer allSectionItems={allSectionItems} sectionItems={sectionItems}  openAllLocations={openAllLocations} openSection={openSection} container={container} openSearch={openSearch}  openLocation={openLocation} openBox={openBox}/>
 
 }
 

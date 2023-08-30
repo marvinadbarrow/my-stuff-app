@@ -125,39 +125,32 @@ So it's definitely not happening in all areas, so I assume it might have somethi
 DEFINITELY AN ISSUE WITH boxes CREATED BEFORE CERTAIN UPDATES. 
 I emptied and deleted a few boxes, recreated them and re-added items, and that solved the issue. 
 
-NO issue sections:
-Floor space
-Desk shelf 2
-HDD ENCLOSURE
-desk-bottom shelf:
-Unboxed
+NOTE: the above solution did not work.  
+Got to the root of this issue in the end. see solution below: 
+
+When the allItemsArray was filtered for 'only' items belonging to the specific section which the user wants to view, the results were 'almost' ordered according to box contents, but not quite.  I initially assumed that items belonging to a specific box would be grouped together in the array because, on first looking, that appeared to be the case. 
+
+Having assumed this, I created the code to loop through the filtered array, and then each time a new box id was found, to create a new element with that box name, and map through the array to find all item siblings of the particular box to render them in the box element. But, if within a section you don't add all box items consecutively, i.e if you add items to one box then add other items to different box, and then go back to the original box and add items, since the distribution of the items in the all items array are in chronological order,   the items added to the second box will be distributed directly after the first group of items added to the first box, and then after the 'second box' items, the  second group of items added to the first box will be distributed - in the all items array distribution there will be a gap between first added and second added items of the first box; and between those will be the items you added to the second box, before returning to add items to the first box. 
+
+The effect of this is that a box will be created two or more times depending on how the box items are destributed in all items array,  because the function finds the same new id more than once and I didn't code for duplicates; I felt that eliminating duplicates required extra work, updating state and things seemed to be getting more complicated than necessary. .  
+
+In the end the solution was simply to create a new array out of the filtered array, and then mutate it but using array.sort(), using  the box id as the object to be sorted, so in the new array, all items of the same box would then be grouped together.  Then I looped through the new array to find box id's, create a new box, and render box items to that box.  This solved the issue. 
+
+NOTE* I thought to just sort the entire all items array each time an item was added, but that seems entirely unecessary because, if after adding an item the user has no wish to view all items of a section there's no need for the array to be sorted.  Additionally, I thought to sort the all items array at the point where the user wishes to see all the items in one section, but the number of items in a section is relatively small compared to the total number of items the inventory, and hence only a small portion of the all items array needs to be sorted when the user wishes to view all the items in a section; most of the results of the sort would be useless to the user, so a large proportion of the search is redundant. 
+
+NOTE 2*.  The filter and sort of the section items from the all items array can be simplified further by applying both filter and sort chined together so that there's no need to create a new and mutated array.  Just use the initial array, which is itself new. 
+
+NOT 2 CORRECTION*
+Actually, the unfiltered array is created on the main app page, in the allSectionItems function, which receives its data as a parameter from the new box page, where the 'viewAllSectionItems' button is rendered.  From there, the section id is used to filter out all item objects from allItemsArray that have the current section id is their own section id.  And that's is the array that's used to render all section items.  So from THERE is where the sort could happen.  I can just chain the sort onto the filter method and then that eliminates the need to do the sort later on just prior to rendering the items in their respective boxes. So will attempt his now. 
 
 
 
-ISSUE BOXES
-desk-bottom shelf:
-Micro ATX:
+ADJUSTMENT FOR all items object compenent . line 16
 
-GA-F2A68HM-HD2 Motherboard
-AeroCool 500 W 80 Plus
-HyperX FURY Series 8GB DDR3
-AMD APU A6-6400K Black
+  // here I'm going to try to make the box clicable, and enable user to go directly to view items in the clicked box. It should be a simple case of activating the viewBox function with the require parameters. Happy.  This is already done for 'search results' so it can easily be replicated here. 
+
+FIX BOX VIEWER JSX by removing boxPath object and trying simpler method. 
+ACTUALLY - this boxPath is different in that it maps exactly to an item, which we want to have a lot of details about, such as location, section and box id's. So this might have to stay. will have a closer look at it. 
 
 
 
-RK61 mech keyboard packaging
-
-
-COMPLETED SECTIONS
-floor space
-desk bottom shelf
-
-
-
-
-
-
-
-
-
-"

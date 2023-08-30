@@ -3,31 +3,30 @@ import { useEffect, useState } from 'react'
 import{v4} from 'uuid'
 import { BoxAll } from './BoxAll';
 
-export  const AllItemsObject = ({tempArray}) =>{
+export  const AllItemsObject = ({tempArray, openBox}) =>{
 
 
 
-let boxName = tempArray[0].item_object.parent_Box;
+let locationId = tempArray[0].location_id;
+let sectionId = tempArray[0].section_id;
 let boxId = tempArray[0].box_id
 let areaName = 'box'
+let boxName = tempArray[0].item_object.parent_Box;
+// the above are the the parameters required to open a specific box and view its content.
 
-
-// the below code creates the boxPath object so that the box can be opened from this
-
-
-console.log(`
-areaName: ${areaName}
-boxName: ${boxName}
-boxId: ${boxId}
-`)
-// the above should be the parameters required to open a specific box and view its content. 
-return(
-    <>
-{
-
-  // here I'm going to try to make the box clicable, and enable user to go directly to view items in the clicked box. It should be a simple case of activating the viewBox function with the require parameters. Happ
+// go to view items in their parent box when the element is clicked
+function openClickedBox(general, specific, boxId, itemName, sectionId, parentId){
+    openBox(general, specific, boxId, itemName, sectionId, parentId)
 }
-<div className="box-contents-div">
+
+ return(
+    <>
+
+<div className="box-contents-div" onClick={()=>{
+ //  div listing items contained in the associated box made clickable to enable user to go directly to view (and edit if desiered) items inside the box.
+openClickedBox(areaName, boxName, boxId, 'no name', sectionId, locationId)
+
+}}>
     <p className="box-name"><b><u>{boxName}</u></b></p>
     <ul key={v4()}className="box-list">
       
@@ -38,9 +37,7 @@ return(
 return(
   <BoxAll itemKey={object.item_id} itemName={object.item_name}/>
 )
-
-
-      
+;       
     })}
     </ul>
     </div>
@@ -49,3 +46,12 @@ return(
 
 
 }
+
+
+
+
+
+
+
+
+
