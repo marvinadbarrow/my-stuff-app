@@ -12,72 +12,56 @@ export  const SectionViewer = ({addBox, closeSection, openBox, container, delete
 let sectionContents;
 let thisLocation;
 let thisSection
+let indexOfLocation;
+let indexOfSection;
 
-
-    container.map((location) =>{
-        if(location.id == parentId){
-thisLocation = location
-thisSection = location.location_contents
-thisSection.map((innerContainer) =>{
-    if(innerContainer.section_name == areaSpecific){
-sectionContents = innerContainer.section_contents
-    }
-})}
-    })
-
-let thisPath = {
-    'all_locations': container, 
-    'this_location': thisLocation,
-    'this_section': thisSection,
-    'section_contents': sectionContents,
-    'specific_area': areaSpecific,
-    'general_area': 'section',
-    'destination_area':'box'
-}
-
-
-function viewBoxContents (currentPath, id){
-// add 'note' property to current path object
-currentPath.note = 'loop through currentPath.section_contents to find matching id of clicked box'
-// add 'id' property to current path object
-currentPath.boxId = id
-openBox(currentPath )
-}
-
-let sectionLocation;
-container.map((location) =>{
-    if(location.id == parentId){
- sectionLocation = location
+container.map((locations, idOflocation) =>{
+    if(locations.id == parentId){
+        thisLocation = locations // location object
+        indexOfLocation = idOflocation // index of location
+locations.location_contents.map((sections, idOfSection) =>{
+            if(sections.id == sectionId){
+        thisSection = sections // section object
+        indexOfSection = idOfSection // index of section
+        sectionContents = sections.section_contents // boxes
+            }
+        })
     }
 })
 
 
+function viewBoxContents (general, specific, id){
+openBox(general, specific, id)
+}
+
 function testCloseSection (){
-    closeSection(sectionLocation) 
+    closeSection(thisLocation) 
 }
 
 function boxDeleteCall (boxId) {
-let indexOfBox;
-let sectionBoxes = thisPath.section_contents
-// map section context to get index of box object
-sectionBoxes.map((boxes, boxIndex)=>{
-    if(boxes.id == boxId){
-indexOfBox = boxIndex
-    }
-})
-    deleteBox(boxId, thisPath)
+ deleteBox(boxId)
 }
+
+
 
     return (
         <>
-    <NewBoxForm boxLocation={boxLocation} testCloseSection={testCloseSection} container={container} parentId={parentId} addBox={addBox} thisPath={thisPath}  sectionId={sectionId} openAllLocations={openAllLocations} allItemsArray={allItemsArray} allSectionItems={allSectionItems}  openSearch={openSearch} sectionLocation={sectionLocation}/>
+    <NewBoxForm boxLocation={boxLocation} testCloseSection={testCloseSection} container={container} parentId={parentId} addBox={addBox} sectionId={sectionId} openAllLocations={openAllLocations} allItemsArray={allItemsArray} allSectionItems={allSectionItems}  openSearch={openSearch} sectionLocation={thisLocation}/>
+
+
+    {sectionContents.length < 1 &&     
+    <div>No boxes in this section</div>}
+
+
         <ul className="items-list">
 
-    { sectionContents.map(sectionBoxes =>{
+    {// map section contents that contains all boxes and for each object, render a new box using id, boxName, contentsLength variables, and viewBoxContents and boxDeleteCall functions as props. Will try to do away with boxpath here
+    
+    sectionContents.map(sectionBoxes =>{
         return ( <>
-            <NewBox id={sectionBoxes.id} boxName={sectionBoxes.box_name} 
+<NewBox id={sectionBoxes.id} boxName={sectionBoxes.box_name} 
             contentsLength={sectionBoxes.box_contents.length}
- viewBoxContents={viewBoxContents} boxDeleteCall={boxDeleteCall} thisPath={thisPath}/>
+ viewBoxContents={viewBoxContents} boxDeleteCall={boxDeleteCall}/>
                 </>)
    })
 }

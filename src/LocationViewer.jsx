@@ -46,8 +46,10 @@ container.map((mainLocations, index) =>{
 
     return (
 <>
+
 <NewSectionForm setSection={setSection} createSection={createSection} backToLocations={backToLocations} location={location} section={section} openSearch={openSearch}/>
 
+{sections.length < 1 && 'No sections in this location'}
 <ul className="items-list">
 {sections.map((locationSections, index) =>{
     let contentsLength = locationSections.section_contents.length

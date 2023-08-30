@@ -23,6 +23,7 @@ function App() {
   const [areaSpecific, setAreaSpecific] = useState('')
   const [parentId, setParentId] = useState('')
   const [sectionId, setSectionId] = useState('')
+  const [boxId, setBoxId] = useState('')
   const [sectionItems, setSectionItems] = useState()
   const [boxDetails, setBoxDetails] = useState({})
   const [preSearchArea, setPreSearchArea] = useState('')
@@ -300,35 +301,30 @@ setContainer(newLocationContainer)
 already exists`)}
 
 }
-function openBox(currentpath) {
-  console.log(currentpath)
-  // view area is intended destination so;
-  setviewArea(currentpath.destination_area)
-  // specific area is the intended box name so search the section contents for the id and set 'specific to the associated box name
-  let specific;
-  currentpath.section_contents.map(boxes =>{
-    if(boxes.id == currentpath.boxId){
-specific = boxes.box_name
-    }
-  })
+function openBox(general, specific, boxId, itemName, sectionId, parentId) {
 
+  if(parentId !== undefined){setParentId(parentId)}
+  if(sectionId !== undefined){setSectionId(sectionId)}
+
+
+  setviewArea(general)
   setAreaSpecific(specific)
-  setBoxDetails(currentpath)
+  setBoxId(boxId)
   }  
   function closeBox (sectionName) {
     setviewArea('section')
     setAreaSpecific(sectionName)
     }  
-  function deleteBox (id, boxPath) {
+  function deleteBox (id) {
 
 // get location and section indexes
   let indexOfLocation;
   let indexOfSection;
-
+// map all locations
     container.map((locations, locationIndex) =>{
       if(locations.id == parentId){
         indexOfLocation = locationIndex;
-
+// map specific location
         container[indexOfLocation].location_contents.map((section, sectionIndex) =>{
           if(section.id == sectionId){
             indexOfSection = sectionIndex;
@@ -338,10 +334,17 @@ specific = boxes.box_name
 
 
     })
+// it's entirely possible to do this deletion without boxPath, by simply using location and section indexes to access section contents (i.e. the boxes), spread them into an array, and then use the below filter on the array, and then carry on with the rest of the function using the filtered array as a starting point. LET'S TEST IT
+    console.log(container[indexOfLocation].location_contents[indexOfSection].section_contents)
+
+let testSectionContents = container[indexOfLocation].location_contents[indexOfSection].section_contents.filter(boxes => boxes.id !== id)
+
+console.log(testSectionContents)
+
 
 
     // create new section contents and filter to remove clicked box object
-    let newSectionContents = boxPath.section_contents.filter(boxes => boxes.id !== id)
+    let newSectionContents = container[indexOfLocation].location_contents[indexOfSection].section_contents.filter(boxes => boxes.id !== id)
   
 
 
@@ -366,16 +369,7 @@ specific = boxes.box_name
 
   // set new container
   setContainer(newContainer)
-  
 
-
-    console.log()
-
-
-
-    // setContainer(currentContainers => {
-    //   return currentContainers.filter(container => container.id !== id)
-    // })
   }
 
 
@@ -432,7 +426,6 @@ already exists`)}
 console.log('adding new section :' + sectionName)
 }
 function openSection (general, specific,  id) {
-  console.log(specific, id)
 setviewArea(general)
 setAreaSpecific(specific)
 setSectionId(id)
@@ -513,8 +506,6 @@ setContainer(newContainer)
   
   }
 function openLocation (general, specific, id) {
-  console.log(general, specific, id)
-  console.log(container)
  setviewArea(general)
   setAreaSpecific(specific)
   setParentId(id)
@@ -549,8 +540,6 @@ function openAllLocations (area){
   setviewArea(area)
   }
 
-console.log(viewArea)
-
 
 
   return (
@@ -569,7 +558,7 @@ console.log(viewArea)
 
 
 {viewArea == "search page" && 
-<SearchPage viewArea={viewArea} closeSearch={closeSearch}  openAllLocations={openAllLocations} allItemsArray={allItemsArray} container={container} openSection={openSection}  parentId={parentId} sectionId={sectionId} areaSpecific={areaSpecific} preSearchArea={preSearchArea} openLocation={openLocation} boxDetails={boxDetails} openBox={openBox}/>
+<SearchPage viewArea={viewArea} closeSearch={closeSearch}  openAllLocations={openAllLocations} allItemsArray={allItemsArray} container={container} openSection={openSection}  parentId={parentId} sectionId={sectionId} areaSpecific={areaSpecific} preSearchArea={preSearchArea} openLocation={openLocation} openBox={openBox}  boxId={boxId}/>
 }
 
 
@@ -615,5 +604,41 @@ export default App
 
 /*
 FOR temp notes
+
+
+adjusted code for opening boxes
+
+  // view area is intended destination so;
+ 
+  // specific area is the intended box name so search the section contents for the id and set 'specific to the associated box name
+//   let specific;
+//   currentpath.section_contents.map(boxes =>{
+//     if(boxes.id == currentpath.boxId){
+// specific = boxes.box_name
+//     }
+//   })
+
+//   console.log(`
+//   specific: ${specific}
+//   areaSpecific: ${areaSpecific}
+//   `)
+
+
+
+// let indexOfLocation;
+// let indexOfSection;
+//   container.map((locations, locationIndex) =>{
+//     if(locations.id == parentId){
+//       indexOfLocation = locationIndex;
+// // map specific location
+//       container[indexOfLocation].location_contents.map((section, sectionIndex) =>{
+//         if(section.id == sectionId){
+//           indexOfSection = sectionIndex;
+//         }
+//       })
+//     }
+
+
+//   })
 
 */

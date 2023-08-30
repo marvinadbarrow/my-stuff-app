@@ -3,10 +3,16 @@ import { useState } from 'react'
 import { NewItemForm } from './NewItemForm';
 import { NewItem } from './NewItem';
 // inside the parameter brackets is the property 
-export  const BoxViewer = ({addBoxItem, closeBox, viewArea, container, deleteBoxItem, areaSpecific, parentId, sectionId, openAllLocations, openLocation, openSearch,  closeSection,}) =>{
+export  const BoxViewer = ({addBoxItem, closeBox, viewArea, container, deleteBoxItem, areaSpecific, parentId, sectionId, openAllLocations, openLocation, openSearch,  closeSection}) =>{
 
     const [location, setLocation] = useState(areaSpecific) 
 
+    console.log(`
+    parentId: ${parentId}
+    sectionId: ${sectionId}
+    areaSpecific: ${areaSpecific}
+   
+    `) 
 
     let locationContents;
     let thisLocation;

@@ -7,6 +7,7 @@ export  const SearchPage = ({results, closeSearch, allItemsArray, container, ope
 const [searchResults, setSearchResults] = useState([])
 const [resultsAdvice, setResultsAdvice] = useState(0)
 
+console.log(boxDetails)
 console.log(container)
 function   searchCirteria(search){
 
@@ -35,7 +36,7 @@ function   searchCirteria(search){
 <h4>Number of results: {searchResults.length}</h4>
 }
 
-<SearchResults searchResults={searchResults} container={container}/>
+<SearchResults searchResults={searchResults} container={container} parentId={parentId} sectionId={sectionId} openBox={openBox}/>
     </>
     )
     

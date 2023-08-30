@@ -9,6 +9,9 @@ import { ViewAllItemsButton } from './ViewAllItemsButton';
 export  const NewBoxForm = ({boxLocation,  createBox, testCloseSection, container, parentId, addBox, sectionId, openAllLocations, allItemsArray, allSectionItems, openSearch, sectionLocation}) =>{
     const [box, setBox] = useState('')
     // create BOX
+
+    console.log(allItemsArray)
+    console.log(sectionId)
     function createBox (e) {
 
       e.preventDefault();
@@ -30,12 +33,17 @@ let nameOfLocation;
     })
 
 
+
+  // filter all items array for only objects that contain the section id - if no such objects exists then there are no items in this section which means that either, no boxes exist, or any that do, have no items in them. If that scenario exists then there is no need to display the view all items in this section button. 
+ 
+  let sectionOnlyItems = allItemsArray.filter(objects => 
+    objects.section_id == sectionId)
+    console.log(sectionOnlyItems)
+
+
+
 function viewAllItems (){
-  // filter all items array for only objects that contain the section id
-let sectionOnlyItems = allItemsArray.filter(objects => 
-  objects.section_id == sectionId)
-  console.log(sectionOnlyItems)
-  // send to APP.jsx where viewArea will be set to page for displaying items and useState will save the array object which will be sent as a prop to the display page. 
+  // send sectionOnlyItems be rendered in APP.jsx where viewArea will be set to page for displaying items and useState will save the array object which will be sent as a prop to the display page. 
 allSectionItems(sectionOnlyItems)
 }
 
@@ -51,7 +59,12 @@ return(
 <BackToSectionViewerButton testCloseSection={testCloseSection} nameOfLocation={nameOfLocation} sectionLocation={sectionLocation}/>
   </div>
 <Form createFunction={createBox} placeholder={'Add a New Box'} value={box} newValue={boxLocation} setFunction={setBox} buttonName={'Add'}/>
+{ // view all items in section button will only display if the section contains items; i.e. if at least one box exists AND at least one box contains items. 
+
+sectionOnlyItems.length > 0 &&
 <ViewAllItemsButton viewAllItems={viewAllItems} boxLocation={boxLocation}/>
+}
+
 </>
 )
 

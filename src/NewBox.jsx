@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { DeleteButton } from './DeleteButton';
 import { ViewAreaButton } from './ViewAreaButton';
-export  const NewBox = ({id, boxName, contentsLength, viewBoxContents, boxDeleteCall, thisPath}) =>{
+export  const NewBox = ({id, boxName, contentsLength, viewBoxContents, boxDeleteCall}) =>{
 
 function deleteBox (id){
     boxDeleteCall(id)
@@ -17,7 +17,7 @@ return(
 <li key={id} className="list_item"><div className="item-div"><p className="list-para">{boxName}</p>
 <p className="items-total">{itemNumber}: {contentsLength}</p>
 
- <ViewAreaButton className={"view-contents"} openArea={viewBoxContents}  id={id} boxPath={thisPath} buttonText={viewButtonText}/>  
+ <ViewAreaButton className={"view-contents"} openArea={viewBoxContents}  id={id} areaName={boxName} buttonText={viewButtonText} generalArea={'box'}/>  
 
 {contentsLength === 0 && 
 <DeleteButton className={"delete"}  name={''}  deleteFunction={deleteBox} id={id}/>

@@ -12,6 +12,7 @@ let sectionArea;
 let boxArea; // currently don't need this variable
 
 
+
     container.map(objects =>{
     if(objects.id == parentId){
         console.log(objects)
@@ -46,8 +47,9 @@ if(preSearchArea == 'location'){
 }
 
 
-function backToMainBox(currentpath, id){
-    openBox(currentpath, id)      }
+function backToMainBox(general, specific){
+    console.log(general, specific)
+    openBox(general, specific)      }
 
 function backToMainLocation(general, specific, id){
     openLocation(general, specific, id)  
@@ -95,6 +97,9 @@ function viewLocations(){
 openAllLocations('main')
 }
 
+console.log(layerNumber)
+console.log(boxDetails)
+console.log(areaSpecific)
     return(
     <>
 <div className="inner-location">
@@ -105,7 +110,7 @@ openAllLocations('main')
         <ViewAreaButton className={"close-location back-btn"} generalArea={'section'} areaName={sectionArea} buttonText={sectionArea} openArea={backToMainSection}  id={sectionId}/>}
 
 { layerNumber > 2 &&
-    <ViewAreaButton className={"close-location back-btn"} generalArea={'box'} areaName={areaSpecific} buttonText={areaSpecific} openArea={backToMainBox} id={boxDetails.boxId} boxPath={boxDetails}/>
+    <ViewAreaButton className={"close-location back-btn"} generalArea={'box'} areaName={areaSpecific} buttonText={areaSpecific} openArea={backToMainBox}/>
 }
 
 </div>

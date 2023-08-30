@@ -1,11 +1,17 @@
-import { useEffect, useState } from 'react'
+
 import './App.css'
 
 
-export  const SearchResults = ({searchResults, container}) =>{
-console.log(searchResults)
-           
+export  const SearchResults = ({searchResults, container, openBox}) =>{
 
+
+  function openResultArea(loc, sec, boxname, id, item, secId, locId){
+ 
+// send parent, section and box id for setting with useState so there is a path to the box contents; and 'box', box name to set general area and specific area for the normal part that uses the then uses the path to open the box
+  openBox('box', boxname, id, item, secId, locId)
+  }
+           
+console.log(searchResults)
     return(
     <>
 
@@ -19,7 +25,7 @@ console.log(searchResults)
 let locationName;
 let sectionName;
 let boxName;
-
+let idOfBox;
 
 container.map((locations) =>{
     if(locations.id == result.location_id){
@@ -35,12 +41,13 @@ container.map((locations) =>{
                   // map the box 
             if(boxes.id == result.box_id){
               boxName = boxes.box_name;
+              idOfBox = boxes.id
               }
           })
         }
       })
   
-      
+  
     }
   })
 
@@ -49,7 +56,7 @@ container.map((locations) =>{
         <>
 
 
-<div className="results-div">
+<div className="results-div" resultBoxId={idOfBox} onClick={()=>{openResultArea(locationName, sectionName, boxName, idOfBox, result.item_name, result.section_id, result.location_id )}}>
    <p className="results-para"><em>{result.item_name}</em></p>
    <p className="results-para">Location: {locationName}</p>
    <p className="results-para">Section: {sectionName}</p>
