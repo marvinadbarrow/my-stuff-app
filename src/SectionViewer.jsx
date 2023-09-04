@@ -4,7 +4,7 @@ import { NewBoxForm } from './NewBoxForm'
 import { NewBox } from './NewBox'
 
 // this will open when section is clicked. 
-export  const SectionViewer = ({addBox, closeSection, openBox, container, deleteBox, areaSpecific, parentId, sectionId, openAllLocations,  allItemsArray, allSectionItems, openSearch}) =>{
+export  const SectionViewer = ({addBox, closeSection, openBox, container, deleteBox, areaSpecific, parentId, sectionId, openAllLocations,  allItemsArray, allSectionItems, openSearch, transferBox}) =>{
 
     const [boxLocation, setLocation] = useState(areaSpecific) 
 
@@ -61,7 +61,7 @@ function boxDeleteCall (boxId) {
         return ( <>
 <NewBox id={sectionBoxes.id} boxName={sectionBoxes.box_name} 
             contentsLength={sectionBoxes.box_contents.length}
- viewBoxContents={viewBoxContents} boxDeleteCall={boxDeleteCall}/>
+ viewBoxContents={viewBoxContents} boxDeleteCall={boxDeleteCall} parentId={parentId} sectionId={sectionId} sectionBoxes={sectionBoxes} transferBox={transferBox} container={container}/>
                 </>)
    })
 }

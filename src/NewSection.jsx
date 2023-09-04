@@ -8,8 +8,10 @@ export  const NewSection = ({ id, locationSectionName,  sections, containerName,
 
     const [checkedStatus, setCheckedStatus] = useState('')
     
-
+let boxTotals; // variable to display number of items in box
+contentsLength > 1 ? boxTotals = 'Boxes': boxTotals = 'Box'
  let boxes;
+
  // if contents contain nothing, use 'create boxes' on button for viewing section contents
 contentsLength === 0 ? boxes = 'Add boxes': boxes = 'Open';
 
@@ -24,7 +26,7 @@ setCheckedStatus('') // return the checked status to unchecked since the checkbo
 {sections.length === 0 && <p className='section-info'><em>No Sections exist</em></p>}
 
 { <li key={id} className='section-item'><div className="section-div"><p className='section-info'>{locationSectionName}</p>
-
+<p className="items-total">{boxTotals}: {contentsLength}</p>
 <ViewAreaButton className={"open-section"} openArea={viewSection} areaName={locationSectionName} id={id} buttonText={boxes} generalArea={'section'}/> 
 
 {contentsLength === 0 &&  

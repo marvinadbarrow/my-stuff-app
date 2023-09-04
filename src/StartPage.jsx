@@ -4,10 +4,10 @@ import{v4} from 'uuid'
 import { SearchForm } from './SearchForm'
 const [search, setSearch] = ('')
 
-export  const StartPage = ({viewArea, openSearch, openAllLocations}) =>{
+export  const StartPage = ({viewArea, openSearch, openAllLocations, fixLocationId}) =>{
 
  const   openUserGuide = () =>{
-
+fixLocationId()
     console.log('Video userguide')
  }
 

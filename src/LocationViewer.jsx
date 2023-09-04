@@ -41,6 +41,7 @@ console.log(parentId)
 container.map((mainLocations, index) =>{
     if( mainLocations.id == parentId){  
         sections = container[index].location_contents
+        // console.log(mainLocations)
        } 
 })
 

@@ -154,3 +154,130 @@ ACTUALLY - this boxPath is different in that it maps exactly to an item, which w
 
 
 
+
+
+
+
+
+
+
+
+
+MOVING ITEMS FUNCTION ----------------------------------------------------------------------------------------
+
+display current path to ITEM 
+
+
+create a copy of all items array... 
+use boxPath details to find the index of the item's object in the array. 
+
+map container to get location names and set as options in drop down menu, (for location selection)
+on location select, map container to get index associated with location
+create a variable, locationObject = container[name_index] and save selection (with useState)
+display selected location in destination element
+
+map locationObject to get section names and set as options for dropdown menu, (for section selection)
+on section select, map locationObject.location_contents to get index associated with section
+create sectionObject = locationObject.location_contents[section_index] and save selection with useState
+display selected section in destination element
+
+
+map sectionObject to get box names and set as options for dropdown menu, (for box selection) 
+(NOTE - if location name and section name are unchanged, don't render current box name because the change has to be to another box within same section nested in the same location )
+on box select, map sectionObject .section_contents to get index associated with box
+create boxObject= sectionObject .box_contents[box_index] and save selection with useState
+display selected box in destination element
+
+
+using the index number of the item in allItemsArray, retrieve the item and change the properties to match the selections made above
+execute setAllItemsArray(copy of allItemsArray), which will set the new path of the item. 
+
+Show 'successful' message
+Show go to previous location
+show go to new location
+
+
+ALL OF THE ABOVE COMPLETED. 
+
+MOVING BOX FUNCTION ----------------------------------------------------------------------------------------------
+Basically the same process with a few alterations
+
+UNCHANGED PARTS OF THE PROCESS: - 
+display current path to BOX
+
+map container to get location names and set as options in drop down menu, (for location selection)
+on location select, map container to get index associated with location
+create a variable, locationObject = container[name_index] and save selection (with useState)
+display selected location in destination element
+
+map locationObject to get section names and set as options for dropdown menu, (for section selection) - 
+(NOTE - if location name is unchanged, don't render current section name because the change has to be to another  section in the same location )
+on section select, map locationObject.location_contents to get index associated with section
+create sectionObject = locationObject.location_contents[section_index] and save selection with useState
+display selected section in destination element
+
+CHANGES: -
+
+NOTE that, when the box is moved to another section, you'll need to change the details of ALL items contained in that specific box; which means locating all items  in the which have the box id, and then changing their section name property. 
+
+PROCESS: 
+create a copy of 'allItemsArray'
+map copy of array, each  array item will have the below format: 
+
+ {
+'item_name':newBoxItem.itemString,
+'item_object': newBoxItem,
+'location_id': boxPath.location_id,
+'section_id': boxPath.section_id,
+'box_id': boxPath.box_id,
+'item_id':newBoxItem.id
+}
+
+
+for all objects that have the box id of the item, the location_id and section_id properties of the object should be renamed to the location and section id that have been selected for the new location. This should be done even if only the section of the box is changed but the location remains the same. It's trivial, but prevents having to write extra code to account for both cases, one where the section AND location is changed and the other where ONLY the section is changed. The change always results in the existence of a location and a section anyway. 
+
+
+
+NEXT TASKS 1 September
+
+
+-1. ensure that first option in the selection menu is selectable when the menu first appears. 
+0. implemenet transfer box function
+1. implement cancel transfer button
+2 before actually fully implementating the transfer, implement the destination button to ensure it works. 
+3. implement return to origin button. 
+4. Think about how to save transfers; same manner as saving new items. 
+5. Transfer search page;  you could even incorporate a button on the search page for user to decide which search they want to do, transfer search or item search. 
+6. Transfer search might even be broken down into further categories, search by item and search by date... that can be for much later though.  
+
+
+COMPLETED --- 
+back button to original box
+destination button to new box
+decide how to place move buttons within boxes
+replace all buttons with viewAreaButton. 
+
+
+
+ISSUES. -- 2 September. 
+
+There are some issues with the mixing of the delete item and delete box functions.  In the end I had to make adjustments to some of the locations since all location ID's got renamed with one single id (belonging to the desk location), using a function to re-write them.  Thankfully the location id's were located in another area, somewhere in the section contents referring back to the location parent. 
+
+The plan is to, at least for now, separate the functions transferring the items from the ones transferring the boxes, and then once they are working, create a copy of the app and try to see if I can merge the two without causing problems.   One of the issues was  a trivial mistsake I made when using the function for the back button.  In the main App component, I was setting states for the parent id and section id's, but then I switched the id's, so I was setting the parent id state using the id of the section I had been in, and setting the section id, using the parent id.  after a few tries, it became impossible to render view sections, because obviously, the location ID  which was being used for map, was actually a section id, so when mapping through locations, looking for that id, nothing was found, and this caused problems further down the line.  It's mainly fixed but there are still a couple of issues I need to attend to, such as when clicking the transfer button for items, the wrong item name appears as the name of the item to be transferred.  In fact, the same item shows, irrespective of the actual item I selected.  So that's the first problem to address today. 
+
+Realized that boxPath.new_item_string could be gotten rid of, by adding itemString, which was passed as a parameter to the original function,  as a parameter to the createItemBox function in the main app. It is then used instead of taking it from boxPath. 
+
+Then decided to send box_contents to the NewItem component, and then on to the TransferButton component.  Inside that component, just to be sure, I've cleared the boxPath.new_item_string, property, just leaving it as an empty string.  And I'll use the ItemString prop (also sent to TransferButton) as an additional parameter to be sent to the transfer page; that way, the correct itemName has to be displayed. 
+
+I'm also sending the box_contents over to the TransferPage, but will have to set the condition to ignore empty contents.  Actually, that's not needed because, if there are no contents in a box, then there will be no item component rendered and hence no 'move item' button will exist to activate a transfer. 
+
+
+
+
+
+
+
+
+
+
+

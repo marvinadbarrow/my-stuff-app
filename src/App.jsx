@@ -12,6 +12,7 @@ import { BoxViewer } from './BoxViewer'
 import { StartPage } from './StartPage'
 import { SearchPage } from './SearchPage'
 import { AllItemsViewer } from './AllItemsViewer'
+import { TransferPage } from './TransferPage'
 
 // localStorage.clear()
 
@@ -29,7 +30,7 @@ function App() {
   const [preSearchArea, setPreSearchArea] = useState('')
 
   // the below state contains all items created.
-  const [allItemsArray, setAllItems] = useState(() =>{
+  const [allItemsArray, setAllItemsArray] = useState(() =>{
     const savedItems = localStorage.getItem('all_items')
     if(savedItems == null){
       return []
@@ -70,14 +71,14 @@ setSectionItems(sectionObjects)
 // console.log(allItemsArray)
 
 // for creation and deletion of specific items in the inventory
-  function addBoxItem (boxPath){
+  function addBoxItem (boxPath, itemString){
 console.log(boxPath)
 // THIS code for avoiding duplicate ITEMS is not working (SOLVED - forgot to increment the 'number' variable if a duplicate exists)
     let number = 0;
     if(boxPath.box_contents.length > 0){ // if there are other contents in the same box
             boxPath.box_contents.map(item =>{ // map the contents and check if the newString is already inside the box contents; which would mean that the box already has an item with that name (used .toLowerCase() so that the duplicates are looked for independent of string case)
-        if(item.itemString.toLowerCase() == boxPath.new_item_string.toLowerCase()){
-        alert('this item already exists:' + boxPath.new_item_string ) // alert user of duplicate
+        if(item.itemString.toLowerCase() == itemString.toLowerCase()){
+        alert('this item already exists:' + itemString ) // alert user of duplicate
         number += 1 // increment 'number' which will cause the below if condition to fail and so a new item will not be created. 
          }
       })
@@ -91,7 +92,7 @@ console.log(boxPath)
       let newBoxItem = {
         id:v4(),
         parent_Box: boxPath.box_name,
-        itemString: boxPath.new_item_string,
+        itemString: itemString,
         parent_box_id: boxPath.box_id
       }
 
@@ -166,7 +167,7 @@ let itemElement = {
 
 // add itemElement to currently saved items array and render. 
 
-setAllItems(currentItems =>{
+setAllItemsArray(currentItems =>{
   return  [...currentItems, itemElement ]
 })
 
@@ -221,10 +222,45 @@ let newAllItemsArray = allItemsArray.filter(objects => objects.item_id !== itemI
 
 
 // set new allItems array
-setAllItems(newAllItemsArray)
+setAllItemsArray(newAllItemsArray)
 setContainer(newContainer)
 console.log(allItemsArray)
       }
+
+console.log(JSON.parse(localStorage.getItem('storage_containers')))
+   
+  function transferItem (detailsOfBox, pageSet, itemName, newBoxItems){
+detailsOfBox.new_item_string = itemName
+
+// clear sectionItems so that, on the transfer page, sectionItems and BoxItems are mutually exclusive; both can never be avialable at the same time, which will avoid conflicts when displaying elements associated with each type of item category. 
+setSectionItems('')
+
+ // save box details for later access on item transfer page 
+    setBoxDetails({...detailsOfBox})
+ // set vew area to open transfer page     
+    setviewArea(pageSet)
+
+     }
+
+
+    console.log(boxDetails)
+
+
+function transferBox(sectionDetails, pageSet){
+
+  // clearing inner box details so there is no conflict with section details, since they cause different elements to be rendered to the page, based on the availability (or unavailability) of the type of details. 
+  setBoxDetails('')
+
+  // set section items so the details of the box can be found and made ready for transfer along with the box. 
+  setSectionItems({...sectionDetails})
+ // set vew area to open transfer page     
+ setviewArea(pageSet)
+
+}
+
+function transferBoxAccept(newArray){
+  // setAllItemsArray(newArray)
+}
 
 
 
@@ -301,10 +337,43 @@ setContainer(newLocationContainer)
 already exists`)}
 
 }
-function openBox(general, specific, boxId, itemName, sectionId, parentId) {
+function openBox(general, specific, boxId, boxItems, sectionIdUpdate, parentIdUpdate) {
 
-  if(parentId !== undefined){setParentId(parentId)}
-  if(sectionId !== undefined){setSectionId(sectionId)}
+  console.log(boxItems)
+  console.log(`
+ 
+
+  general: ${general}
+  specific: ${specific}
+  boxId: ${boxId}
+   `)
+   if(sectionIdUpdate !== undefined){
+    console.log(`sectionIdUpdate: ${sectionIdUpdate}`)
+   }
+   if(parentIdUpdate !== undefined){
+    console.log(`parentIdUpdate: ${parentIdUpdate}`)
+   }
+  
+   if(boxItems !== undefined){
+    console.log(boxItems)
+    console.log('STATE parent ID' +  parentId)
+    console.log('box parent ID' +  boxItems.location_id)
+    console.log('STATE section ID' +  sectionId)
+    console.log('box section ID' +  boxItems.section_id)
+  }
+   
+
+
+// the sectionId and parentId parameters are for when a search is made and user wishes to open the box containing the item - logically the search would not be made from inside the box of the searched item because you can already see the contents in the box where you clicked the search button - so the item searched for would be in another box, meaning that sectionId and parentId in state may not correspond to the the parent and section id of the address of the box the user wishes to navigate to, so the exact pathway will be incorrect.  Also, if the user went directly to the search page without navigating anyhere else first, then there would be no section or parent id at all, so these id's must  generated at time of clicking the search result box and extracting from the data given in the object associated with that box.  
+
+  if(sectionIdUpdate !== undefined){
+    console.log('updating section id...')
+    setParentId(parentIdUpdate)}
+  if(parentIdUpdate !== undefined){
+    console.log('updating location id...')
+    setSectionId(sectionIdUpdate)}
+
+
 
 
   setviewArea(general)
@@ -553,6 +622,47 @@ function openAllLocations (area){
   setviewArea(area)
   }
 
+  function fixLocationId (){
+
+    let index = 5
+let realParentId = container[index].location_contents[0].section_contents[0].parent_container_id
+let parentName = container[index].location_name
+let parentId = container[index].id
+let locationObject = {...container[index]}
+
+console.log(locationObject)
+console.log(`
+real parent ID: ${realParentId}
+parentName: ${parentName}
+ALTERED parentId: ${parentId}
+ `)
+ 
+
+ 
+locationObject.id = realParentId
+
+console.log(locationObject)
+
+let fixedLocationsArray = [...container]
+
+fixedLocationsArray[index] = locationObject
+
+console.log(fixedLocationsArray)
+
+// setContainer([...fixedLocationsArray])
+// setBoxDetails('')
+
+// 6d0c84cd-179e-41c0-86e2-b7c7992e32eb
+let idSearch = '6d0c84cd-179e-41c0-86e2-b7c7992e32eb'
+let idSearch2 ='44796d36-c580-4f67-a6df-992107d77fd0'
+allItemsArray.map(objects =>{
+  if(objects.section_id == idSearch2){
+    console.log(objects.item_name)
+    console.log(objects.section_id)
+  }
+})
+ }
+
 
 
   return (
@@ -560,13 +670,19 @@ function openAllLocations (area){
 
 <h1 className="app-title">Find My Stuff App</h1>
 
+
+{viewArea == "transfer page" &&
+<TransferPage viewArea={viewArea} parentId={parentId} sectionid={sectionId} container={container} boxDetails={boxDetails} allItemsArray={allItemsArray} openBox={openBox} openSection={openSection} sectionItems={sectionItems} transferBoxAccept={transferBoxAccept}/>
+
+}
+
 {viewArea == "all section items" &&
 <AllItemsViewer allSectionItems={allSectionItems} sectionItems={sectionItems}  openAllLocations={openAllLocations} openSection={openSection} container={container} openSearch={openSearch}  openLocation={openLocation} openBox={openBox}/>
 
 }
 
 {viewArea == "start page" && 
-<StartPage viewArea={viewArea} openSearch={openSearch}  openAllLocations={openAllLocations}/>
+<StartPage viewArea={viewArea} openSearch={openSearch}  openAllLocations={openAllLocations} fixLocationId={fixLocationId}/>
 }
 
 
@@ -589,14 +705,14 @@ function openAllLocations (area){
 
 {
 // if viewArea  string is 'box' then load box viewer (view Items of Specific box)
-viewArea == 'box' && <BoxViewer addBoxItem={addBoxItem} closeBox={closeBox} container={container} deleteBoxItem={deleteBoxItem} areaSpecific={areaSpecific} viewArea={viewArea}  parentId={parentId} sectionId={sectionId} openAllLocations={openAllLocations} openLocation={openLocation} openSearch={openSearch} closeSection={closeSection}  />
+viewArea == 'box' && <BoxViewer addBoxItem={addBoxItem} closeBox={closeBox} container={container} deleteBoxItem={deleteBoxItem} areaSpecific={areaSpecific} viewArea={viewArea}  parentId={parentId} sectionId={sectionId} openAllLocations={openAllLocations} openLocation={openLocation} openSearch={openSearch} closeSection={closeSection}  transferItem={transferItem}/>
 }
 
 
 
 {
 // if viewArea   string is 'section' then load section viewer (view boxes of a section)
-viewArea == 'section' && <SectionViewer addBox={addBox} closeSection={closeSection} openBox={openBox} container={container} deleteBox={deleteBox} areaSpecific={areaSpecific} parentId={parentId}  sectionId={sectionId} openAllLocations={openAllLocations} allItemsArray={allItemsArray} allSectionItems={allSectionItems} openSearch={openSearch} />
+viewArea == 'section' && <SectionViewer addBox={addBox} closeSection={closeSection} openBox={openBox} container={container} deleteBox={deleteBox} areaSpecific={areaSpecific} parentId={parentId}  sectionId={sectionId} openAllLocations={openAllLocations} allItemsArray={allItemsArray} allSectionItems={allSectionItems} openSearch={openSearch} transferBox={transferBox}/>
 }
 
 
@@ -653,5 +769,20 @@ adjusted code for opening boxes
 
 
 //   })
+
+
+
+
+
+
+    console.log(`
+    id: ${id}
+    areaName: ${areaName}
+    generalArea: ${generalArea}
+    buttonText: ${buttonText}
+    className: ${className}
+    OpenArea Function: ${openArea}
+     `): console.log('nothng to do')
+
 
 */
