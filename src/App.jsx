@@ -179,7 +179,7 @@ setContainer(newLocationContainer)
 
   }
   // ISSUE HERE: boxItems not used. 
-  function deleteBoxItem (itemId, boxItems, boxObject){
+  function deleteBoxItem (itemId, boxObject){
 let locationIndex = boxObject.location_index
 let sectionindex = boxObject.section_index
 let boxIndex = boxObject.box_index

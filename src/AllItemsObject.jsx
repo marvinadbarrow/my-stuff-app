@@ -3,39 +3,43 @@ import { useEffect, useState } from 'react'
 import{v4} from 'uuid'
 import { BoxAll } from './BoxAll';
 
-export  const AllItemsObject = ({tempArray, openBox}) =>{
+export  const AllItemsObject = ({boxObject, openBox}) =>{
 
 
 
-let locationId = tempArray[0].location_id;
-let sectionId = tempArray[0].section_id;
-let boxId = tempArray[0].box_id
+let boxId = boxObject.id
 let areaName = 'box'
-let boxName = tempArray[0].item_object.parent_Box;
+let boxName = boxObject.box_name
+
+console.log(`
+boxId: ${boxId}
+areaName: ${areaName}
+boxName: ${boxName}
+
+
+`)
 // the above are the the parameters required to open a specific box and view its content.
 
 // go to view items in their parent box when the element is clicked
-function openClickedBox(general, specific, boxId, itemName, sectionId, parentId){
-    openBox(general, specific, boxId, itemName, sectionId, parentId)
+function openClickedBox(general, specific, boxId){
+    openBox(general, specific, boxId)
 }
 
  return(
     <>
 
 <div className="box-contents-div" onClick={()=>{
- //  div listing items contained in the associated box made clickable to enable user to go directly to view (and edit if desiered) items inside the box.
-openClickedBox(areaName, boxName, boxId, 'no name', sectionId, locationId)
+ // results element of a specific box is clickable to enable user to go directly to view inside the box as in normal user view.
+openClickedBox(areaName, boxName, boxId)
 
 }}>
     <p className="box-name"><b><u>{boxName}</u></b></p>
     <ul key={v4()}className="box-list">
       
-    {tempArray.map(object =>{
+    {boxObject.box_contents.map(object =>{
 
-
-      // console.log(object)
 return(
-  <BoxAll itemKey={object.item_id} itemName={object.item_name}/>
+  <BoxAll itemKey={object.id} itemName={object.itemString}/>
 )
 ;       
     })}

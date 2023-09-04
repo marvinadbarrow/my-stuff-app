@@ -5,36 +5,22 @@ import { BackToBoxViewerButton } from './BackToBoxViewerButton';
 import { ViewAreaButton } from './ViewAreaButton';
 export  const AllItemsViewer = ({allSectionItems, openAllLocations, openSection, sectionItems, container, openLocation, openBox}) =>{
 
-
+  // the below should be the array of box objects otherwise known as section_contents. 
+console.log(sectionItems)
 
 
     let objectBox = ''; 
     let tempArray = []
 
 
-let locationId = sectionItems[0].location_id
+let locationId = sectionItems[0].parent_container_id
 let sectionId = sectionItems[0].section_id
-let indexOfLocation;
-let nameOfLocation
-let indexOfSection;
-let nameOfSection;
+let nameOfLocation = sectionItems[0].location_name
+let nameOfSection = sectionItems[0].parent_section_name
 
-  container.map((locations, locationIndex) =>{ 
-    if(locations.id == locationId){
-      indexOfLocation = locationIndex;
-      nameOfLocation = locations.location_name;
-      locations.location_contents.map((sections, sectionIndex) =>{
-        if(sections.id == sectionId){
-            indexOfSection = sectionIndex
-            nameOfSection = sections.section_name
-        }
-      })
-   }
-    })
 
 function backToMainLocation(general, specific, id){
 openLocation(general, specific, id)
-
 }
 
     function backToLocations(e) {
@@ -66,21 +52,13 @@ return(
 
  <div className="all-boxes-div">
  {
-
-
 sectionItems.map(objects =>{ // map through all section objects
-  if(objects.box_id !== objectBox){ //if current box id isn't box name variable
-    objectBox = objects.box_id // change box name variable to current box id
-  
-    // filter sortedSectionItems for only objects which have the same box id
-  tempArray = [...sectionItems.filter(objects => objects.box_id == objectBox)]
-// console.log(tempArray)
-  // console.log(tempArray) 
-  // return a allItemsObject component with the array for processing
+
+  // send each object and the open box function as a prop
   return(
-<AllItemsObject tempArray={tempArray} openBox={openBox}/>
+ <AllItemsObject boxObject={objects} openBox={openBox}/> 
   )
-  }
+  
   })
 
  }
@@ -97,4 +75,8 @@ sectionItems.map(objects =>{ // map through all section objects
 /*
 PARAMETERS FOP RETURN TO SECTION
  testCloseSection={testCloseSection} nameOfLocation={nameOfLocation}
+
+
+
+
 */

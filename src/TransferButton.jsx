@@ -2,7 +2,7 @@ import { NewItem } from "./NewItem"
 
 export const TransferButton = ({objectPath, itemName, transferItem, buttonText, newBoxItems, transferBox}) =>{
 
-console.log(objectPath)
+// console.log(objectPath)
 // console.log(objectPath, newBoxItems, itemName)
 
 
@@ -12,7 +12,7 @@ if(objectPath.hasOwnProperty('new_item_string')){
 
 }
 
-console.log(objectPath, itemName, )
+// console.log(objectPath, itemName, )
 
 
     // added both  newBoxItems and itemName be sent to transfr page

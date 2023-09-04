@@ -21,6 +21,7 @@
   --border-color-grey:rgba(255, 255, 255, 0.5);
   --border-color-blue:#646cff;
   --border-color-white:white;
+  --border-color-yellow:yellow;
 
   --element-margin-bottom-small:10px;
   --element-margin-bottom-medium:15px;
@@ -166,6 +167,7 @@ p{font-size: 9px;}
 .search-page-btn{background-color: rgb(156, 154, 154);}
 .start-page-btns{margin: 10px;}
 .results-div{ width: fit-content; height: auto; border: 0.5px solid white; padding: 6px; width: 40%; aspect-ratio: 1/1; margin: 4px 0px; border-radius: 4%;}
+.results-div:hover{cursor: pointer;border-color: var(--border-color-yellow);}
 .results-list{display: flex; flex-direction: row; flex-wrap: wrap;justify-content: space-around; width: 96%; background-color: rgba(255, 255, 0, 0);}
 .results-para{font-size: 10px;}
 label{font-size: 10px;}
@@ -200,7 +202,7 @@ label{font-size: 10px;}
   height: fit-content;
   border: 0.25px solid white;
   border-radius: 10px;
-  margin-bottom: var(--element-margin-bottom);
+  margin-bottom: var(--element-margin-bottom-medium);
   list-style: none;
   padding: 2px;
 }

@@ -5,10 +5,10 @@ import { TransferButton } from './TransferButton';
 export  const NewItem = ({ boxPath, boxItemDeleteCall, newBoxItems, itemName, itemId, itemParentName, itemParentId, numberOfItems, transferItem}) =>{
     const [checkedStatus, setCheckedStatus] = useState('')
 
-    console.log(boxPath, itemName, newBoxItems)
+    console.log(boxPath, itemName)
 // takes user back to locations shelf
 function itemDeleteCall (id) {
-    boxItemDeleteCall(id, newBoxItems, boxPath)
+    boxItemDeleteCall(id, boxPath)
     setCheckedStatus('')
 }
 
