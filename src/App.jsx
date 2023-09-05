@@ -174,34 +174,52 @@ setAllItemsArray(currentItems =>{
 
 // re-render with new locations array
 setContainer(newLocationContainer)
+alert(`${itemString} - successfully added`)
     }
 
 
   }
+
   // ISSUE HERE: boxItems not used. 
-  function deleteBoxItem (itemId, boxObject){
+  function deleteBoxItem (itemId, boxObject, itemString){
+
     console.log(boxObject)
+if(!itemId || !boxObject){console.log(`
+Item ID or box parent object of item  is missing, cannot procede with deletion - check origin of parameters (DeleteButton or NewItem component)
+`)}
 let locationIndex = boxObject.location_index
 let sectionindex = boxObject.section_index
 let boxIndex = boxObject.box_index
 
   const  updatedItems = boxObject.box_contents.filter(items => items.id !== itemId)
-
+console.log(updatedItems) // CORRECT
   // create new variable for old box_contents array
-let newBoxContents = [...container[locationIndex].location_contents[sectionindex].section_contents[boxIndex].box_contents]
-newBoxContents = updatedItems // update the box_contents array with changed items
+// let newBoxContents = [...container[locationIndex].location_contents[sectionindex].section_contents[boxIndex].box_contents]
+// newBoxContents = updatedItems // update the box_contents array with changed items
+ 
+
+// update the box object and set state with update
+boxObject.box_contents = updatedItems
+setBoxDetails(boxObject)
+
 
 // create a new box variable out of the old one and replace the existing box_contents with the updated array
-let newBox = {...container[locationIndex].location_contents[sectionindex].section_contents[boxIndex], box_contents: newBoxContents}
-
+let newBox = {...container[locationIndex].location_contents[sectionindex].section_contents[boxIndex], box_contents: updatedItems}
+console.log(newBox) // CORRECT
 // create a new section into which the box will go into its box_contents array. 
 let newSectionContents = [...container[locationIndex].location_contents[sectionindex].section_contents]
 
 // update using index of box in section_contents
 newSectionContents[boxIndex] = newBox
 
+console.log(newSectionContents)  // CORRECT
+// box contents are still altered. 
+
+
 // create a new section object from the old and update it with new section contents
 let  newSection = {...container[locationIndex].location_contents[sectionindex], section_contents:newSectionContents}
+
+console.log(newSection)  // CORRECT - box contents still good
 
 // create a new location contents array
 let newLocationContents = [...container[locationIndex].location_contents]
@@ -209,26 +227,43 @@ let newLocationContents = [...container[locationIndex].location_contents]
 // and use section index to replace the old original section with the new
 newLocationContents[sectionindex] = newSection
 
+
+console.log(newLocationContents)    // CORRECT LOCATION CONTENTS - box contents still good
+
+
+
 // create new location (which is an object) and update the location contents
 let newLocation = {...container[locationIndex], location_contents: newLocationContents}
+
+console.log(newLocation)   // CORRECT LOCATION DETAILS  box contents still good
+
 
 // create new container so that the old location object can be replaced. 
 let newContainer = [...container]
 
 newContainer[locationIndex] = newLocation
-console.log(newContainer)
+console.log(newContainer) // CORRECT container 
 
 // filter all item objects whose id is not the id of the object
 let newAllItemsArray = allItemsArray.filter(objects => objects.item_id !== itemId)
 
 
+setContainer(newContainer)
 // set new allItems array
 setAllItemsArray(newAllItemsArray)
-setContainer(newContainer)
-console.log(allItemsArray)
+
+// console.log(allItemsArray)
+// alert(`${itemString} - successfully deleted`)
+
+
+
+
+
       }
 
 console.log(JSON.parse(localStorage.getItem('storage_containers')))
+// if box properties exist show box details otherwise log 'false' to console
+boxDetails.hasOwnProperty('box_contents')? boxDetails:console.log(boxDetails.hasOwnProperty('box_contents'))
    
   function transferItem (detailsOfBox, pageSet, itemName, newBoxItems){
 detailsOfBox.new_item_string = itemName
@@ -386,6 +421,8 @@ function openBox(general, specific, boxId, boxItems, sectionIdUpdate, parentIdUp
 // get location and section indexes
   let indexOfLocation;
   let indexOfSection;
+  let lengthOfBoxContents
+  let nameOfBox; 
 // map all locations
     container.map((locations, locationIndex) =>{
       if(locations.id == parentId){
@@ -394,6 +431,13 @@ function openBox(general, specific, boxId, boxItems, sectionIdUpdate, parentIdUp
         container[indexOfLocation].location_contents.map((section, sectionIndex) =>{
           if(section.id == sectionId){
             indexOfSection = sectionIndex;
+            section.section_contents.map(boxes =>{
+              if(boxes.id == id){
+nameOfBox = boxes.box_name
+lengthOfBoxContents = boxes.box_contents.length
+console.log(lengthOfBoxContents)
+              }
+            })
           }
         })
       }
@@ -403,38 +447,49 @@ function openBox(general, specific, boxId, boxItems, sectionIdUpdate, parentIdUp
 // it's entirely possible to do this deletion without boxPath, by simply using location and section indexes to access section contents (i.e. the boxes), spread them into an array, and then use the below filter on the array, and then carry on with the rest of the function using the filtered array as a starting point. LET'S TEST IT
     console.log(container[indexOfLocation].location_contents[indexOfSection].section_contents)
 
-let testSectionContents = container[indexOfLocation].location_contents[indexOfSection].section_contents.filter(boxes => boxes.id !== id)
+// the above variable filters the section contents so that the clicked box is eliminated from the array; this is no issue normally because the box delete button only appears when a box is empty, and this function is normally activated from that button.  But this function will also be activated by the 'transfer' box accept function, so we need to set the condition that this variable should only be made when the box to be deleted has no contents.  I think it's also a good secondary precaution because, should the button appear while the box has contents, because of a bug, then the user risks deleting a box without realizing it contained items.  So a warning in place to alert user that the box they are attempting to delete has  items is a good idea. This will ensure that, in the transfer process, the box will not be deleted until ALL of the items are first removed.  
 
-console.log(testSectionContents)
+if(lengthOfBoxContents < 1){
 
+  let testSectionContents = container[indexOfLocation].location_contents[indexOfSection].section_contents.filter(boxes => boxes.id !== id)
 
-
-    // create new section contents and filter to remove clicked box object
-    let newSectionContents = container[indexOfLocation].location_contents[indexOfSection].section_contents.filter(boxes => boxes.id !== id)
+  console.log(testSectionContents)
   
+  
+  
+      // create new section contents and filter to remove clicked box object
+      let newSectionContents = container[indexOfLocation].location_contents[indexOfSection].section_contents.filter(boxes => boxes.id !== id)
+    
+  
+  
+      // // create new section object and replace section_contents with above array
+      let newSection = {...container[indexOfLocation].location_contents[indexOfSection], section_contents:newSectionContents}
+  
+      // now create new location contents 
+      let newLocationContents = [...container[indexOfLocation].location_contents]
+  
+      // and replace the old section with the above using the section index
+      newLocationContents[indexOfSection] = newSection
+  
+  
+      // create a new location object and update it's location contents with the above array
+      let newLocation = {...container[indexOfLocation], location_contents: newLocationContents}
+  
+      // create a new container array
+      let newContainer = [...container]
+  
+    // replace the original location with the updated one
+      newContainer[indexOfLocation] = newLocation
+  
+    // set new container
+    setContainer(newContainer)
 
+}else{ // if box contains contents then alert user to delete box. 
+  alert(`this box cannot be deleted because it contains items
+box name: ${nameOfBox}
+please delete all items from the box if you wish to procede with deletion
+`)}
 
-    // // create new section object and replace section_contents with above array
-    let newSection = {...container[indexOfLocation].location_contents[indexOfSection], section_contents:newSectionContents}
-
-    // now create new location contents 
-    let newLocationContents = [...container[indexOfLocation].location_contents]
-
-    // and replace the old section with the above using the section index
-    newLocationContents[indexOfSection] = newSection
-
-
-    // create a new location object and update it's location contents with the above array
-    let newLocation = {...container[indexOfLocation], location_contents: newLocationContents}
-
-    // create a new container array
-    let newContainer = [...container]
-
-  // replace the original location with the updated one
-    newContainer[indexOfLocation] = newLocation
-
-  // set new container
-  setContainer(newContainer)
 
   }
 

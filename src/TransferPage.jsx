@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ViewAreaButton } from "./ViewAreaButton";
 import { v4 } from "uuid";
+import { produce } from "immer";
 export const TransferPage = ({boxDetails, container, allItemsArray, openBox, openSection, sectionItems, transferBoxAccept, addBoxItem, deleteBoxItem}) =>{
 
 const [selectedLocationInfo, setSelectedLocationInfo] = useState({})
@@ -11,6 +12,7 @@ const [transferApplied, setTransferApplied] = useState('')
 const [newDestination, setNewDestination] = useState({})
 
 console.log(boxDetails)
+console.log(container)
 
 let objectType;
 let locationName;
@@ -30,7 +32,7 @@ let destinationBox;
 
 // Only the item ID is needed in order to search allItemsArray, the useState values, which are the location, section and box ids will replace the current item object properties. 
 
-// if box details has properties then the below will be true
+// if box details  item string property then an item is to be transferred
 if(boxDetails.hasOwnProperty('new_item_string')){
  locationName = boxDetails.location_name
  sectionName = boxDetails.section_name
@@ -42,8 +44,7 @@ areaName = boxName;
 originId = boxDetails.box_id
 destinationBox = 'Box:' // updated at time of menu select
 
-
-}else{ // if destination is a box
+}else{ // if box details has no item string property then it must be empty of properties, which means sectionItems contains properties so a box is being transferred
     locationName = sectionItems.location_name
     sectionName = sectionItems.parent_section_name
     itemName = sectionItems.box_name 
@@ -52,6 +53,7 @@ destinationBox = 'Box:' // updated at time of menu select
     areaName = sectionItems.parent_section_name
     originId = sectionItems.section_id 
     destinationBox = ''
+
 }
 
 
@@ -76,53 +78,76 @@ destinationId = selectedBoxInfo.box_id
 
 
 function processTransferItem(boxInfo){
-let itemNamestring = boxInfo.new_item_string
-let itemID  //you need the item id for deletion
-boxInfo.box_contents.map(boxObject =>{
-    if(boxObject.itemString == itemNamestring){
-        itemID = boxObject.id
+    // only process transfer item if box details has properties 
+    if(boxDetails.hasOwnProperty('new_item_string')){
+        let itemNamestring = boxInfo.new_item_string
+        let itemID  //you need the item id for deletion
+        boxInfo.box_contents.map(boxObject =>{
+            if(boxObject.itemString == itemNamestring){
+                itemID = boxObject.id
+            }
+        
+        })
+        
+        let destLocationIndex = selectedLocationInfo.location_index
+        let destSectionIndex = selectedSectionInfo.section_index
+        let destBoxIndex = selectedBoxInfo.box_index
+        console.log(`
+        location index: ${destLocationIndex}
+        section index: ${destSectionIndex}
+        box index: ${destBoxIndex}
+        `)
+        
+        let contentsOfOldBox = container[boxDetails.location_index].location_contents[boxDetails.section_index].section_contents[boxDetails.box_index].box_contents
+        
+        
+        let contentsOfNewBox = container[destLocationIndex].location_contents[destSectionIndex].section_contents[destBoxIndex].box_contents
+        
+
+        let newBoxInfo ={
+            'all_Locations':container,
+            'location_id':selectedLocationInfo.location_id,
+            'section_id':selectedSectionInfo.section_id,
+            'box_id':selectedBoxInfo.box_id,
+            'box_name':selectedBoxInfo.box_name,
+            'box_contents': contentsOfNewBox 
+        }
+
+                // just realized that newBoxInfo.box_contents is incorrect, it's supposed to be the 'content of the NEW BOX' which you probably need all the indexes for from location down to 
+        console.log(contentsOfOldBox)
+        console.log(contentsOfNewBox) // new box information
+        
+
+
+
+        console.log(boxInfo) // original box information
+        console.log(`
+        item string: ${itemNamestring}
+        item ID: ${itemID}
+        `)
+        
+        // INVESTIGATE THIS ISSUE - by swapping these two function calls around i.e. deleting the box item first, and then adding a box item to the new location, the item gets deleted from allItemsArray, but does not get deleted from the box at location, and although it initially gets altered in the container and state is set, the container seems to revert back to the old, unedited one.  I don't know why this is occuring but will have a think about it. 
+
+
+
+
+
+        // addBoxItem (newBoxInfo, itemNamestring)
+        // // note that the parameters are reversed for addBoxItem and deleteBoxItem
+        // deleteBoxItem(itemID, boxInfo, itemNamestring)
+        
+        // note, an entirely new boxDetails needs to be created
+        
+        
+        
+
+
+
+        
+
+
+
     }
-
-})
-
-let destLocationIndex = selectedLocationInfo.location_index
-let destSectionIndex = selectedSectionInfo.section_index
-let destBoxIndex = selectedBoxInfo.box_index
-console.log(`
-location index: ${destLocationIndex}
-section index: ${destSectionIndex}
-box index: ${destBoxIndex}
-`)
-
-
-let contentsOfBox = container[destLocationIndex].location_contents[destSectionIndex].section_contents[destBoxIndex].box_contents
-
-let newBoxInfo ={
-    'location_id':selectedLocationInfo.location_id,
-    'section_id':selectedSectionInfo.section_id,
-    'box_id':selectedBoxInfo.box_id,
-    'box_name':selectedBoxInfo.box_name,
-    'box_contents': contentsOfBox  
-}
-
-console.log(boxInfo)
-console.log(`
-item string: ${itemNamestring}
-item ID: ${itemID}
-`)
-
-
-
-// note that the parameters are reversed for addBoxItem and deleteBoxItem
-deleteBoxItem(itemID, boxInfo)
-
-// note, an entirely new boxDetails needs to be created
-
-
-
-setTimeout(() => {
-    addBoxItem (newBoxInfo, itemNamestring)
-}, 500);
 
 
 // got it; you actually need a new box content because this is the old one
@@ -180,18 +205,11 @@ function goToDestination(general, specific, id){
 }
 
 // EDIT BOX TRANSFER ITEMS
-function findAllBoxItems(originBoxId, originSectionId, originalLocationId, destinationSection, destinationLocation ){
+function processBoxItems(originBoxId, originSectionId, originalLocationId, destinationSection, destinationLocation ){
 
-    // create a new all items array with current box items filtered out
-    let newAllItemsArray = allItemsArray.filter(objects =>objects.box_id !== originBoxId)
+
 
     // check total item numbers differ by the amount of box items (latter should be less)
-    console.log(allItemsArray)
-    console.log(newAllItemsArray)
-
-
-
-
 
     console.log(sectionItems)
 console.log(`
@@ -201,23 +219,13 @@ originalLocationId: ${originalLocationId}
 destinationLocation: ${destinationLocation.location_id}
 destinationSection: ${destinationSection.section_id}
 `)
-// create array for objects that have the original box id
-let pretransferredBoxObjects = allItemsArray.filter(stuff =>stuff.box_id == originBoxId)
 
-// map through array and for each object change location/section id irrespective of whether the old matches the new. Assign the result to a new variable so that the old array remains intact (I hope)
- pretransferredBoxObjects.map((objects) =>{
-    objects.location_id = destinationLocation.location_id
-    objects.section_id = destinationSection.section_id
+// first we need to create a list of all items in the box along with their id's (for deletion), so begin by getting the box items
+let itemsForDelete = sectionItems.box_contents
+
+itemsForDelete.map(items =>{
+    console.log(items.id)
 })
-
-let finalItemsArray = [...newAllItemsArray, ...pretransferredBoxObjects]
-// after alteration check the two arrays have objects with the same name and id, have a different location/section id - which matches the transfer destination
-console.log(allItemsArray)
-console.log(newAllItemsArray)
-console.log(finalItemsArray)
-// working; now you need to create a copy of allItemsArray
-
-
 
 // transferBoxAccept(finalArrayEdit)
 }
@@ -245,7 +253,7 @@ setTransferApplied(confirm)
     if(selectedSectionInfo.section_name){ // and section menu has been selected
    
         setTransferApplied(confirm) // then accept transfer
-findAllBoxItems(sectionItems.id, sectionItems.section_id, sectionItems.parent_container_id, selectedSectionInfo, selectedLocationInfo)
+processBoxItems(sectionItems.id, sectionItems.section_id, sectionItems.parent_container_id, selectedSectionInfo, selectedLocationInfo)
 // otherwise alert user that both location and section options must be selected
     }else{alert('please select location AND section before attempting tranfer')}
 
@@ -323,8 +331,8 @@ return(
             <select id="location-select"   onChange={(e) =>{
                 container.map((location, indexOfLocation) =>{
                     if(location.id == e.target.value){
-                        console.log(indexOfLocation)
-//if location id is equal to selected option set destination location information
+                        console.log(e.target.value)
+       //if location id is equal to selected option set destination location information
                         setSelectedLocationInfo({
                             "location_index": indexOfLocation,
                             "location_id": e.target.value,
@@ -411,7 +419,7 @@ container[selectedLocationInfo.location_index].location_contents.map(sections =>
                 setSelectedBoxInfo({
                     "box_index": indexOfBox,
                     "box_id": e.target.value,
-                    "box_name":boxes.box_name
+                    "box_name":boxes.box_name,
                         })
 
                         destinationBox = `Box: ${boxes.box_name}`

@@ -41,29 +41,6 @@ HDD enclosure and unboxed (containing laptop and rk61)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 DONE ------------------------------------------------------------------------
 
 NOTE: check how clicking on the box causes the box to open to the page displaying all box items. 
