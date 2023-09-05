@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ViewAreaButton } from "./ViewAreaButton";
 import { v4 } from "uuid";
-export const TransferPage = ({boxDetails, container, allItemsArray, openBox, openSection, sectionItems, transferBoxAccept}) =>{
+export const TransferPage = ({boxDetails, container, allItemsArray, openBox, openSection, sectionItems, transferBoxAccept, addBoxItem, deleteBoxItem}) =>{
 
 const [selectedLocationInfo, setSelectedLocationInfo] = useState({})
 const [selectedSectionInfo, setSelectedSectionInfo] = useState({})
@@ -75,6 +75,69 @@ destinationId = selectedBoxInfo.box_id
 
 
 
+function processTransferItem(boxInfo){
+let itemNamestring = boxInfo.new_item_string
+let itemID  //you need the item id for deletion
+boxInfo.box_contents.map(boxObject =>{
+    if(boxObject.itemString == itemNamestring){
+        itemID = boxObject.id
+    }
+
+})
+
+let destLocationIndex = selectedLocationInfo.location_index
+let destSectionIndex = selectedSectionInfo.section_index
+let destBoxIndex = selectedBoxInfo.box_index
+console.log(`
+location index: ${destLocationIndex}
+section index: ${destSectionIndex}
+box index: ${destBoxIndex}
+`)
+
+
+let contentsOfBox = container[destLocationIndex].location_contents[destSectionIndex].section_contents[destBoxIndex].box_contents
+
+let newBoxInfo ={
+    'location_id':selectedLocationInfo.location_id,
+    'section_id':selectedSectionInfo.section_id,
+    'box_id':selectedBoxInfo.box_id,
+    'box_name':selectedBoxInfo.box_name,
+    'box_contents': contentsOfBox  
+}
+
+console.log(boxInfo)
+console.log(`
+item string: ${itemNamestring}
+item ID: ${itemID}
+`)
+
+
+
+// note that the parameters are reversed for addBoxItem and deleteBoxItem
+deleteBoxItem(itemID, boxInfo)
+
+// note, an entirely new boxDetails needs to be created
+
+
+
+setTimeout(() => {
+    addBoxItem (newBoxInfo, itemNamestring)
+}, 500);
+
+
+// got it; you actually need a new box content because this is the old one
+// parameters needed
+// got it; you actually need a new box content because this is the old one
+// parameters needed
+/* 
+boxPath.location_id
+boxPath.section_id
+boxPath.box_id
+boxPath.box_name
+boxPath.box_contents (array boxes in new section)
+
+*/
+}
 
 function backToOrigin(general, specific, id){
 
@@ -234,8 +297,6 @@ return(
    boxDetails.hasOwnProperty('new_item_string') && 
    <p className="results-para">{boxName}</p>
 }
-
-
 
             </div>
 
@@ -416,7 +477,10 @@ container[selectedLocationInfo.location_index].location_contents[selectedSection
 
     <button className="apply-transfer-btn small-border" onClick={() =>{
         // go to execute attempt at transfer (pending satisfied conditions)
-        attemptTransfer('yes')}}>Apply transfer</button>
+        attemptTransfer('yes')
+        processTransferItem(boxDetails)
+        }}>Apply transfer</button>
+       
 </div>
 
 }

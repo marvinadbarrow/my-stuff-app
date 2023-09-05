@@ -180,6 +180,7 @@ setContainer(newLocationContainer)
   }
   // ISSUE HERE: boxItems not used. 
   function deleteBoxItem (itemId, boxObject){
+    console.log(boxObject)
 let locationIndex = boxObject.location_index
 let sectionindex = boxObject.section_index
 let boxIndex = boxObject.box_index
@@ -243,9 +244,6 @@ setSectionItems('')
      }
 
 
-    console.log(boxDetails)
-
-
 function transferBox(sectionDetails, pageSet){
 
   // clearing inner box details so there is no conflict with section details, since they cause different elements to be rendered to the page, based on the availability (or unavailability) of the type of details. 
@@ -261,7 +259,6 @@ function transferBox(sectionDetails, pageSet){
 function transferBoxAccept(newArray){
   // setAllItemsArray(newArray)
 }
-
 
 
 // --- BOXES, creating, opening, closing, deleting
@@ -672,7 +669,7 @@ allItemsArray.map(objects =>{
 
 
 {viewArea == "transfer page" &&
-<TransferPage viewArea={viewArea} parentId={parentId} sectionid={sectionId} container={container} boxDetails={boxDetails} allItemsArray={allItemsArray} openBox={openBox} openSection={openSection} sectionItems={sectionItems} transferBoxAccept={transferBoxAccept}/>
+<TransferPage viewArea={viewArea} parentId={parentId} sectionid={sectionId} container={container} boxDetails={boxDetails} allItemsArray={allItemsArray} openBox={openBox} openSection={openSection} sectionItems={sectionItems} transferBoxAccept={transferBoxAccept} addBoxItem={addBoxItem} deleteBoxItem={deleteBoxItem}/>
 
 }
 

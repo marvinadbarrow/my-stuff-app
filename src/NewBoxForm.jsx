@@ -38,19 +38,9 @@ let nameOfLocation;
    }
     })
 
-// show the boxes within the opened section
-console.log(allSectionObjects)
-
-// console.log(allItemsArray)
-
-  // filter all items array for only objects that contain the section id, i.e. items belonging to the current section, and sort the returned array by box id, so that box items are grouped together.  
-// const sortedSectionItems = allItemsArray.filter(objects => 
-//   objects.section_id == sectionId).sort((a, b) => (a.box_id.replaceAll('-','')).localeCompare(b.box_id.replaceAll('-','')))
-
-// console.log(sortedSectionItems)
 
 function viewAllItems (){
-  // send sectionOnlyItems be rendered in APP.jsx where viewArea will be set to page for displaying items and useState will save the array object which will be sent as a prop to the display page. 
+  // send allSectionObjects be rendered in APP.jsx where viewArea will be set to page for displaying items and useState will save the array object which will be sent as a prop to the display page. 
 allSectionItems(allSectionObjects)
 }
 
