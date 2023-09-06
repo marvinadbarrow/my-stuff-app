@@ -53,13 +53,13 @@ function boxDeleteCall (boxId) {
     <div>No boxes in this section</div>}
 
 
-        <ul className="items-list">
+        <ul key={v4()}  className="items-list">
 
     {// map section contents that contains all boxes and for each object, render a new box using id, boxName, contentsLength variables, and viewBoxContents and boxDeleteCall functions as props. Will try to do away with boxpath here
     
     sectionContents.map(sectionBoxes =>{
         return ( <>
-<NewBox id={sectionBoxes.id} boxName={sectionBoxes.box_name} 
+<NewBox key={v4()}  id={sectionBoxes.id} boxName={sectionBoxes.box_name} 
             contentsLength={sectionBoxes.box_contents.length}
  viewBoxContents={viewBoxContents} boxDeleteCall={boxDeleteCall} parentId={parentId} sectionId={sectionId} sectionBoxes={sectionBoxes} transferBox={transferBox} container={container}/>
                 </>)

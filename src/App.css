@@ -229,6 +229,8 @@ label{font-size: 10px;}
 .cancel-transfer-btn{background-color: var(--button-go-back-color);}
 .apply-transfer-btn{background-color: var(--button-go-forward-color);}
 .all-buttons-container{width: 45%;  height: auto; display: flex; flex-direction: row; justify-content: space-between;}
+
+.all-buttons-container-new-box{width: 45%;  height: auto; display: flex; flex-direction: row; justify-content: space-between;}
 .transfer-box-item{font-size: var(--btn-font-small); color: var(--text-color-yellow);}
 ul.box-contents-for-transfer {
   display: inline-block;
@@ -252,3 +254,4 @@ ul.box-contents-for-transfer {
 .transfer-box-item:nth-child(even){color:#f9f9fa;}
 select{font-size: var(--btn-font-small);}
 .sucess-confirmed{color: var(--text-color-yellow);}
+.inner-button-container{width: 100%; height: auto; display: flex; flex-direction: row; justify-content: space-between;}

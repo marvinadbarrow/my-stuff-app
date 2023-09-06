@@ -15,14 +15,14 @@ let boxArea; // currently don't need this variable
 
     container.map(objects =>{
     if(objects.id == parentId){
-        console.log(objects)
-        console.log(objects.location_name)
+        // console.log(objects)
+        // console.log(objects.location_name)
         locationArea = objects.location_name
     }if(sectionId){
 objects.location_contents.map(content =>{
     if(content.id == sectionId){
-   console.log(content)
-   console.log(content.section_name)
+//    console.log(content)
+//    console.log(content.section_name)
    sectionArea = content.section_name
     }
 })
@@ -48,7 +48,7 @@ if(preSearchArea == 'location'){
 
 
 function backToMainBox(general, specific){
-    console.log(general, specific)
+    // console.log(general, specific)
     openBox(general, specific)      }
 
 function backToMainLocation(general, specific, id){
@@ -97,9 +97,9 @@ function viewLocations(){
 openAllLocations('main')
 }
 
-console.log(layerNumber)
-console.log(boxDetails)
-console.log(areaSpecific)
+// console.log(layerNumber)
+// console.log(boxDetails)
+// console.log(areaSpecific)
     return(
     <>
 <div className="inner-location">

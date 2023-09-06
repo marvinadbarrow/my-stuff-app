@@ -3,22 +3,27 @@ import { DeleteButton } from './DeleteButton';
 import { ViewAreaButton } from './ViewAreaButton';
 import { TransferButton } from './TransferButton';
 export  const NewBox = ({id, boxName, contentsLength, viewBoxContents, boxDeleteCall, parentId, sectionId, sectionBoxes, transferBox, container}) =>{
+console.log(sectionBoxes)
+let newSectionBoxes = {
 
+    "box_contents":sectionBoxes.box_contents, 
+    "box_name":sectionBoxes.box_name,
+    "location_name":sectionBoxes.location_name,
+    "parent_container_id":sectionBoxes.parent_container_id,
+    "parent_section_name":sectionBoxes.parent_section_name,
+    "section_id":sectionBoxes.section_id,
+    "box_contents":sectionBoxes.box_contents,
+  
 
-// console.log(`
-// boxId: ${id}
-// parentId: ${parentId}
-// sectionId: ${sectionId}
-// boxName: ${boxName}
-// `)
-
+}
+console.log(newSectionBoxes)
 // add section id to sectionBoxes object
-sectionBoxes.section_id = sectionId
+newSectionBoxes.section_id = sectionId
 
-// get the name of the parent location and add location_name property to sectionBoxes, setting its value using parent location name. 
+// get the name of the parent location and add location_name property to newSectionBoxes, setting its value using parent location name. 
 container.map(objects =>{
     if(objects.id == parentId){
- sectionBoxes.location_name = objects.location_name
+ newSectionBoxes.location_name = objects.location_name
     }
 })
 
@@ -29,7 +34,15 @@ function deleteBox (id){
 let itemNumber; // variable to display number of items in box
 let viewButtonText  // variable to display text on button for viewing contents if they exist or adding content if not. 
 
-contentsLength > 1 ? itemNumber = 'Items': itemNumber = 'Item'
+// if contents length is 1, then word is 'item', but for all other values, zero included, word is 'items'
+switch (contentsLength) {
+    case 1: itemNumber = 'item'        
+        break;
+
+    default: itemNumber = 'Items'
+        break;
+}
+
 contentsLength === 0 ? viewButtonText = 'Add Items': viewButtonText = 'View Items'
 return(
 <>
@@ -38,7 +51,7 @@ return(
 {
     // the below div contains item total display and all buttons so that they display evenly on each row
 }
-<div className="all-buttons-container">
+<div className="all-buttons-container-new-box">
 
 <p className="items-total">{itemNumber}: {contentsLength}</p>
 
@@ -47,14 +60,16 @@ return(
 {
 // below button takes you to transfer page
 }
- <TransferButton  itemName={boxName} transferBox={transferBox} objectPath={sectionBoxes} buttonText={'Move Box'}/>
+ <TransferButton  itemName={boxName} transferBox={transferBox} objectPath={newSectionBoxes} buttonText={'Move Box'}/>
+
+
+
+
+</div>
 
 {contentsLength === 0 && 
 <DeleteButton className={"delete"}  name={''}  deleteFunction={deleteBox} id={id}/>
  }
-</div>
-
-
 </div>
 </li> 
 </>

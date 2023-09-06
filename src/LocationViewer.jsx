@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { NewSection } from './NewSection'
 import { NewSectionForm } from './NewSectionForm'
+import { v4 } from 'uuid'
 // going to put variables before functions in the destrucured parameters
 export  const LocationViewer = ({areaSpecific, container, parentId, openSection, addSection, closeLocation,  deleteSection, openSearch}) =>{
 
@@ -51,12 +52,12 @@ container.map((mainLocations, index) =>{
 <NewSectionForm setSection={setSection} createSection={createSection} backToLocations={backToLocations} location={location} section={section} openSearch={openSearch}/>
 
 {sections.length < 1 && 'No sections in this location'}
-<ul className="items-list">
+<ul key={v4()} className="items-list">
 {sections.map((locationSections, index) =>{
     let contentsLength = locationSections.section_contents.length
 
         return(    
-<NewSection id={locationSections.id} locationSectionName={locationSections.section_name}  sectionDeleteCall={sectionDeleteCall}  sections={sections} containerName={locationSections.container_name} contentsLength={contentsLength} viewSection={viewSection}/>
+<NewSection key={v4()}  id={locationSections.id} locationSectionName={locationSections.section_name}  sectionDeleteCall={sectionDeleteCall}  sections={sections} containerName={locationSections.container_name} contentsLength={contentsLength} viewSection={viewSection}/>
         )
            })
 } 

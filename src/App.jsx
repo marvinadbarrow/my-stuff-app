@@ -18,6 +18,7 @@ import { TransferPage } from './TransferPage'
 
 function App() {
 
+
 // console.log(localStorage)
   // create a function which takes a state variable, which can be assigned the clicked location name as a string, when the variable is a string, the location will open, otherwise the main page will render when the variable is an empty string. 
   const [viewArea, setviewArea] = useState('start page') // precise area to be viewed
@@ -59,6 +60,20 @@ if(whatsStored == null){ // if no locations exist
   }, [allItemsArray])
 
 
+
+
+
+    // keeping a copy of all items array in local storage since I almost deleted it. 
+    // localStorage.setItem('all_items_spare', JSON.stringify(allItemsArray))
+    // console.log(JSON.parse(localStorage.getItem('all_items_spare')))
+
+    // same for container items
+    // localStorage.setItem('spare_inventory', JSON.stringify(container))
+    //    console.log(JSON.parse(localStorage.getItem('spare_inventory')))
+
+
+
+
 function allSectionItems(sectionObjects){
 if(sectionObjects.length > 0){
   console.log(sectionObjects)
@@ -66,6 +81,15 @@ setSectionItems(sectionObjects)
   setviewArea("all section items")
 }
 
+}
+
+function inventoryChange(newContainerArray){
+  setContainer(newContainerArray)
+}
+
+function allArrayChange(allObjectsNew){
+
+  setAllItemsArray(allObjectsNew)
 }
 
 // console.log(allItemsArray)
@@ -261,7 +285,7 @@ setAllItemsArray(newAllItemsArray)
 
       }
 
-console.log(JSON.parse(localStorage.getItem('storage_containers')))
+// console.log(JSON.parse(localStorage.getItem('storage_containers')))
 // if box properties exist show box details otherwise log 'false' to console
 boxDetails.hasOwnProperty('box_contents')? boxDetails:console.log(boxDetails.hasOwnProperty('box_contents'))
    
@@ -496,7 +520,6 @@ please delete all items from the box if you wish to procede with deletion
 
 
 
-
 // --- SECTIONS, creating, opening, closing, deleting
 
 function addSection (sectionName, containerName, containerIndex, parentContents) {
@@ -724,7 +747,7 @@ allItemsArray.map(objects =>{
 
 
 {viewArea == "transfer page" &&
-<TransferPage viewArea={viewArea} parentId={parentId} sectionid={sectionId} container={container} boxDetails={boxDetails} allItemsArray={allItemsArray} openBox={openBox} openSection={openSection} sectionItems={sectionItems} transferBoxAccept={transferBoxAccept} addBoxItem={addBoxItem} deleteBoxItem={deleteBoxItem}/>
+<TransferPage viewArea={viewArea} parentId={parentId} sectionid={sectionId} container={container} boxDetails={boxDetails} allItemsArray={allItemsArray} openBox={openBox} openSection={openSection} sectionItems={sectionItems} transferBoxAccept={transferBoxAccept} addBoxItem={addBoxItem} deleteBoxItem={deleteBoxItem} inventoryChange={inventoryChange} allArrayChange={allArrayChange}/>
 
 }
 
