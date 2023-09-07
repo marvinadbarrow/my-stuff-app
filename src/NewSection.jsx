@@ -26,8 +26,12 @@ setCheckedStatus('') // return the checked status to unchecked since the checkbo
 {sections.length === 0 && <p className='section-info'><em>No Sections exist</em></p>}
 
 { <li key={id} className='section-item'><div className="section-div"><p className='section-info'>{locationSectionName}</p>
+<div className="all-buttons-container-new-section">
 <p className="items-total">{boxTotals}: {contentsLength}</p>
 <ViewAreaButton className={"open-section"} openArea={viewSection} areaName={locationSectionName} id={id} buttonText={boxes} generalArea={'section'}/> 
+
+</div>
+
 
 {contentsLength === 0 &&  
 <DeleteButton className={"danger-delete-section"}  name={locationSectionName}  deleteFunction={deleteThisSection} id={id}/>

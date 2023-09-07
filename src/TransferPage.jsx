@@ -116,57 +116,35 @@ function processTransferItem(boxInfo){
         // to store index of item in all items array
         let indexOfItemInAllArray; 
 
-// origin contents (where the item object came from)
-    let contentsOfOldBox = container[origLoc].location_contents[origSec].section_contents[origBox].box_contents
+
         
 // destination contents (where the item object will go to)        
         let contentsOfNewBox = container[destLoc].location_contents[destSec].section_contents[destBox].box_contents
 
 // now you need the object, so you can push it to the new array, and remove it from the old. 
 
-        let newBoxInfo ={
-            'all_Locations':container,
-            'location_id':selectedLocationInfo.location_id,
-            'section_id':selectedSectionInfo.section_id,
-            'box_id':selectedBoxInfo.box_id,
-            'box_name':selectedBoxInfo.box_name,
-            'box_contents': contentsOfNewBox 
-        }
+        // let newBoxInfo ={
+        //     'all_Locations':container,
+        //     'location_id':selectedLocationInfo.location_id,
+        //     'section_id':selectedSectionInfo.section_id,
+        //     'box_id':selectedBoxInfo.box_id,
+        //     'box_name':selectedBoxInfo.box_name,
+        //     'box_contents': contentsOfNewBox 
+        // }
 
-                // just realized that newBoxInfo.box_contents is incorrect, it's supposed to be the 'content of the NEW BOX' which you probably need all the indexes for from location down to 
-        // console.log(contentsOfOldBox)
-        // console.log(contentsOfNewBox) // new box information
+
+// console.log(boxOrig)
+
+
+
 
 // original box
 let boxOrig = testContainer[origLoc].location_contents[origSec].section_contents[origBox].box_contents
-// console.log(boxOrig)
-
-// destination box
-let boxDest =  testContainer[destLoc].location_contents[destSec].section_contents[destBox].box_contents
-// console.log(boxDest)
-
-
-
-// OLD METHOD ------------------------------------
-
-// item at ORIGIN
-let transObj = boxOrig.filter(checkItems => checkItems.itemString == itemNamestring)
-console.log('old way for item at origin using filter')
-console.log(transObj)
-
-// OLDER item method from all items array
-let allObj = testAllItemsArray.filter(objects => objects.item_id == itemID)
-console.log('old way for item in all items array using filter')
-console.log(allObj)
-
-
-
-
 
 // NEW MOTHOD --------------------------------------
 
 
-// a better item at ORIGIN
+// a better item getter from ORIGIN 
 let betterTransObj
 boxOrig.map((objects, objectsIndex) =>{
     if(objects.itemString == itemNamestring){
@@ -177,7 +155,7 @@ console.log('new way of getting items at origin using map')
 console.log(betterTransObj)
 
 
-// better item in ALL items array
+// better item getter from  ALL items array
 let betterAllObj;
 testAllItemsArray.map((objects, allObjectsIndex) =>{
     if(objects.item_id == itemID){
@@ -189,7 +167,7 @@ console.log(betterAllObj)
 
 
 
-// new object for new physical location ------------------------------------
+// new item object for new physical location ------------------------------------
 let alteredTransObj = {
     "id":betterTransObj.id,
     "itemString":betterTransObj.itemString,
@@ -205,11 +183,13 @@ if(objects.item_id == itemID){
     console.log(testAllItemsArray[indexOfObject])
 }
 })
+
+
 // new object with destination details. 
 let alteredAllItemsObj = {
     'box_id': selectedBoxInfo.box_id,
-    'item_id':allObj[0].item_id,
-    'item_name':allObj[0].item_name,
+    'item_id':betterAllObj.item_id,
+    'item_name':betterAllObj.item_name,
 
     'item_object': {
         "id": itemID,
@@ -292,23 +272,112 @@ function goToDestination(general, specific, id){
 }
 
 // EDIT BOX TRANSFER ITEMS
-function processBoxItems(originBoxId, originSectionId, originalLocationId, destinationSection, destinationLocation ){
+function processBoxItems(originSecId, originLocId, destSecId, destLocId ){
 
 
+    console.log(sectionItems)
+
+
+    let originBoxName = sectionItems.box_name
+    let originSectionName = sectionItems.parent_section_name
+    let originSectionId = originSecId
+    let originLocationId = originLocId
+    let destinationLocationID = destLocId
+    let destinationSectionID = destSecId
+    let boxItems = sectionItems.box_contents
+    let thisBox;
+    let boxID;
+    let originalLocationIndex;
+    let originalSectionIndex;
+    let originalBoxIndex;
+    let transferBox;
+
+
+
+
+    // find box with map of box contents
+    boxItems.map((itemsOfBox) =>{
+        if(itemsOfBox.parent_Box == originBoxName){
+            thisBox = itemsOfBox
+            boxID = itemsOfBox.parent_box_id
+
+        }
+
+    })
 
     // check total item numbers differ by the amount of box items (latter should be less)
 
-//     console.log(sectionItems)
-// console.log(`
-// originBoxId: ${originBoxId}
-// originSectionId: ${originSectionId}
-// originalLocationId: ${originalLocationId}
-// destinationLocation: ${destinationLocation.location_id}
-// destinationSection: ${destinationSection.section_id}
-// `)
+
+console.log(`
+originBoxName:${originBoxName}
+originBoxId: ${boxID}
+originSectionName:${originSectionName}
+originSectionId: ${originSectionId}
+originalLocationId: ${originLocationId}
+destinationLocationID: ${destinationLocationID}
+destinationSectionID: ${destinationSectionID}
+`)
+
+
+console.log("box Items")
+
+// get index of location and section indexes for destination which will be used to filter out the box from the section contents
+testContainer.map((location, locationIndex) =>{
+    if(location.id == originLocationId){
+        // get location index
+        originalLocationIndex = locationIndex
+        location.location_contents.map((section, sectionIndex) =>{
+            if(section.id == originSectionId){
+                // get section index
+                originalSectionIndex = sectionIndex
+                section.section_contents.map((box, boxIndex)=>{
+                    if(box.id == boxID){
+                        originalBoxIndex = boxIndex
+                    }
+                })
+            }
+           
+        })
+    }
+
+})
+// origin and destination locations/sections indexes
+let transitObj ={
+    
+    "locA_index":originalLocationIndex,
+    "secA_index":originalSectionIndex,
+    "boxA_index":originalBoxIndex,
+    "locB_index":selectedLocationInfo.location_index,
+    "secB_index":selectedSectionInfo.section_index,
+    "origin":'',
+    "destination":''
+}
+
+transitObj.origin = testContainer[transitObj.locA_index].location_contents[transitObj.secA_index]
+
+transitObj.destination = testContainer[transitObj.locB_index].location_contents[transitObj.secB_index]
+
+transferBox = transitObj.origin.section_contents[originalBoxIndex]
+
+
+console.log(transitObj)
+console.log(transitObj.origin)
+console.log(transitObj.destination)
+console.log(transferBox)
+
+// setTestContainer(draft =>{
+//     // push box to new section
+//     draft[transitObj.locB_index].location_contents[transitObj.secB_index].section_contents.push(transferBox)
+
+//     // filter box from origin section
+//     draft[transitObj.locA_index].location_contents[transitObj.secA_index].section_contents = 
+//     draft[transitObj.locA_index].location_contents[transitObj.secA_index].section_contents.filter(box => box.id !== boxID) 
+// })
+
+
 
 // first we need to create a list of all items in the box along with their id's (for deletion), so begin by getting the box items
-// let itemsForDelete = sectionItems.box_contents
+let itemsForDelete = boxItems
 
 // itemsForDelete.map(items =>{
 //     console.log(items.id)
@@ -340,7 +409,7 @@ setTransferApplied(confirm)
     if(selectedSectionInfo.section_name){ // and section menu has been selected
    
         setTransferApplied(confirm) // then accept transfer
-processBoxItems(sectionItems.id, sectionItems.section_id, sectionItems.parent_container_id, selectedSectionInfo, selectedLocationInfo)
+processBoxItems(sectionItems.section_id, sectionItems.parent_container_id, selectedSectionInfo.section_id, selectedLocationInfo.location_id)
 // otherwise alert user that both location and section options must be selected
     }else{alert('please select location AND section before attempting tranfer')}
 
@@ -613,4 +682,36 @@ className
 
 
             // previous back to origin/cancel button
+
+            HOLDING ONTO THE BELOW SEARCHERS OF ITEM IN PREVIOUS BOX AND ITEM IN ALL ITEMS ARRAY
+
+
+            
+
+// OLD METHOD ------------------------------------
+
+
+// // origin contents (where the item object came from)
+// let contentsOfOldBox = container[origLoc].location_contents[origSec].section_contents[origBox].box_contents
+
+// // destination box
+// let boxDest =  testContainer[destLoc].location_contents[destSec].section_contents[destBox].box_contents
+// // console.log(boxDest)
+
+
+
+// // item at ORIGIN
+// let transObj = boxOrig.filter(checkItems => checkItems.itemString == itemNamestring)
+// console.log('old way for item at origin using filter')
+
+
+// // OLDER item method from all items array
+// let allObj = testAllItemsArray.filter(objects => objects.item_id == itemID)
+// console.log('old way for item in all items array using filter')
+
+
+
+
+// ABOVE NOT NEEDED --------------------------------------
+
 */

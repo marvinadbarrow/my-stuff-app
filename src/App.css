@@ -230,7 +230,7 @@ label{font-size: 10px;}
 .apply-transfer-btn{background-color: var(--button-go-forward-color);}
 .all-buttons-container{width: 45%;  height: auto; display: flex; flex-direction: row; justify-content: space-between;}
 
-.all-buttons-container-new-box{width: 45%;  height: auto; display: flex; flex-direction: row; justify-content: space-between;}
+.all-buttons-container-new-box,.all-buttons-container-new-section{width: 45%;  height: auto; display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 5px;}
 .transfer-box-item{font-size: var(--btn-font-small); color: var(--text-color-yellow);}
 ul.box-contents-for-transfer {
   display: inline-block;

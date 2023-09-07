@@ -1,0 +1,12 @@
+fixed issue where all items array object was not updating when an item was moved from one box to another. Part of the issue was that I was using 'filter' to pull out the oject referring to the item to be moved, and not realizing that filter creates a new array.  I overlooked the fact that the variable I assiged to the filter was not an object, but a single object inside a new array.  I was also using filter to delete the object before trying to push a new version of the object using useImmer. 
+
+ The function was just not working properly.  I decided instead to just find the index of the items object in the array, and then to do a mutation by replacing the old object, with the new object, which was had the references to the items new position in the inventory.  
+
+This resolved the issue. Prior to this, when an object was moved from one place to another, when I did a search for it, the result would show it still sitting in the old location.  But when clicking the result and being taken to the old location, the item was not there; it was in the new location.  That's when I realized that the object in allItemsArray that refers to the item had not been changed.  
+
+Next set of issues/steps will be to create function to move an entire box with all of its contents to another section.  There are still some issues to resolve regarding how menu options appear for select, particularly when the box you are moving the item from is the only box in the section. Select an option registers only when an option other than the one automatically showing is chosen, which is a problem if there is only one box. 
+
+I made quite a few oversights when trying to initially program the transfer of a box. 
+I assumed you could just put the box into the new location, forgetting that all items need to have all of their relative id's changed, such as location, section, id.  Box id remains the same. The box also needs it's relative id's changed, i.e. section id and location id. That needs to happen directly in the box objects, and all the items contained in the box, but also, all of the items in the array holding all inventory items need to have all of the relative id's changed. 
+
+To make things  easier I've started to use immer, and will be refactoring a lot of code using the method to handle deeply nested elements so that the code is much easier to read, and to greatly reduce all of the processing required to edit deeply nested objects. 
