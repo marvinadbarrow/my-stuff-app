@@ -22,6 +22,7 @@
   --border-color-blue:#646cff;
   --border-color-white:white;
   --border-color-yellow:yellow;
+  --border-color-red:rgb(255, 0, 0);
 
   --element-margin-bottom-small:10px;
   --element-margin-bottom-medium:15px;
@@ -139,7 +140,7 @@ label{font-weight: bold;}
   flex-direction: column;
 }
 
-.view-contents,.first-added-items,.danger-delete,.delete {
+.view-contents,.first-added-items,.danger-delete,.delete{
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -215,8 +216,10 @@ label{font-size: 10px;}
 .advice-para{color: rgb(255, 255, 255); font-size: 10px; font-weight: bold;}
 .advice-div-container{position: relative; width: 100%; height: auto; background-color: rgba(255, 255, 0, 0);}
 .transfer-button{color: white; background-color: rgb(154, 221, 52); font-weight: bold; font-size: 7px;}
-.transfer-elements-container, .navigation-btn-container{display: flex; flex-direction: row; justify-content: space-between; width: 100%; height: fit-content;}
-.origin{background-color: var(--button-go-back-color); border-color: var(--border-color-white); font-size: var(--btn-font-medium);  }
+.transfer-elements-container, .navigation-btn-container{display: flex; flex-direction: row; justify-content: space-between; width: 100%; height: fit-content; margin-bottom: var(--element-margin-bottom-medium);}
+.origin{background-color: var(--button-go-back-color); border-color: var(--border-color-white); font-size: var(--btn-font-medium);
+margin-top: var(--element-margin-bottom-medium);
+}
 .destination{background-color: var(--button-go-forward-color); border-color: var(--border-color-white); font-size: var(--btn-font-medium);}
 
 .element-div{ border: solid var(--border-color-white); width: fit-content; height: auto; padding: 7px; background-color: rgba(163, 163, 160, 0.795);   margin-bottom: var(--element-margin-bottom-large); padding-bottom: 1rem;}
@@ -228,6 +231,15 @@ label{font-size: 10px;}
 .transfer-btn-container{width: 100%; display: flex; flex-direction: row; justify-content: space-between;}
 .cancel-transfer-btn{background-color: var(--button-go-back-color);}
 .apply-transfer-btn{background-color: var(--button-go-forward-color);}
+
+.warning-message-element{width: 100%;}
+
+.duplicate-box-warning{background-color: white; font-size: var(--btn-font-medium) ;color: red; padding: 3px; border: solid; border-width: var(--element-border-medium); border-radius: var(--border-rad-large); border-color: var(--border-color-red); height: fit-content; width: 80%; margin: auto;
+margin-bottom: var(--element-margin-bottom-large);
+}
+.duplicate-warning-para{color: black; font-size: var(--btn-font-small);}
+
+
 .all-buttons-container{width: 45%;  height: auto; display: flex; flex-direction: row; justify-content: space-between;}
 
 .all-buttons-container-new-box,.all-buttons-container-new-section{width: 45%;  height: auto; display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 5px;}
@@ -237,12 +249,13 @@ ul.box-contents-for-transfer {
   text-align: left;
   padding: 3px;
   margin: 2px;
-
 }
+
+
 .transfer-box-output{max-width: 100%; height: auto; margin: auto; text-align: center; border: solid white;}
 .transfer-box-heading{margin: 3px 0px;}
 
-.element-div-transfer-origin{ border: solid var(--border-color-white); max-width: 35%; height: auto; padding: 7px; background-color: rgba(163, 163, 160, 0.795);   margin-bottom: var(--element-margin-bottom-large); padding: 1rem 0.2rem;}
+.element-div-transfer-origin, .element-div-transfer-destination{ border: solid var(--border-color-white); max-width: 30%; height: auto; padding: 7px; background-color: rgba(163, 163, 160, 0.795);   margin-bottom: var(--element-margin-bottom-large); padding: 1rem 0.2rem;}
 .app-title{margin: 2px 0px;}
 .list-div{
   width: 100%;
@@ -255,3 +268,9 @@ ul.box-contents-for-transfer {
 select{font-size: var(--btn-font-small);}
 .sucess-confirmed{color: var(--text-color-yellow);}
 .inner-button-container{width: 100%; height: auto; display: flex; flex-direction: row; justify-content: space-between;}
+
+/* this class is added to a box name in the transfer section that matches the name of the box user is attempting to transfer - so that the user knows that transfering the box will result in duplicate box names in the destination section: It can't happen anyway, but this is a pre-warning, before they hit the apply transfer button.  It's also visually useful because it can be used as a guide to renaming the transfer box*/
+.warning-red{color: rgb(236, 113, 113) !important; font-weight: bold; font-style: italic;}
+.rename-box-form{width: 100%; height: fit-content; margin-bottom: var(--element-margin-bottom-medium); display: flex; flex-direction: column; align-items: center; justify-content: space-around;}
+.success-green{color: rgb(87, 247, 100) !important; font-weight: bold; font-style: italic;}
+

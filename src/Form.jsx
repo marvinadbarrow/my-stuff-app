@@ -1,6 +1,6 @@
 export const Form = ({createFunction, placeholder, value, newValue, setFunction, label, buttonName, formClicked}) =>{
 
-  console.log(placeholder)
+
     return (
         <>
           <form className='new-item-form' id="item-creation-form" onSubmit={createFunction}>

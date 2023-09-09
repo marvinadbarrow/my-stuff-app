@@ -12,7 +12,7 @@ let newSectionBoxes = {
     "parent_container_id":sectionBoxes.parent_container_id,
     "parent_section_name":sectionBoxes.parent_section_name,
     "section_id":sectionBoxes.section_id,
-    "box_contents":sectionBoxes.box_contents,
+
   
 
 }
@@ -57,10 +57,13 @@ return(
 
  <ViewAreaButton className={"view-contents"} openArea={viewBoxContents}  id={id} areaName={boxName} buttonText={viewButtonText} generalArea={'box'}/>  
 
-{
+{// if box name is unboxed don't render the transfer button because there will always be a duplicate named 'unboxed' in the transfer destination, AND, unboxed isn't actually a box per se' so, for now items will have to be moved manually
+    boxName.toLowerCase() !== 'unboxed' &&
+
 // below button takes you to transfer page
+<TransferButton  itemName={boxName} transferBox={transferBox} objectPath={newSectionBoxes} buttonText={'Move Box'}/>
 }
- <TransferButton  itemName={boxName} transferBox={transferBox} objectPath={newSectionBoxes} buttonText={'Move Box'}/>
+
 
 
 

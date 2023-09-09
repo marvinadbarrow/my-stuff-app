@@ -356,8 +356,8 @@ if(number < 1){
   let newAddedBox =  {
     id: v4(), // box id
     box_name: box,
-    parent_section_name: boxLocation, // section parent name
-    parent_container_id: parentId,  // section parent index
+    parent_section_name: boxLocation, // section  name
+    parent_container_id: parentId,  // section  index
     box_contents: [], // container for items in box
    }
 
