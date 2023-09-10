@@ -1,6 +1,6 @@
 
 import { v4 } from "uuid";
-export const DisplayDestination = ({selectedLocationInfo, selectedSectionInfo, testContainer, sectionItems, newBoxName, transferApplied}) =>{
+export const DisplayDestinationBtn = ({selectedLocationInfo, selectedSectionInfo, testContainer, sectionItems, newBoxName, transferApplied}) =>{
 
 
 

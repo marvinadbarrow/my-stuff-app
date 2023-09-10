@@ -1,4 +1,4 @@
-export const DuplicateWarning = ({duplicateFound, newBoxName, setExistingDuplicates, applyBoxNameChange}) =>{
+export const DuplicateWarning = ({duplicateFound, newBoxName, setExistingDuplicates, applyBoxNameChange, setNewBoxName}) =>{
 
 const processDuplicate = () =>{
 

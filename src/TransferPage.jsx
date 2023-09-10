@@ -5,10 +5,13 @@ import { useImmer } from "use-immer";
 import { useEffect } from "react";
 import { AllItemsObject } from "./AllItemsObject";
 import { DisplayOrigin } from "./DisplayOrigin";
-import { DisplayDestination } from "./DisplayDestination";
+import { DisplayDestinationBtn } from "./DisplayDestinationBtn";
 import { DuplicateWarning } from "./DuplicateWarning";
 import { ApplyTransfer } from "./ApplyTransfer";
 import { OptionSelect } from "./OptionSelect";
+import { DestinationElement } from "./DestinationElement";
+import { OriginElement } from "./OriginElement";
+import { SelectElement } from "./SelectElement";
 
 
 export const TransferPage = ({boxDetails, container, allItemsArray, openBox, openSection, sectionItems, transferBoxAccept, addBoxItem, deleteBoxItem, inventoryChange, allArrayChange}) =>{
@@ -553,101 +556,31 @@ processBoxItems(selectedSectionInfo.section_id, selectedLocationInfo.location_id
         </div>
         <div className="transfer-elements-container">
         {
-    // DISPLAY ORIGIN ------------------------------------------------------
-    // locationName, sectionName, sectionItems, boxName, boxDetails
+    // TRANSFER BOX/ITEM ORIGIN DETAILS------------
+    <OriginElement locationName={locationName} sectionName={sectionName} sectionItems={sectionItems} boxDetails={boxDetails} boxName={boxName}/>
 }
-            <div className="element-div-transfer-origin medium-border">
-            <p className="results-para heading-clr-origin text-shadow-heading"><em>{'ORIGIN'}</em></p>
-            <p className="results-para">Location:<br/> {locationName}</p>
-   <p className="results-para">Section:<br/> {sectionName}</p>
 
-   {
-// if section items property exists, desplay element to list all items in a box transfer
-sectionItems.hasOwnProperty('parent_section_name') &&
-<DisplayOrigin sectionItems={sectionItems}/>
-   }
-
-   {// only rendered if transfer type is item
-   boxDetails.hasOwnProperty('new_item_string') && 
-   <p className="results-para">{boxName}</p>
-}
-            </div>
-
-            { // SUCCESS MESSAGE  ---------------------------------------------
-            transferApplied == 'yes'  &&
-
+{ // SUCCESS MESSAGE  ---------------------------------------------
+transferApplied == 'yes'  &&
 <div className="successful-transfer">
     <h3 className="sucess-confirmed">TRANSFER SUCCESSFUL</h3>
 </div>
-
-}
-            { // SELECT MENUS ---------------------------------------------------
-            // show the select menus only if transfer has not been applied
-            transferApplied !== 'yes' &&
-    // element displaying select menus
-           <div className="element-div select-div medium-border">
-{
-    // LOCATION SELECT---------------------------------------------
 }
 
-{
-// OPTION SELECTOR
- <OptionSelect chooseLabel={'Choose a location'} selectID={'location.id'} infoLevel1={selectedLocationInfo} areaName={'location'} infoSetter={setSelectedLocationInfo} container={container}/> 
-}
+      { // SELECT MENUS ---------------------------------------------------
+    // show the select menus only if transfer has not been applied
+    transferApplied !== 'yes' &&
+    <div className="element-div select-div medium-border">
 
-
-{ // if a location is selected then display section select menu
-selectedLocationInfo.location_index && 
-<>
-
-{// OPTION SELECTOR
-}
-<OptionSelect chooseLabel={'Choose a section'} selectID={'section.id'} infoLevel1={selectedLocationInfo} infoLevel2={selectedSectionInfo} areaName={'section'} infoSetter2={setSelectedSectionInfo} container={container}/> 
-</>
-}
-
-
-{ // if a section is selected from menu
-    selectedSectionInfo.section_index &&
-    // if an item is being transferred then display box select menu
-    boxDetails.hasOwnProperty('new_item_string') &&
-
-    <>
-    
-        <OptionSelect chooseLabel={'Choose a box'} selectID={'box.id'} infoLevel1={selectedLocationInfo} infoLevel2={selectedSectionInfo} areaName={'box'} infoSetter3={setSelectedBoxInfo} container={container}/> 
-    </>
-}
-
+<SelectElement selectedLocationInfo={selectedLocationInfo} setSelectedLocationInfo={setSelectedLocationInfo} selectedSectionInfo={selectedSectionInfo} setSelectedSectionInfo={setSelectedSectionInfo} boxDetails={boxDetails} setSelectedBoxInfo={setSelectedBoxInfo} container={container}/>
             </div>
         } 
-{
-    // DISPLAY DESTINATION 
+
+{    // TRANSFER BOX/ITEM DESTINATION DETAILS
+    <DestinationElement selectedLocationInfo={selectedLocationInfo} selectedSectionInfo={selectedSectionInfo} sectionItems={sectionItems} testContainer={testContainer} newBoxName={newBoxName} transferApplied={transferApplied} selectedBoxInfo={selectedBoxInfo}/> 
+    
 }
-            <div className="element-div-transfer-destination medium-border">
-            <p className="results-para heading-clr-destination text-shadow-heading"><em>{'DESTINATION'}</em></p>
 
-            {selectedLocationInfo.hasOwnProperty('location_name') && 
-                 <p className="results-para">Location:<br/> <b>{selectedLocationInfo.location_name}</b></p>       
-            }
-
-    {selectedSectionInfo.hasOwnProperty('section_name') && 
-    <p className="results-para">Section:<br/> <b>{selectedSectionInfo.section_name}</b></p>
-    }
-   {    // if section items property exists, desplay element to list all items in a box transfer
-sectionItems.hasOwnProperty('parent_section_name') &&
-// only show section boxes once section is selected
-selectedSectionInfo.section_name &&
-
-
-<DisplayDestination testContainer={testContainer} selectedSectionInfo={selectedSectionInfo} selectedLocationInfo={selectedLocationInfo} sectionItems={sectionItems} newBoxName={newBoxName} transferApplied={transferApplied}/>
-
-
-   }
-
-   {   selectedBoxInfo.hasOwnProperty('box_index') && //  and  paragraph for selected box name only shown if a box is selected in select menu
-      <p className="results-para">Box:<br/> <b>{selectedBoxInfo.box_name}</b></p>
-   }
-            </div>
 
         </div>
 { transferApplied !== 'yes' && // hide advance and return buttons if transfer not applied (using ViewAreaButton component)
@@ -681,7 +614,7 @@ selectedSectionInfo.section_name &&
 
 {existingDuplicates > 0  &&
 
-<DuplicateWarning duplicateFound={duplicateFound} newBoxName={newBoxName} setExistingDuplicates={setExistingDuplicates} applyBoxNameChange={applyBoxNameChange}/>
+<DuplicateWarning duplicateFound={duplicateFound} newBoxName={newBoxName} setExistingDuplicates={setExistingDuplicates} applyBoxNameChange={applyBoxNameChange} setNewBoxName={setNewBoxName}/>
 
 // duplicateFound, newBoxName, setExistingDuplicates, applyBoxNameChange
 }
