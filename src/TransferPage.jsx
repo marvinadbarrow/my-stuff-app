@@ -4,6 +4,13 @@ import { v4 } from "uuid";
 import { useImmer } from "use-immer";
 import { useEffect } from "react";
 import { AllItemsObject } from "./AllItemsObject";
+import { DisplayOrigin } from "./DisplayOrigin";
+import { DisplayDestination } from "./DisplayDestination";
+import { DuplicateWarning } from "./DuplicateWarning";
+import { ApplyTransfer } from "./ApplyTransfer";
+import { OptionSelect } from "./OptionSelect";
+
+
 export const TransferPage = ({boxDetails, container, allItemsArray, openBox, openSection, sectionItems, transferBoxAccept, addBoxItem, deleteBoxItem, inventoryChange, allArrayChange}) =>{
 
 const [selectedLocationInfo, setSelectedLocationInfo] = useState({})
@@ -136,22 +143,6 @@ function processTransferItem(boxInfo){
 // destination contents (where the item object will go to)        
         let contentsOfNewBox = container[destLoc].location_contents[destSec].section_contents[destBox].box_contents
 
-// now you need the object, so you can push it to the new array, and remove it from the old. 
-
-        // let newBoxInfo ={
-        //     'all_Locations':container,
-        //     'location_id':selectedLocationInfo.location_id,
-        //     'section_id':selectedSectionInfo.section_id,
-        //     'box_id':selectedBoxInfo.box_id,
-        //     'box_name':selectedBoxInfo.box_name,
-        //     'box_contents': contentsOfNewBox 
-        // }
-
-
-// console.log(boxOrig)
-
-
-
 
 // original box
 let boxOrig = testContainer[origLoc].location_contents[origSec].section_contents[origBox].box_contents
@@ -248,25 +239,12 @@ setTestAllItemsArray(draft =>{
 // back to origin, pre or post tranfer
 function backToOrigin(general, specific, id){
 
-    if(boxDetails.hasOwnProperty('new_item_string')){ // if box details exist
-        // note that, since user will be navigating to a different box than the original, if the destination box is in a different section, then the sectionId in state will not be not be a valid parameter for navigating to the new box; (trivially, if the location has changed, then the section  will have also changed, and both parameters will be incorrect).  The destination parentId and sectionId are generated in the map functions used for generating destination details when menu items are selected. 
-
-
-        // console.log(boxDetails.box_contents)
-        // console.log(`
-        // id: ${id}
-        // areaName: ${specific}
-        // generalArea: ${general}
-        //  `)
-    
+    if(boxDetails.hasOwnProperty('new_item_string')){ 
 // if the transfer object is an item, then section id and location id are not needed because they are already set. 
 openBox(general, specific, id, boxDetails )    
 
        }else{ 
-        
-        
-        // console.log(sectionItems)
-        
+       
         setDuplicateFound('')
         
         // no properties in box details - an entire box is being transferred
@@ -322,10 +300,6 @@ if(newBoxName !== ''){
         }
 
     })
-
-    // check total item numbers differ by the amount of box items (latter should be less)
-
-
 
 // get index of location and section indexes for destination which will be used to filter out the box from the section contents
 testContainer.map((location, locationIndex) =>{
@@ -440,8 +414,6 @@ console.log('array objects before alteration')
 console.log(justBoxItems)
 
 
-
-
 // get array without box items - will push altered items to this
 let arrayWithoutItems = testAllItemsArray.filter(object =>object.box_id !== boxID)
 // temporary array for altered items
@@ -491,10 +463,6 @@ if(newBoxName == ''){
 
 }
 
-
-
-
-
 // push to temp array
 tempArray.push(newItem)
 })
@@ -528,26 +496,7 @@ if(duplicates > 0){
 }
 
 
-/*
-
-ALL BOX DETAILS THAT NEED CHANGING
-
-BOX CONTENTS properties, each refering to a box item, do not need to change since they show item ID, box ID, item name and box name, all of which remain unchanged wherever the box is transferred to. 
-
-DO NOT CHANGE BOX PROPERTIES:  id and box_name.  parent_section_name needs to change, and parent_container_id (which is the section id), also needs to change. 
-
-CHANGE BOX PROPERTIES: parent_section_name and parent_container_id.  These will be taken from the details in transitOjb, also noticed that location name has been added to the box at some point. 
-
-
-WHERE TO MAKE THE CHANGES. 
-transitObj.box_details
-
-
-*/
 if(existingDuplicates < 1){
-
-
-
 // BOX FUNTION
 
 setTestContainer(draft =>{
@@ -561,19 +510,12 @@ setTestContainer(draft =>{
 // 
 setTestAllItemsArray(completedNewArray)
 
-}{
+}
+{
     // alert will run and adjustment box will pop up
 }
 
-
-
-
 }
-
-
-
-
-
 
 // EXECUTE TRANSFER
 function attemptTransfer(confirm){
@@ -612,6 +554,7 @@ processBoxItems(selectedSectionInfo.section_id, selectedLocationInfo.location_id
         <div className="transfer-elements-container">
         {
     // DISPLAY ORIGIN ------------------------------------------------------
+    // locationName, sectionName, sectionItems, boxName, boxDetails
 }
             <div className="element-div-transfer-origin medium-border">
             <p className="results-para heading-clr-origin text-shadow-heading"><em>{'ORIGIN'}</em></p>
@@ -621,43 +564,21 @@ processBoxItems(selectedSectionInfo.section_id, selectedLocationInfo.location_id
    {
 // if section items property exists, desplay element to list all items in a box transfer
 sectionItems.hasOwnProperty('parent_section_name') &&
-<>
-<div className="transfer-box-output small-border">
-<p className="transfer-box-heading"><b>Box contents:</b></p>
-<ul key={v4()} className="box-contents-for-transfer">
-<div className="list-div"> 
-    { // this DIV will only display 5 or 6 box items; boxes having > 6 items will causes the y-overflow to be hidden and the y-axis scrollbar will appear; user can also mousewheel scroll down to view the rest of the box items. List items alternate in color for easier readability
-        sectionItems.box_contents.map(contents =>{
-return(
-    <li key={contents.id} className="transfer-box-item">{contents.itemString}</li>
-)
-        })
-    }
-</div>
-</ul>
-</div>
-</>
-
-
+<DisplayOrigin sectionItems={sectionItems}/>
    }
 
    {// only rendered if transfer type is item
    boxDetails.hasOwnProperty('new_item_string') && 
    <p className="results-para">{boxName}</p>
 }
-
             </div>
-
-
 
             { // SUCCESS MESSAGE  ---------------------------------------------
             transferApplied == 'yes'  &&
 
-
 <div className="successful-transfer">
     <h3 className="sucess-confirmed">TRANSFER SUCCESSFUL</h3>
 </div>
-
 
 }
             { // SELECT MENUS ---------------------------------------------------
@@ -665,79 +586,24 @@ return(
             transferApplied !== 'yes' &&
     // element displaying select menus
            <div className="element-div select-div medium-border">
+{
+    // LOCATION SELECT---------------------------------------------
+}
 
-
-
-            <div className="options-container" >
-            <label htmlFor="location-select" >Choose a location:</label><br/>
-            <select id="location-select"   onChange={(e) =>{
-                container.map((location, indexOfLocation) =>{
-                    if(location.id == e.target.value){
-                        // console.log(e.target.value)
-       //if location id is equal to selected option set destination location information
-                        setSelectedLocationInfo({
-                            "location_index": indexOfLocation,
-                            "location_id": e.target.value,
-                            "location_name": location.location_name
-                        })
-                    }
-                })
-
-
-}}>
-                {// map through location names and render each as an option
-container.map((location) =>{
-return (
-    <>
-    <option value={location.id}>{location.location_name}</option>
-    </>
-)
-})
-   }
-
-   { // if no selection has been made, display the word 'select' to hint next step to user
-   !selectedLocationInfo.hasOwnProperty('location_index') &&
-   <option value="" className="default-option"  selected="selected">select</option>
-   }
-
-            </select>
-        </div>
+{
+// OPTION SELECTOR
+ <OptionSelect chooseLabel={'Choose a location'} selectID={'location.id'} infoLevel1={selectedLocationInfo} areaName={'location'} infoSetter={setSelectedLocationInfo} container={container}/> 
+}
 
 
 { // if a location is selected then display section select menu
-selectedLocationInfo.location_index &&
-<div className="options-container" >
-<label htmlFor="section-select">Choose a section:</label><br/>
+selectedLocationInfo.location_index && 
+<>
 
-<select id="section-select" onChange={(e) =>{
-    container[selectedLocationInfo.location_index].location_contents.map((section, indexOfSection) =>{
-        if(section.id == e.target.value){
-// if section id is equal to selected option set destination section information
-                setSelectedSectionInfo({
-                    "section_index": indexOfSection,
-                    "section_id": e.target.value,
-                    "section_name":section.section_name
-                        })
-                    }
-                })
-
-
-}}>
-
-{
-!selectedLocationInfo.location_index ? console.log('no section info'): 
-container[selectedLocationInfo.location_index].location_contents.map(sections =>{
-  return (
-    <option value={sections.id} >{sections.section_name}</option>
-  )
-})
+{// OPTION SELECTOR
 }
-   { // if no selection has been made, display the word 'select' to hint next step to user
-   !selectedSectionInfo.hasOwnProperty('section_index') &&
-   <option value="" className="default-option"  selected="selected">select</option>
-   }
-</select>
-</div>
+<OptionSelect chooseLabel={'Choose a section'} selectID={'section.id'} infoLevel1={selectedLocationInfo} infoLevel2={selectedSectionInfo} areaName={'section'} infoSetter2={setSelectedSectionInfo} container={container}/> 
+</>
 }
 
 
@@ -745,50 +611,15 @@ container[selectedLocationInfo.location_index].location_contents.map(sections =>
     selectedSectionInfo.section_index &&
     // if an item is being transferred then display box select menu
     boxDetails.hasOwnProperty('new_item_string') &&
-    <div className="options-container" >
-    <label htmlFor="box-select">Choose a box:</label><br/>
-    <select id="box-select"  onChange={(e) =>{
-    container[selectedLocationInfo.location_index].location_contents[selectedSectionInfo.section_index].section_contents.map((boxes, indexOfBox) =>{
-        if(boxes.id == e.target.value){
 
-
-
-// if box id is equal to selected option set destination box information
-                setSelectedBoxInfo({
-                    "box_index": indexOfBox,
-                    "box_id": e.target.value,
-                    "box_name":boxes.box_name,
-                        })
-
-                        destinationBox = `Box: ${boxes.box_name}`
-                    }
-                })
-}}>
-
-        {
-!selectedSectionInfo.section_index ? console.log('no section info'): 
-container[selectedLocationInfo.location_index].location_contents[selectedSectionInfo.section_index].section_contents.map(boxes =>{
-  return (
-    <option value={boxes.id} >{boxes.box_name}</option>
-  )
-})
-        }
-           { // if no selection has been made, display the word 'select' to hint next step to user
-   !selectedBoxInfo.hasOwnProperty('box_index') &&
-   <option value="" className="default-option"  selected="selected">select</option>
-   }
-    </select>
-</div>
-
+    <>
+    
+        <OptionSelect chooseLabel={'Choose a box'} selectID={'box.id'} infoLevel1={selectedLocationInfo} infoLevel2={selectedSectionInfo} areaName={'box'} infoSetter3={setSelectedBoxInfo} container={container}/> 
+    </>
 }
 
             </div>
         } 
-
-
-
-
-
 {
     // DISPLAY DESTINATION 
 }
@@ -802,86 +633,33 @@ container[selectedLocationInfo.location_index].location_contents[selectedSection
     {selectedSectionInfo.hasOwnProperty('section_name') && 
     <p className="results-para">Section:<br/> <b>{selectedSectionInfo.section_name}</b></p>
     }
-   {
-    // if section items property exists, desplay element to list all items in a box transfer
+   {    // if section items property exists, desplay element to list all items in a box transfer
 sectionItems.hasOwnProperty('parent_section_name') &&
 // only show section boxes once section is selected
 selectedSectionInfo.section_name &&
-<>
-<div className="transfer-box-output small-border">
-<p className="transfer-box-heading"><b>Box Names:</b></p>
-<ul key={v4()} className="box-contents-for-transfer">
-<div className="list-div"> 
-    { // this DIV will only display 5 or 6 destination boxes; the rest will be hidden but can be seen using the scroll bar or mousewheel. 
 
-    /*
- below maps the new section and displays the box names as list items; the items display in alternating colours for readability. If the transfer box has the same name as any of the destination boxes, that list item gets a slightly different class name and a CSS selector will be used to color that box name in bold italic red.  If the newBoxName property gets changed to an empty string, then, the class name of the box which will no longer be have a duplicate name, should be given the default class which should turn it back to the color given to the list position,depending on whether the position is even or odd. 
 
- // when the transfer happens, because the original box, modified or not, now matches the box name of the newly arrived box at the destination, so the transferred box will show as bold red italic in the destination display; which is the correct behaviour (although I hadn't anticipated that result) because that will activate  setNewBoxName(). So I'll change it to another color (green) as another indicator that the transfer has been successful. This can be done by using the condition of 'if transferApplied = 'yes' then change the color to blue.  It will obviously be 'yes' otherwise you would not be able to see the 'go to destination' button. 
-    
-    */
-    testContainer[selectedLocationInfo.location_index].location_contents[selectedSectionInfo.section_index].section_contents.map(box =>{
-        let nameOfClass;
+<DisplayDestination testContainer={testContainer} selectedSectionInfo={selectedSectionInfo} selectedLocationInfo={selectedLocationInfo} sectionItems={sectionItems} newBoxName={newBoxName} transferApplied={transferApplied}/>
 
-      // if destination contains a box with the same name as tranfer box
-        if(box.box_name == sectionItems.box_name){
-// if the newBoxName doesn't exist
-            if(newBoxName == ''){
-
-                if(transferApplied !== 'yes'){ // if tranfer is not yet applied, the duplicate name conflict has not yet been resolved so give conflicting destination box name the red italic bold formatting
-                nameOfClass = "transfer-box-item warning-red"
-                }else{ // otherwise transfer is applied so, keep bold italic but change color to green to indicate successful transfer
-                    nameOfClass = "transfer-box-item success-green"
-
-                }
-
-            }else{
-                // otherwise a new name has been generated for the transform box that doesn't duplicate any destination box name, rever to normal formatting
-                nameOfClass = "transfer-box-item" 
-            }
-        }else{    // the transfer box name doesn't match any box name at the destination  
-                nameOfClass = "transfer-box-item" 
-
-        }
-
-return(
-    <li id={box.id} className={nameOfClass}>{box.box_name}</li>
-)
-        })
-    }
-</div>
-</ul>
-</div>
-</>
 
    }
 
-   {   selectedBoxInfo.hasOwnProperty('box_index') && //  and only shown if a box is selected in select menu
+   {   selectedBoxInfo.hasOwnProperty('box_index') && //  and  paragraph for selected box name only shown if a box is selected in select menu
       <p className="results-para">Box:<br/> <b>{selectedBoxInfo.box_name}</b></p>
    }
-
             </div>
-
 
         </div>
 { transferApplied !== 'yes' && // hide advance and return buttons if transfer not applied (using ViewAreaButton component)
 
 
 <div className="transfer-btn-container">
-
-
 <ViewAreaButton className={"cancel-transfer-btn small-border"} openArea={backToOrigin}  id={originId} areaName={areaName} buttonText={'Cancel Transfer'} generalArea={generalArea}/>
 
 {
     existingDuplicates < 1 &&
-    <button className="apply-transfer-btn small-border" onClick={() =>{
-        // go to execute attempt at transfer (pending satisfied conditions)
-        attemptTransfer('yes')
-        processTransferItem(boxDetails)
-        }}>Apply transfer</button>
-       
-
-}
+<ApplyTransfer attemptTransfer={attemptTransfer} processTransferItem={processTransferItem} boxDetails={boxDetails}/> 
+        }
 
 
 </div>
@@ -903,37 +681,9 @@ return(
 
 {existingDuplicates > 0  &&
 
-<div className="warning-message-element">
-<div className="duplicate-box-warning medium-border">
-    <b><em>WARNING - Duplicate box name exists:</em></b><br/>
-     <p className="duplicate-warning-para"> the box name: -   
-     <b><em> {duplicateFound}</em></b>, already exists at the transfer destination<br/> Consider <em>modifying</em> the box name by <em>'adding a number'</em> at the end of the name to represent the order in which the box was placed in the destination
-     </p>
-     </div>
-{
-    // RENAMING FORM FOR DUPLICATE BOX NAMES
-}
-<form action="" onSubmit={(e) =>{
-    e.preventDefault();
-    if(newBoxName !== duplicateFound && newBoxName.length > 2){
-        applyBoxNameChange(newBoxName)
-        setExistingDuplicates(0);
-     
-    }
+<DuplicateWarning duplicateFound={duplicateFound} newBoxName={newBoxName} setExistingDuplicates={setExistingDuplicates} applyBoxNameChange={applyBoxNameChange}/>
 
-    
-}} className="rename-box-form">
- <label htmlFor="rename-input">{'Modify Box Name'}</label>
- <input value={newBoxName} id='rename-input' type="text" placeholder={'New box name'} 
-onChange={e => setNewBoxName(e.target.value)}
-  />
-<button className="reset-duplicates navigation-btn origin" typeof="submit" >Apply Name Change</button>
-</form>
-
-
-
-</div>
-
+// duplicateFound, newBoxName, setExistingDuplicates, applyBoxNameChange
 }
         
         </>
@@ -942,53 +692,6 @@ onChange={e => setNewBoxName(e.target.value)}
 
 /*
 
-parameters needed for view area button
-className
- buttonText
- openArea
- id
- areaName
- generalArea
-
-
- DON'T DO THIS YET, UNTIL YOU HAVE ALL OF THE PARAMETERS YOU NEED TO NAVIGATE TO THE ORIGIN OR DESTINATION
-
- 
-
-            <ViewAreaButton className={"navigation-btn destination  small-border"} openArea={goToDestination}  id={id} areaName={boxName} buttonText={viewButtonText} generalArea={'box'}/>
-
-
-            // previous back to origin/cancel button
-
-            HOLDING ONTO THE BELOW SEARCHERS OF ITEM IN PREVIOUS BOX AND ITEM IN ALL ITEMS ARRAY
-
-
-            
-
-// OLD METHOD ------------------------------------
-
-
-// // origin contents (where the item object came from)
-// let contentsOfOldBox = container[origLoc].location_contents[origSec].section_contents[origBox].box_contents
-
-// // destination box
-// let boxDest =  testContainer[destLoc].location_contents[destSec].section_contents[destBox].box_contents
-// // console.log(boxDest)
-
-
-
-// // item at ORIGIN
-// let transObj = boxOrig.filter(checkItems => checkItems.itemString == itemNamestring)
-// console.log('old way for item at origin using filter')
-
-
-// // OLDER item method from all items array
-// let allObj = testAllItemsArray.filter(objects => objects.item_id == itemID)
-// console.log('old way for item in all items array using filter')
-
-
-
-
-// ABOVE NOT NEEDED --------------------------------------
+-----------------
 
 */
