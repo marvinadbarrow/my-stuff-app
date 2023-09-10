@@ -369,21 +369,10 @@ transitObj.box_details = testContainer[transitObj.locA_index].location_contents[
 // destination section
 transitObj.destination = testContainer[transitObj.locB_index].location_contents[transitObj.secB_index]
  
-
-// if newBoxName is not an empty string, the transfer box name was a duplicate  of a box name at the destination.  The newBoxName is set in state as a modification of the original transfer box name.  The boxA_name property of transitObj, is changed to this modification so that when (on line 467), the destination section is mapped and a comparison is made to see if the box name property of transitObj is a duplicate of any other the boxes in the destination, since the original duplicate name is no longer  written to that boxA_name variable, there will be no conflict and all of the other steps, those of editing the box and all items array objects with the new destination id's, can continue as normal.  
-
-console.log(transitObj) // contains origina and destination details
-console.log(transitObj.origin) //origin section
-console.log(transitObj.destination) // destination section
-console.log(transitObj.box_details) // transfer box
-
 // create a new box object by spreading the contents of the old box object; that way the new can be mutated without affecting the old
 let newBoxDetails = {
     ...transitObj.box_details,
 }
-
-
-// BOOM.... FOUND IT...  HERE IS WHERE LOCATION ID AND SECTION ID WERE ACCIDENTALLY SWAPPED. LINES 412 AND 414, VARIABLES WERE ASSIGNED WRONG VALUES.. i.e. section id was assigned location id, and location id was assigned section id.  Hopefully this is a fix. 
 
 // change  original section id and name to destination section id and name
 newBoxDetails.parent_section_name = transitObj.secB_name // new section name
@@ -393,35 +382,13 @@ newBoxDetails.parent_container_id = transitObj.locB_id // new section id
 
 // this is done. Now you need to change the properties in all of the allItemsArray objects that have the same box id. 
 
-console.log(newBoxDetails)
-// check old box details 
-// console.log('box details prior to transfer')
-// console.log(transitObj.box_details)
 
-// check newboxDetails has correct details for the new location
-// console.log(' transferred box new destination details')
-// console.log(newBoxDetails)
-
-console.log(testContainer)
-// now all you have to do is push this box object, in place of the previous one, named 'transfer' box to the draft location and therefore it will have the correct details of the section in which it lands.  (the state is already set up; just change the object to be pushed)
-console.log('check properties of just one object in array')
-console.log(testAllItemsArray[0])
-
-// check original array length
-console.log('array length before alteration')
-console.log(testAllItemsArray.length)
-// get only box items
 let justBoxItems = testAllItemsArray.filter(object =>object.box_id == boxID)
-// check object data
-console.log('array objects before alteration')
-console.log(justBoxItems)
 
 
 // get array without box items - will push altered items to this
 let arrayWithoutItems = testAllItemsArray.filter(object =>object.box_id !== boxID)
-// temporary array for altered items
-console.log('array length with boxes removed')
-console.log(arrayWithoutItems.length)
+
 
 
 let tempArray = []
@@ -470,15 +437,7 @@ if(newBoxName == ''){
 tempArray.push(newItem)
 })
 
-console.log('temp array  - objects after alteration')
-console.log(tempArray)
-
 let completedNewArray = [...arrayWithoutItems, ...tempArray]
-
-console.log('array length after alteration')
-console.log(completedNewArray.length)
-
-
 
 let duplicates = 0;
 let duplicateName;
