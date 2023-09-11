@@ -1,8 +1,24 @@
 
+import { useState } from "react"
+
 export const OptionSelect = ({chooseLabel, selectID, infoLevel1, areaName, infoSetter, infoSetter2, infoSetter3, container, infoLevel2, infoLevel3, boxDetails}) =>{
 
+const [defaultLocation, setDefaultLocation] = useState()
+// if info setter values are initially empty, then execute infoSetter with an object for BLACK CHEST to see if that will 
 
+console.log(infoLevel1)
+    // if(!infoLevel1.hasOwnProperty('location_index')){
+    //     infoSetter( {
+    //         "location_index": 0,
+    //         "location_id": container[0].id,
+    //         "location_name": container[0].location_name
+    //     }) 
+    // }
+
+    console.log(infoLevel1)
     const setInfo = (infoObject) =>{
+        console.log('info object')
+        console.log(infoObject)
         infoSetter(infoObject)
     }
 
@@ -14,7 +30,7 @@ export const OptionSelect = ({chooseLabel, selectID, infoLevel1, areaName, infoS
         infoSetter3(infoObject)
     }
 
-console.log(chooseLabel, selectID, infoLevel1, areaName)
+
 if(areaName == 'location'){
 
 
@@ -25,26 +41,28 @@ if(areaName == 'location'){
 <div className="options-container" >
             <label htmlFor="location-select" >Choose a location:</label><br/>
             <select id="location-select"   onChange={(e) =>{
-
+   
                 
                 container.map((location, indexOfLocation) =>{
                     if(location.id == e.target.value){
-                        // console.log(e.target.value)
-       //if location id is equal to selected option set destination location information
+    console.log(e.target)
+    console.log(location.location_contents)
+                            let newObject = {
+                                "location_index": indexOfLocation,
+                                "location_id": e.target.value,
+                                "location_name": location.location_name
+                               }
+                            setInfo(newObject)
 
-       let newObject = {
-        "location_index": indexOfLocation,
-        "location_id": e.target.value,
-        "location_name": location.location_name
-       }
-    setInfo(newObject)
                     }
                 })
 
 
 }}>
                 {// map through location names and render each as an option
+        infoLevel1.location_name !== '' &&
 container.map((location) =>{
+
 return (
     <>
     <option value={location.id}>{location.location_name}</option>
@@ -53,8 +71,8 @@ return (
 })
    }
 
-   { // if no selection has been made, display the word 'select' to hint next step to user
-   !infoLevel1.hasOwnProperty('location_index') &&
+{ // if no selection has been made, display the word 'select' to hint next step to user
+   infoLevel1.hasOwnProperty('location_index') &&
    <option value="" className="default-option"  selected="selected">select</option>
    }
 
@@ -89,13 +107,14 @@ setInfo2(newObject)
 
 }}>
 
-{
-!infoLevel1.location_index ? console.log('no section info'): 
+{ // this is where the map for BLACK CHEST is not happening.  According to the code below, this map should log 'no section info' if 
+infoLevel1.location_index !== '' &&
 container[infoLevel1.location_index].location_contents.map(sections =>{
   return (
     <option value={sections.id} >{sections.section_name}</option>
   )
 })
+
 }
    { // if no selection has been made, display the word 'select' to hint next step to user
    !infoLevel2.hasOwnProperty('section_index') &&

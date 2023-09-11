@@ -3,7 +3,7 @@ import { DisplayDestinationBtn } from "./DisplayDestinationBtn"
 export const DestinationElement = ({selectedLocationInfo, selectedSectionInfo, sectionItems, testContainer, newBoxName, transferApplied, selectedBoxInfo}) =>{
 
     
-console.log(selectedLocationInfo, selectedSectionInfo, sectionItems, testContainer, newBoxName, transferApplied, selectedBoxInfo)
+console.log(selectedLocationInfo)
 return(<>
 
 <div className="element-div-transfer-destination medium-border">

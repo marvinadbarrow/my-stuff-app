@@ -279,15 +279,7 @@ setAllItemsArray(newAllItemsArray)
 // console.log(allItemsArray)
 // alert(`${itemString} - successfully deleted`)
 
-
-
-
-
       }
-
-// console.log(JSON.parse(localStorage.getItem('storage_containers')))
-// if box properties exist show box details otherwise log 'false' to console
-boxDetails.hasOwnProperty('box_contents')? boxDetails:console.log(boxDetails.hasOwnProperty('box_contents'))
    
   function transferItem (detailsOfBox, pageSet, itemName, newBoxItems){
 detailsOfBox.new_item_string = itemName

@@ -3,7 +3,7 @@ import { DeleteButton } from './DeleteButton';
 import { ViewAreaButton } from './ViewAreaButton';
 import { TransferButton } from './TransferButton';
 export  const NewBox = ({id, boxName, contentsLength, viewBoxContents, boxDeleteCall, parentId, sectionId, sectionBoxes, transferBox, container}) =>{
-console.log(sectionBoxes)
+
 let newSectionBoxes = {
 
     "box_contents":sectionBoxes.box_contents, 
@@ -16,7 +16,7 @@ let newSectionBoxes = {
   
 
 }
-console.log(newSectionBoxes)
+
 // add section id to sectionBoxes object
 newSectionBoxes.section_id = sectionId
 

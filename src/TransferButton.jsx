@@ -18,6 +18,7 @@ if(objectPath.hasOwnProperty('new_item_string')){
     // added both  newBoxItems and itemName be sent to transfr page
     function preparTransfer(objectPath, nameofItem, boxContents){
 
+// if box contents exist, execute transfer item, otherwise execute transfer box
 boxContents !== undefined ?
 transferItem(objectPath,'transfer page', nameofItem, boxContents):
 transferBox(objectPath ,'transfer page')
@@ -43,10 +44,4 @@ objectPath.hasOwnProperty('new_item_string') ?
 
 /*
 
-        if(objectPath.hasOwnProperty('box_contents')){
-
-            transferItem(objectPath, 'transfer page')
-        }else{
-    // otherwise, send updated section and transfer page string for state update      
-            transferItem(objectPath,'transfer page')}
 */
