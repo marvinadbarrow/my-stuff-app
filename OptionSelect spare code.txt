@@ -53,8 +53,7 @@ if(areaName == 'location'){
                                 "location_name": location.location_name
                                }
                             setInfo(newObject)
-                            setInfo2('')
-                            setInfo3('')
+
 
                     }
                 })
@@ -103,7 +102,6 @@ let newObject = {
     "section_name": section.section_name
    }
 setInfo2(newObject)
-setInfo3('')
                     }
                 })
 
@@ -150,7 +148,6 @@ let newObject = {
     "box_name": boxes.box_name
    }
 setInfo3(newObject)
-
                         // destinationBox = `Box: ${boxes.box_name}`
 // ALSO: whenever thie location is changed, the section and box should be reset. 
 
