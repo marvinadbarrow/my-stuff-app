@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { SearchButton } from './SearchButton';
 import { Form } from './Form';
 import { BackToStartButton } from './BackToStartButton';
-export function NewLocationForm({ formSubmit, closeMainArea, openSearch }) {
+export function NewLocationForm({ formSubmit, returnToStart, openSearch }) {
     const [location, setLocation] = useState('')
 
 function createLocation (e) {
@@ -13,7 +13,7 @@ setLocation('')
   }
 
   const backToStartPage = () =>{
-        closeMainArea('start page')
+        returnToStart('start page')
     }
 
     return(

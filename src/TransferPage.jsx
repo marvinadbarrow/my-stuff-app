@@ -14,6 +14,7 @@ import { OriginElement } from "./OriginElement";
 import { SelectElement } from "./SelectElement";
 
 
+
 export const TransferPage = ({boxDetails, container, allItemsArray, openBox, openSection, sectionItems, transferBoxAccept, addBoxItem, deleteBoxItem, inventoryChange, allArrayChange}) =>{
 
 const [selectedLocationInfo, setSelectedLocationInfo] = useState({})
@@ -522,8 +523,9 @@ beginSelect == '' &&
       { // SELECT MENUS ---------------------------------------------------
 
 
-// only show select element if begin select has been shown
+// only show select element if begin select has been shown and transfer has not been applied.  So button will disappear once transfer is complete. You should also re-rest begin Select otherwise the button won't show (not the most important thing and I may think about removing it later on)
     beginSelect == 'select started' &&
+    transferApplied !== 'yes' &&
     <>
     <div className="element-div select-div medium-border">
 

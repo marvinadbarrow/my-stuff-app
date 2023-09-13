@@ -53,7 +53,7 @@ function boxDeleteCall (boxId) {
     <div>No boxes in this section</div>}
 
 
-        <ul key={v4()}  className="items-list">
+        <ul key={v4()}  className="items-list-box">
 
     {// map section contents that contains all boxes and for each object, render a new box using id, boxName, contentsLength variables, and viewBoxContents and boxDeleteCall functions as props. Will try to do away with boxpath here
     

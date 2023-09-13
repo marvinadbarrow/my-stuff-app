@@ -9,13 +9,14 @@ export function NewLocation ({location_name, id, location_contents, openLocation
   location_contents.length < 1 ? sectionsTotal = 'No sections': sectionsTotal =  'sections: ' + location_contents.length;
 
   let advice;
-  location_contents.length < 1 ? advice = 'Add Section': advice ='View Location';
+  location_contents.length < 1 ? advice = 'Add Section': advice ='View';
   
+
     return (
         <div className="location" >
 <p className="location-name">{location_name}</p>
   
-  <img src={containerImage} alt="cabinet image" className="container-img"/>
+
   
   <ViewAreaButton className={"view-contents"} openArea={openLocation} id={id} areaName={location_name} buttonText={advice} generalArea={'location'}/>
 <p className="items-number-para">{sectionsTotal}</p>
@@ -28,5 +29,5 @@ export function NewLocation ({location_name, id, location_contents, openLocation
 }
 
 /*
-
+  <img src={containerImage} alt="cabinet image" className="container-img"/>
 */

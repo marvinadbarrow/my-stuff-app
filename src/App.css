@@ -30,6 +30,7 @@
 
   --button-go-forward-color: rgb(134, 207, 24);
   --button-go-back-color: red;
+  --button-delete-color: red;
 
   --text-clr-origin:rgb(248, 62, 62);
   --text-clr-destination: rgb(134, 207, 24);
@@ -37,6 +38,7 @@
 
 }
 
+body{width: 100vw;}
 .large-border{
   border-width: var(--element-border-large);
   border-radius: var(--border-rad-large);
@@ -63,8 +65,10 @@ color: var(--text-clr-destination);
 .text-shadow-heading{text-shadow: 0.3px 0.3px white;}
 
 #root {
-  max-width: 100%;
-  margin: 0 auto;
+  width: 100%;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  margin: auto;
   padding: 0.5rem;
   text-align: center;
 }
@@ -82,24 +86,7 @@ li{list-style: none;}
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
 
 .read-the-docs {
   color: #888;
@@ -108,10 +95,13 @@ li{list-style: none;}
 .container-img{width: 15%;}
 
 
-.location, .inner-location{ width: 100%; height: auto; padding: 2px; border: 0.5px solid rgba(255, 255, 255, 0); display: flex; flex-direction: row; justify-content:space-between;}
-.inner-location{margin-bottom: var(--element-margin-bottom);}
+.inner-location{ width: 100%; height: auto; padding: 2px; border: 0.5px solid rgba(255, 255, 255, 0); display: flex; flex-direction: row; justify-content:space-between ;margin-bottom: var(--element-margin-bottom);}
 
-.location{ margin: 5px 0px; width: 90%; height: fit-content;}
+
+
+.location{ margin: 5px 0px; width: 30%; height: fit-content; padding: 2px; display: flex; flex-direction: column; justify-content:space-between; border: solid var(--border-color-white); border-radius: var(--border-rad-medium);}
+
+.location-name{color: var(--text-color-yellow);}
 
 .location:hover{
   cursor: pointer;
@@ -128,11 +118,34 @@ label{font-weight: bold;}
   margin: 0;
 }
 
+.item-div-box-item{display: flex; flex-direction: row; width: 100%; justify-content: space-between; padding-bottom: 5px;}
+
+.item-button-holder{width: fit-content; height: auto;}
 
 .list_item{list-style-type: none; display: flex; justify-content: space-between;   }
+
 .list-para{font-size: 0.7rem;}
 
-.item-div, .box-item-div, .section-div{display: flex;  flex-direction: row; width: 100%; height: fit-content; background-color: rgba(172, 255, 47, 0); justify-content: space-between;   align-items: center; margin-bottom: var(--element-margin-bottom);}
+.item-div, .box-item-div, .section-div{display: flex;  flex-direction: column; width: 100%; height: fit-content; background-color: rgba(172, 255, 47, 0); justify-content: space-between;   align-items: center; margin-bottom: var(--element-margin-bottom);}
+
+.section-item{width: 30%;}
+
+.section-div{border: solid var(--border-color-white); border-radius: var(--border-rad-medium); border-width: var(--element-border-medium); margin-bottom: 10px; padding: 0px 2px; width: 100%;}
+
+
+.items-list{display: flex; flex-wrap: wrap; width: 100%; height: fit-content; justify-content: space-around; margin-left: 0px; padding: 0px;}
+
+.items-list-section{display: flex; flex-wrap: wrap; width: 100%; height: fit-content; justify-content: space-around; margin-left: 0px; padding: 0px;}
+
+.section-info{color: var(--text-color-yellow); font-weight: bold;}
+
+.item-div-box{display: flex;  flex-direction: column; width: 100%; height: fit-content; background-color: rgba(172, 255, 47, 0); justify-content: space-between;   align-items: center; margin-bottom: var(--element-margin-bottom);border: solid var(--border-color-white); border-radius: var(--border-rad-medium); border-width: var(--element-border-medium); margin-bottom: 10px; padding: 0px 2px;}
+
+
+.boxes-list-item{width: 30%; display: flex; flex-wrap: wrap; height: fit-content;}
+.items-list-box{padding: 0px; display: flex; flex-wrap: wrap; justify-content: space-around;}
+.list-item-box{width: 100%; height: fit-content; display: flex; flex-wrap: wrap;}
+
 .close-location, .open-section{font-size: 10px; padding: 6px 12px;}
 
 .new-item-form, #location-creation-form{
@@ -216,6 +229,7 @@ label{font-size: 10px;}
 .advice-para{color: rgb(255, 255, 255); font-size: 10px; font-weight: bold;}
 .advice-div-container{position: relative; width: 100%; height: auto; background-color: rgba(255, 255, 0, 0);}
 .transfer-button{color: white; background-color: rgb(154, 221, 52); font-weight: bold; font-size: 7px;}
+.new-delete-button{color: white; background-color: rgb(154, 221, 52); font-weight: bold; font-size: 7px;}
 .transfer-elements-container, .navigation-btn-container{display: flex; flex-direction: row; justify-content: space-between; width: 100%; height: fit-content; margin-bottom: var(--element-margin-bottom-medium);}
 .origin{background-color: var(--button-go-back-color); border-color: var(--border-color-white); font-size: var(--btn-font-medium);
 margin-top: var(--element-margin-bottom-medium);
@@ -240,9 +254,11 @@ margin-bottom: var(--element-margin-bottom-large);
 .duplicate-warning-para{color: black; font-size: var(--btn-font-small);}
 
 
-.all-buttons-container{width: 45%;  height: auto; display: flex; flex-direction: row; justify-content: space-between;}
+.all-buttons-container{width: 45%;  height: auto; display: flex; flex-direction: column; justify-content: space-between;}
 
-.all-buttons-container-new-box,.all-buttons-container-new-section{width: 45%;  height: auto; display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 5px;}
+.all-buttons-container-new-box,.all-buttons-container-new-section{width: 100%;  height: auto; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 5px;}
+
+
 .transfer-box-item{font-size: var(--btn-font-small); color: var(--text-color-yellow);}
 ul.box-contents-for-transfer {
   display: inline-block;
@@ -255,7 +271,7 @@ ul.box-contents-for-transfer {
 .transfer-box-output{max-width: 100%; height: auto; margin: auto; text-align: center; border: solid white;}
 .transfer-box-heading{margin: 3px 0px;}
 
-.element-div-transfer-origin, .element-div-transfer-destination{ border: solid var(--border-color-white); max-width: 30%; height: auto; padding: 7px; background-color: rgba(163, 163, 160, 0.795);   margin-bottom: var(--element-margin-bottom-large); padding: 1rem 0.2rem;}
+.element-div-transfer-origin, .element-div-transfer-destination{ border: solid var(--border-color-white); width: 30%; height: auto; padding: 7px; background-color: rgba(163, 163, 160, 0.795);   margin-bottom: var(--element-margin-bottom-large); padding: 1rem 0.2rem;}
 .app-title{margin: 2px 0px;}
 .list-div{
   width: 100%;
@@ -271,7 +287,14 @@ select{font-size: var(--btn-font-small);}
 
 /* this class is added to a box name in the transfer section that matches the name of the box user is attempting to transfer - so that the user knows that transfering the box will result in duplicate box names in the destination section: It can't happen anyway, but this is a pre-warning, before they hit the apply transfer button.  It's also visually useful because it can be used as a guide to renaming the transfer box*/
 .warning-red{color: rgb(236, 113, 113) !important; font-weight: bold; font-style: italic;}
+
+
+.new-delete-button{color: white; font-weight: bold; font-size: 7px; background-color: var(--button-delete-color);}
+
+
 .rename-box-form{width: 100%; height: fit-content; margin-bottom: var(--element-margin-bottom-medium); display: flex; flex-direction: column; align-items: center; justify-content: space-around;}
 .success-green{color: rgb(87, 247, 100) !important; font-weight: bold; font-style: italic;}
 
-.start-select{height: fit-content;}
+.start-select{height: fit-content; width: 30%; background-color: var(--border-color-blue);}
+
+.video-holder{width: 100%; min-height: 200px; border: solid var(--border-color-white); border-radius: var(--border-rad-large);}

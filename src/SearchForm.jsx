@@ -11,8 +11,6 @@ let locationArea;
 let sectionArea;
 let boxArea; // currently don't need this variable
 
-
-
     container.map(objects =>{
     if(objects.id == parentId){
         // console.log(objects)
@@ -29,23 +27,20 @@ objects.location_contents.map(content =>{
     }
     })
 
-
-
 let layerNumber;
+// layerNumber is used to show how deep into the system the user was at the time of executing search, and is used to create a back button to the previously viewed area and, if the area was nested inside another area (for example a box inside a section or a section inside a location) back buttons to parent areas. If the current value of layerNumber has numbers below it that are greater than zero, for example if layerNumber is 2, so 1 is below it, the back button for layer 2 and layer 1 will appear on the page, because user was in a section (layer 2) and sections have location as a parent (layer 1). So, for any given search either, no parent, or parent or parent and grandparent (parent of parent) buttons will show depending where the user was in prior to executing search. 
 
-if(preSearchArea == 'location'){
-// note, presearcharea is only location if you came from location. 
-    layerNumber = 1
-}else if(preSearchArea == 'section'){
-// note, presearcharea is only section if you came from section. 
-    layerNumber = 2
-}else if(preSearchArea == 'box'){ // presearch == 'box'
-    layerNumber = 3
-    // boxPath = 'defined';
-}else{
-    // do nothing because you haven't navigated to an area yet, so no buttons appear
+switch(preSearchArea){
+
+case "location": layerNumber = 1;
+break;
+
+case "section": layerNumber = 2 ;
+break;
+
+case "box": layerNumber = 3 ;
+break;
 }
-
 
 function backToMainBox(general, specific){
     // console.log(general, specific)
@@ -85,7 +80,6 @@ const formClicked = (label) =>{
     setSearchLength('')
 }
 
-        
 
     // go back to start page
 const backToStartPage = () =>{
@@ -97,9 +91,6 @@ function viewLocations(){
 openAllLocations('main')
 }
 
-// console.log(layerNumber)
-// console.log(boxDetails)
-// console.log(areaSpecific)
     return(
     <>
 <div className="inner-location">
@@ -161,7 +152,7 @@ PreSearchArea: start page
 The above also applies if the PresearchArea is 'start page' 
 
 PreSearchArea: location
-Then only the returnt o location button is needed. 
+Then only the return  location button is needed. 
 
 PreSearchArea: section
 Return to section and return to location buttons needed 

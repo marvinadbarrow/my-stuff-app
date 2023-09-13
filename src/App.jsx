@@ -13,7 +13,7 @@ import { StartPage } from './StartPage'
 import { SearchPage } from './SearchPage'
 import { AllItemsViewer } from './AllItemsViewer'
 import { TransferPage } from './TransferPage'
-
+import { VideoUserGuide } from "./VideoUserGuide";
 // localStorage.clear()
 
 function App() {
@@ -680,7 +680,12 @@ setviewArea(area)
 setPreSearchArea(generalArea)
 }
 
-function closeMainArea (area){
+function openUserGuide(area){
+  setviewArea(area)
+}
+
+
+function returnToStart (area){
   setviewArea(area)
   }
 
@@ -735,8 +740,11 @@ allItemsArray.map(objects =>{
   return (
     <>
 
-<h1 className="app-title">Find My Stuff App</h1>
+<h1 className="app-title">My Stuff</h1>
+{ viewArea == 'user guide' &&
+<VideoUserGuide openSearch={openSearch} openAllLocations={openAllLocations} returnToStart={returnToStart} />
 
+}
 
 {viewArea == "transfer page" &&
 <TransferPage viewArea={viewArea} parentId={parentId} sectionid={sectionId} container={container} boxDetails={boxDetails} allItemsArray={allItemsArray} openBox={openBox} openSection={openSection} sectionItems={sectionItems} transferBoxAccept={transferBoxAccept} addBoxItem={addBoxItem} deleteBoxItem={deleteBoxItem} inventoryChange={inventoryChange} allArrayChange={allArrayChange}/>
@@ -749,7 +757,7 @@ allItemsArray.map(objects =>{
 }
 
 {viewArea == "start page" && 
-<StartPage viewArea={viewArea} openSearch={openSearch}  openAllLocations={openAllLocations} fixLocationId={fixLocationId}/>
+<StartPage viewArea={viewArea} openSearch={openSearch}  openAllLocations={openAllLocations} fixLocationId={fixLocationId} openUserGuide={openUserGuide}/>
 }
 
 
@@ -761,7 +769,7 @@ allItemsArray.map(objects =>{
     {viewArea == 'main' &&     
 // // if viewArea IS an empty string then render form and locations shelf (woo hoo, it works)
 <>
-<NewLocationForm formSubmit={addLocation} closeMainArea={closeMainArea} openSearch={openSearch}  />
+<NewLocationForm formSubmit={addLocation} returnToStart={returnToStart} openSearch={openSearch}  />
 <div className="locations-container">
 <div className="locations-shelf">
 <LocationShelf container={container} openLocation={openLocation} deleteLocation={deleteLocation}/>

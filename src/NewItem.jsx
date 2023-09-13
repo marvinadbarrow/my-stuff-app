@@ -17,19 +17,24 @@ function itemDeleteCall (id) {
 {numberOfItems == undefined && 'no items here'}
 
 <li key={itemId} className="list_item">
- <div className="item-div">
+ <div className="item-div-box-item">
 <label className="list-para">
 <input type="checkbox"  onClick={() =>{
     checkedStatus == ''? setCheckedStatus('checked'): setCheckedStatus('');
 }}/>    
 {itemName}</label>
 
+<div className="item-button-holder">
+
 {checkedStatus == '' && 
 <TransferButton objectPath={boxPath} itemName={itemName} transferItem={transferItem} buttonText={'Move Item'} newBoxItems={newBoxItems}/>
 }
 {checkedStatus == 'checked' &&
-<DeleteButton className={"delete-item"}  name={''}  deleteFunction={itemDeleteCall} id={itemId}/>
+<DeleteButton className={"new-delete-button"}  name={''}  deleteFunction={itemDeleteCall} id={itemId}/>
 }
+    
+</div>
+
 </div>
 </li>
 </>

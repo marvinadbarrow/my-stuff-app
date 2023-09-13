@@ -4,12 +4,8 @@ import{v4} from 'uuid'
 import { SearchForm } from './SearchForm'
 const [search, setSearch] = ('')
 
-export  const StartPage = ({viewArea, openSearch, openAllLocations, fixLocationId}) =>{
+export  const StartPage = ({viewArea, openSearch, openAllLocations, fixLocationId, openUserGuide}) =>{
 
- const   openUserGuide = () =>{
-fixLocationId()
-    console.log('Video userguide')
- }
 
     return(
     <>
@@ -26,7 +22,7 @@ viewArea == "start page" &&
 <button className="start-page-btns" onClick={() =>{openAllLocations('main');
 }}>View/edit locations </button>
 
-<button className="start-page-btns" onClick={() =>{openUserGuide('main');
+<button className="start-page-btns" onClick={() =>{openUserGuide('user guide');
 }}>Video userguide</button>
 </div>
 

@@ -46,7 +46,9 @@ switch (contentsLength) {
 contentsLength === 0 ? viewButtonText = 'Add Items': viewButtonText = 'View Items'
 return(
 <>
-<li key={id} className="list_item"><div className="item-div"><p className="list-para">{boxName}</p>
+<li key={id} className="boxes-list-item">
+    
+    <div className="item-div-box"><p className="list-para">{boxName}</p>
 
 {
     // the below div contains item total display and all buttons so that they display evenly on each row
@@ -74,6 +76,7 @@ return(
 <DeleteButton className={"delete"}  name={''}  deleteFunction={deleteBox} id={id}/>
  }
 </div>
+
 </li> 
 </>
 )}

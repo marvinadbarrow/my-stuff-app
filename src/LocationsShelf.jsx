@@ -7,7 +7,8 @@ export function LocationShelf ({container, openLocation, deleteLocation}) {
     return (
 <>
 
-{container.length === 0 && "No Existing Locations"}
+{// if no locations have been created show the 'no existing locations' message
+container.length === 0 && "No Existing Locations"}
 
 {container.map((innerContainer, index) =>{
 
