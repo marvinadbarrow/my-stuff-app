@@ -17,6 +17,7 @@ import { SelectElement } from "./SelectElement";
 
 export const TransferPage = ({boxDetails, container, allItemsArray, openBox, openSection, sectionItems, transferBoxAccept, addBoxItem, deleteBoxItem, inventoryChange, allArrayChange}) =>{
 
+
 const [selectedLocationInfo, setSelectedLocationInfo] = useState({})
 const [selectedSectionInfo, setSelectedSectionInfo] = useState({})
 const [selectedBoxInfo, setSelectedBoxInfo] = useState({})
@@ -40,6 +41,8 @@ inventoryChange(testContainer)
 useEffect(()=>{
     allArrayChange(testAllItemsArray)
 },[testAllItemsArray])
+
+
 
 
 
@@ -523,9 +526,6 @@ if(duplicates > 0){
 else{ // no duplicate exists
 
     setNewBoxName('')
-    if(localStorage.getItem('modified_box_name')){
-        itemName = JSON.parse(localStorage.getItem('modified_box_name'))
-    }
 
     setModifiedBoxName('')
 setTestContainer(draft =>{
@@ -577,7 +577,10 @@ processBoxItems(selectedSectionInfo.section_id, selectedLocationInfo.location_id
         <>
 
         <div className="tranfer-object-info-div">
-            <p className="tranfer-info-para">Transferring {objectType}: <b>"{itemName}"</b></p>
+       {transferApplied !== 'yes'  &&
+            <p className="tranfer-info-para">Transferring {objectType}: <b>"{itemName}"</b></p>      
+       }
+
         </div>
         <div className="transfer-elements-container">
         {

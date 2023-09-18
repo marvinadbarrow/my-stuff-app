@@ -7,7 +7,6 @@ export const DestinationBoxes = ({selectedLocationInfo, selectedSectionInfo, tes
 // if incoming modified box name has a value then set it as state otherwise leave previous state, but I'm not sure it will work and might have to use local storage to solve this.
 
 
-
     return(
         <>
  <div className="transfer-box-output small-border">
@@ -29,7 +28,10 @@ export const DestinationBoxes = ({selectedLocationInfo, selectedSectionInfo, tes
       if(transferApplied !== 'yes'){
 
 if(box.box_name == sectionItems.box_name){ // if duplicate box exists at destination
-    if(localStorage.getItem('modified_box_name')){ // this is the stage between changing the name and retrying the transfer. Since the box name is modified the transfer won't cause a conflict so the originally redded name can now return to the normal color. 
+    if(localStorage.getItem('modified_box_name')){
+        
+   console.log(JSON.parse(localStorage.getItem('modified_box_name')))
+        // this is the stage between changing the name and retrying the transfer. Since the box name is modified the transfer won't cause a conflict so the originally redded name can now return to the normal color. 
         nameOfClass = "transfer-box-item" // remove warning color in readiness to transfer altered box name
     }else{
 // this is the stage prior to retry, and prior to name modification so keep the duplicate box name red. 
@@ -46,6 +48,8 @@ if(localStorage.getItem('modified_box_name')){
     // if the modified box name variable is saved to local storage then 'existing duplicates < 1' is true because it is set to zero at the same time as the local storage save; and 'existing duplicates < 1' allows the transfer to complete. 
         if(box.box_name == JSON.parse(localStorage.getItem('modified_box_name'))){ // whichever box in the destination has the local storage variable name is the box which was transferred so color it green. 
             nameOfClass = "transfer-box-item success-green"
+            console.log('modified success green')
+
     }else{ // other evaluated boxes do not have the local storage variable name and so, they are not the transferred box, so are rendered with regular colours. 
             nameOfClass = "transfer-box-item"     
         }
@@ -61,8 +65,8 @@ if(localStorage.getItem('modified_box_name')){
 
     }else{
     // 'existingDuplicates < 1' so there is no duplication
-    if(box.box_name == sectionItems.box_name){ // the evaluated box is the tranferred box so color success green
-        nameOfClass = "transfer-box-item success-green" 
+    if(box.box_name == JSON.parse(localStorage.getItem('modified_box_name'))){ // the evaluated box is the tranferred box so color success green
+        nameOfClass = "transfer-box-item success-green" ;
 
     }else{ // the evaluated box is not the transfer box so color it regular
         nameOfClass = "transfer-box-item" 
@@ -70,12 +74,6 @@ if(localStorage.getItem('modified_box_name')){
     }
 }}
    
-
-
-
-
-
-
 
 return(
     <li id={box.id} className={nameOfClass}>{box.box_name}</li>
