@@ -33,7 +33,7 @@ function openClickedBox(general, specific, boxId){
 openClickedBox(areaName, boxName, boxId)
 
 }}>
-    <p className="box-name"><b><u>{boxName}</u></b></p>
+    <p className="all-items-box-name"><b><u>{boxName}</u></b></p>
     <ul key={v4()}className="box-list">
       
     {boxObject.box_contents.map(object =>{

@@ -48,20 +48,21 @@ return(
 <>
 <li key={id} className="boxes-list-item">
     
-    <div className="item-div-box"><p className="list-para">{boxName}</p>
+    <div className="item-div-box"><p className="box-title">{boxName}</p>
 
 {
     // the below div contains item total display and all buttons so that they display evenly on each row
 }
 <div className="all-buttons-container-new-box">
 
-<p className="items-total">{itemNumber}: {contentsLength}</p>
+
 
  <ViewAreaButton className={"view-contents"} openArea={viewBoxContents}  id={id} areaName={boxName} buttonText={viewButtonText} generalArea={'box'}/>  
 
+ <p className="items-total">{itemNumber}: {contentsLength}</p>
 {// if box name is unboxed don't render the transfer button because there will always be a duplicate named 'unboxed' in the transfer destination, AND, unboxed isn't actually a box per se' so, for now items will have to be moved manually
     boxName.toLowerCase() !== 'unboxed' &&
-
+    contentsLength !== 0 && 
 // below button takes you to transfer page
 <TransferButton  itemName={boxName} transferBox={transferBox} objectPath={newSectionBoxes} buttonText={'Move Box'}/>
 }

@@ -23,6 +23,8 @@ viewArea == "start page" &&
 }}>View/edit locations </button>
 
 <button className="start-page-btns" onClick={() =>{openUserGuide('user guide');
+
+// fixLocationId()
 }}>Video userguide</button>
 </div>
 
@@ -39,3 +41,4 @@ viewArea == "start page" &&
     
     }
     
+

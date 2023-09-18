@@ -1,0 +1,48 @@
+Adding new items or new areas are easy to do; 
+wherever you are in the system, if there's an input field, just read the placeholder (the grey text) inside the input and that shows you what you can create at that location.  I've found the placeholder useful because on the odd occasion, if I've been naviagating around a lot, I'll forget exactly where I am and end up trying to create an area in the wrong place. 
+
+For example I might have been navigating in the brown chest bottom drawer and thought about creating a new box, but then forgot that I navigated up one level. I might try to create a box there but when I look at the input field it says add a new section so that shows I'm in the wrong place for creating a new box.  
+
+This isn't a fool proof method though, on a number of occasions I've created something in the wrong place. It's not a huge problem because you can just delete it immediately but I'm thinking to get the user to be more specific about what they are trying to create so that these mistakes are avoided.  
+
+CREATE LOCATION: 
+
+To create a location make sure the place holder says 'Add a New location', then simple enter the name of the new location and a new location box will be added to the list of existing locations.  I'll add a location called, New Place.  You'll notice the delete button appears when a new location is created. The delete button only appears if there are no contents inside the location and that prevents you accidentally deleting inventory without realizing that there are items or areas deeper down the path.  If you want to delete a location you have to go to the deepest level, delete all items from the box, then delete the box, etc... all the way up to the location; which is intentional.  I've set it up that way to make it difficult to accidentally delete something. 
+
+Since the location is new, there are no sections added yet,so the button text reads  'add section', that will change and read 'view' when sections are created in the location. Underneath the button the text indicating how many sections are in the location reads no sections at the moment because you haven't added any yet.  
+
+Let's add a section: 
+CREAT SECTION: 
+click the add section button and this will take you inside of the new location.  Immediately you'll notice a few lines of text beneath the add button; the top line in bold tells the user of the name of the area they have navigated to, the main location, and if nothing is in the area, then the second line appears stating the obvious; in this case, no sections exist. So, let's create a section. 
+
+The element appears, notice that here, no delete button appeared; so there must be contents inside this section, and that's something I've done intentionally.  On creating a section a single container is created inside it automatically. 
+Notice also the text under the button is showing  that there's already one box in 'section A' even though we haven't created one.  Let's click in and see what that box is. it's called 'unboxed'.  You can use that for anything inside a section which doesn't reside in a box; that could be all of the items in the section, for example if you have a drawer with pillow cases and a few bedsheets, then they probably are not boxed.  look at one of my examples. 
+
+Wardrobe
+Wardrobe Top
+boots, coffee machine. They aren't boxed so for the sake of a tidy onscreen display, I've decided to put anything that isn't in a box, in this area called unboxed, which makes the view cleaner.  
+
+Go back to new location. and add a box to the newly created section - 
+There's our message confirming that nothing exists in the section yet and above that in bold the name of the section so you know where you are. 
+
+As with locations, duplicate sections cannot be created and if, forgetting you've already created a section, you try to create its duplicate, you'll get an alert and the new section will not be created.  So, if we try to create section a again, it will not be created.  This facility is case agnostic so it doesn't matter if you change bits to upper or lower case, if the same characters exist in the same order, then the new section will be recognized as as duplicate and therefore will not be created
+
+
+CREATE BOX: 
+
+So let's add BOX 2 
+element appears, we have't put any items into the box so the text says zero items and the button says add items.  There's the delete button which will only appear if there are no items; this prevents accidental deletion of items from the system.  Imagine having 30 items in a box and accidentally deleting them.  That would be a real pain so you'll only be allowed to delete a box if it's empty.  
+
+Notice what happens if I try to create a new box with using a name of any other box, you'll get an alert, and when you click ok, the box you tried to create will not be added to the section; this avoid's duplication; If you have several similar boxes then you might want to number them, and that is allowed and will avoid duplication; on a side note, don't forget to actually write the number on the physical box which the virtual box refers to; this will save you from having to open more than one box to search for an item; the app exists so you don't have to do that. 
+
+let's go into BOX 2: 
+Again, since it has only just been created there are no items and we have the bottom line stating the obvious.  Above that you have the name of the box you are in. 
+
+CREATE AN ITEM: 
+Here is where you'll be dropping all of the items in your inventory, in the box area.  So let's add an item. 
+Socks, shirts - a bit of a strange combination but as you see it works. 
+Notice what happens if I try to add an item of the same name again, you'll get an alert, and when you click ok, no item will be added and this simply avoid's duplication; if you're adding different types of socks, such as thermal socks, or you want to separate them by pattern or color, then you have to be specific about the item, maybe by using an adjective to describe the item, or by adding a number to the item; you can think of your own adjustments I'm sure. 
+
+So that's it, that's how you create items, boxes, sections and locations. 
+
+

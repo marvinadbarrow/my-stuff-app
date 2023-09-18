@@ -10,8 +10,8 @@ export const OriginElement = ({locationName, sectionName, sectionItems, boxDetai
         <>
                     <div className="element-div-transfer-origin medium-border">
             <p className="results-para heading-clr-origin text-shadow-heading"><em>{'ORIGIN'}</em></p>
-            <p className="results-para">Location:<br/> {locationName}</p>
-   <p className="results-para">Section:<br/> {sectionName}</p>
+            <p className="origin-para">Location:<br/> <b>{locationName}</b></p>
+   <p className="origin-para">Section:<br/> <b>{sectionName}</b></p>
 
    {
 // if section items property exists, desplay element to list all items in a box transfer
@@ -21,7 +21,7 @@ sectionItems.hasOwnProperty('parent_section_name') &&
 
    {// only rendered if transfer type is item
    boxDetails.hasOwnProperty('new_item_string') && 
-   <p className="results-para">{boxName}</p>
+   <p className="origin-para"><b>{boxName}</b></p>
 }
             </div>
         

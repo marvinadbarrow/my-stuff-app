@@ -14,6 +14,7 @@ import { SearchPage } from './SearchPage'
 import { AllItemsViewer } from './AllItemsViewer'
 import { TransferPage } from './TransferPage'
 import { VideoUserGuide } from "./VideoUserGuide";
+
 // localStorage.clear()
 
 function App() {
@@ -60,7 +61,7 @@ if(whatsStored == null){ // if no locations exist
   }, [allItemsArray])
 
 
-
+console.log(container)
 
 
     // keeping a copy of all items array in local storage since I almost deleted it. 
@@ -337,7 +338,7 @@ let oldSectionContents;
     if(oldSectionContents.length > 0){
       oldSectionContents.map(boxObjects =>{ // for each item in the sections contents
         // if a duplicate box name is found, increment number
-        boxObjects.box_name == box ?   number++ : number = number;
+        boxObjects.box_name.toString().toLowerCase() == box.toString().toLowerCase() ?   number++ : number = number;
       })
     }
 
@@ -510,19 +511,19 @@ please delete all items from the box if you wish to procede with deletion
   }
 
 
-
-
 // --- SECTIONS, creating, opening, closing, deleting
 
 function addSection (sectionName, containerName, containerIndex, parentContents) {
 console.log(parentContents)
+
   let number = 0;
 
     container[containerIndex].location_contents.map((everySection) =>{
       // if a duplicate name is found, increment number
-      everySection.item_name == sectionName ?   number++ : number = number;
+      everySection.section_name.toString().toLowerCase() == sectionName.toString().toLowerCase() ?   number++ : number = number;
     });
     
+    console.log(number)
     // if number < 1, no duplicate name was found so create new section object, item array, location object and container and run state again
 if(number < 1){
 
@@ -630,7 +631,7 @@ setContainer(newContainer)
     let number = 0;
   container.map(eachLocation =>{
     // if a duplicate name is found, increment number
-    eachLocation.location_name == locationName ?   number++ : number = number;
+    eachLocation.location_name.toString().toLowerCase() == locationName.toString().toLowerCase() ?   number++ : number = number;
   })
   
   // if number < 1, no duplicate name was found so create new location object
@@ -696,43 +697,92 @@ function openAllLocations (area){
 
   function fixLocationId (){
 
-    let index = 5
-let realParentId = container[index].location_contents[0].section_contents[0].parent_container_id
-let parentName = container[index].location_name
-let parentId = container[index].id
-let locationObject = {...container[index]}
+//     let index = 5
+// let realParentId = container[index].location_contents[0].section_contents[0].parent_container_id
+// let parentName = container[index].location_name
+// let parentId = container[index].id
+// let locationObject = {...container[index]}
 
-console.log(locationObject)
-console.log(`
-real parent ID: ${realParentId}
-parentName: ${parentName}
-ALTERED parentId: ${parentId}
- `)
+// console.log(locationObject)
+// console.log(`
+// real parent ID: ${realParentId}
+// parentName: ${parentName}
+// ALTERED parentId: ${parentId}
+//  `)
  
 
  
-locationObject.id = realParentId
+// locationObject.id = realParentId
 
-console.log(locationObject)
+// console.log(locationObject)
 
-let fixedLocationsArray = [...container]
+// let fixedLocationsArray = [...container]
 
-fixedLocationsArray[index] = locationObject
+// fixedLocationsArray[index] = locationObject
 
-console.log(fixedLocationsArray)
+// console.log(fixedLocationsArray)
 
-// setContainer([...fixedLocationsArray])
-// setBoxDetails('')
+// // setContainer([...fixedLocationsArray])
+// // setBoxDetails('')
 
-// 6d0c84cd-179e-41c0-86e2-b7c7992e32eb
-let idSearch = '6d0c84cd-179e-41c0-86e2-b7c7992e32eb'
-let idSearch2 ='44796d36-c580-4f67-a6df-992107d77fd0'
-allItemsArray.map(objects =>{
-  if(objects.section_id == idSearch2){
-    console.log(objects.item_name)
-    console.log(objects.section_id)
-  }
-})
+// // 6d0c84cd-179e-41c0-86e2-b7c7992e32eb
+// let idSearch = '6d0c84cd-179e-41c0-86e2-b7c7992e32eb'
+// let idSearch2 ='44796d36-c580-4f67-a6df-992107d77fd0'
+// allItemsArray.map(objects =>{
+//   if(objects.section_id == idSearch2){
+//     console.log(objects.item_name)
+//     console.log(objects.section_id)
+//   }
+// })
+
+// let removalID = 'b98c9c09-89d8-43ba-b597-86a7d437f847'
+
+// let newSectionContents = container[6].location_contents[0].section_contents.filter(boxes => boxes.id !== removalID) // new array with boxes
+
+
+
+let newSection = container[6].location_contents[0] // new section 
+newSection.section_contents = [] //empty specific section contents with new boxes
+
+let newLocation =  container[6]// create new location
+
+newLocation.location_contents[0] = newSection // updated with edited section
+
+
+
+let newContainer = [...container] // create new container
+newContainer[6] = newLocation // update with edited location
+
+
+
+console.log('edited section')
+console.log(newSection)
+console.log('edited location')
+console.log(newLocation)
+console.log('container')
+console.log(newContainer)
+
+// NOTE THIS EXECUTES FROM START PAGE INSIDE THE USERVIDEO BUTTON'S ONCLICK
+
+// let newLocationContents = container[6].location_contents//new location contents
+// newLocationContents[0] = newLocationContents// updated specific section in location contents wwith new section
+
+// let newLocation = container[6] // OBJECT
+// newLocation.location_contents = newLocationContents// updated 
+
+// let newcontainer = [...container]
+// newcontainer[6] = newLocation // REPLACE OBJECT
+
+
+// setContainer(newContainer)
+
+
+// console.log('edited section')
+// console.log(container[6].location_contents[0])
+// console.log('new location')
+// console.log(newLocation)
+// console.log('container')
+// console.log(newcontainer)
  }
 
 
@@ -742,7 +792,7 @@ allItemsArray.map(objects =>{
 
 <h1 className="app-title">My Stuff</h1>
 { viewArea == 'user guide' &&
-<VideoUserGuide openSearch={openSearch} openAllLocations={openAllLocations} returnToStart={returnToStart} />
+<VideoUserGuide openSearch={openSearch} openAllLocations={openAllLocations} returnToStart={returnToStart} s/>
 
 }
 

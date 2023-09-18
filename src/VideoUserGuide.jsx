@@ -1,6 +1,7 @@
 import { AllLocationsButton } from "./AllLocationsButton"
 import { SearchButton } from "./SearchButton"
 import { BackToStartButton } from "./BackToStartButton"
+import { VideoShelf } from "./VideoShelf"
 
 export const VideoUserGuide = ({returnToStart, openSearch, openAllLocations}) =>{
 
@@ -26,7 +27,7 @@ function backToLocations(){
         </div>
         <SearchButton generalArea={'search page'} openSearch={openSearch}/>
         <div className="video-holder">
-
+<VideoShelf/>
 
         </div>
         </>

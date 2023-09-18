@@ -1,9 +1,17 @@
-export const DuplicateWarning = ({duplicateFound, newBoxName, setExistingDuplicates, applyBoxNameChange, setNewBoxName}) =>{
+import { useState } from "react"
 
-const processDuplicate = () =>{
+export const DuplicateWarning = ({duplicateFound, newBoxName, setExistingDuplicates, applyBoxNameChange, setNewBoxName, setTransferApplied}) =>{
 
-    applyBoxNameChange(newBoxName)
-    setExistingDuplicates(0);
+
+console.log(duplicateFound, newBoxName)
+localStorage.setItem('modified_box_name',JSON.stringify(nameofNewBox))
+const processDuplicate = (nameofNewBox) =>{
+
+// set newBoxName as the name of the box
+applyBoxNameChange(nameofNewBox)
+  
+// setting existing duplicates to zero will cause the duplicates warning to disappear and will allow the 'apply transfer' button to re-appear which is necessary because, since there was a duplicate, the transfer did not complete; so the user will have to activate the transfer function again by hitting the transfer button once more.  Now that the box name has been changed and used to set new box, when apply transfer is clicked, the box will take the existing new name, and no  duplicate will be found, and this will allow the process to complete and transfer the box.
+setExistingDuplicates(0);
 }
 
 
@@ -21,14 +29,19 @@ const processDuplicate = () =>{
     // RENAMING FORM FOR DUPLICATE BOX NAMES
 }
 <form action="" onSubmit={(e) =>{
-    e.preventDefault();
-    if(newBoxName !== duplicateFound && newBoxName.length > 2){
-processDuplicate()
-     
-    }
+        e.preventDefault();
 
-    
-}} className="rename-box-form">
+        // if new name must have > 2 characters
+ if(newBoxName.length > 2){
+
+    // if the newly typed box name is not the same as the duplicate
+if(newBoxName !== duplicateFound){
+processDuplicate(newBoxName)
+}else{alert('new box name is still a duplicate of a box at the destination')}
+
+}else{alert('please rename the box with more than two characteres')}
+
+   }} className="rename-box-form">
  <label htmlFor="rename-input">{'Modify Box Name'}</label>
  <input value={newBoxName} id='rename-input' type="text" placeholder={'New box name'} 
 onChange={e => setNewBoxName(e.target.value)}

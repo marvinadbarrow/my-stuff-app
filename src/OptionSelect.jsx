@@ -6,7 +6,7 @@ export const OptionSelect = ({chooseLabel, selectID, infoLevel1, areaName, infoS
 const [defaultLocation, setDefaultLocation] = useState()
 // if info setter values are initially empty, then execute infoSetter with an object for BLACK CHEST to see if that will 
 
-console.log(infoLevel1)
+
     // if(!infoLevel1.hasOwnProperty('location_index')){
     //     infoSetter( {
     //         "location_index": 0,
@@ -15,7 +15,7 @@ console.log(infoLevel1)
     //     }) 
     // }
 
-    console.log(infoLevel1)
+    
     const setInfo = (infoObject) =>{
         infoSetter(infoObject)
         console.log(infoLevel2)
@@ -46,7 +46,7 @@ if(areaName == 'location'){
                 container.map((location, indexOfLocation) =>{
                     if(location.id == e.target.value){
 
-    console.log(location.location_contents)
+
                             let newObject = {
                                 "location_index": indexOfLocation,
                                 "location_id": e.target.value,

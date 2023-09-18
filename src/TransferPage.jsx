@@ -5,7 +5,7 @@ import { useImmer } from "use-immer";
 import { useEffect } from "react";
 import { AllItemsObject } from "./AllItemsObject";
 import { DisplayOrigin } from "./DisplayOrigin";
-import { DisplayDestinationBtn } from "./DisplayDestinationBtn";
+import { DestinationBoxes } from "./DestinationBoxes";
 import { DuplicateWarning } from "./DuplicateWarning";
 import { ApplyTransfer } from "./ApplyTransfer";
 import { OptionSelect } from "./OptionSelect";
@@ -42,6 +42,13 @@ useEffect(()=>{
 },[testAllItemsArray])
 
 
+
+console.log("section items")
+console.log(sectionItems) // these should be empty on page load
+console.log("new box name")
+console.log(newBoxName) // these should be empty on page load
+console.log("modified box name")
+console.log(modifiedBoxName) // these should be empty on page load
 let objectType;
 let locationName;
 let sectionName;
@@ -58,7 +65,7 @@ let originId
 let destinationBox;
 let duplicateBoxWarning;
 
-
+console.log(sectionItems)
 
 // Only the item ID is needed in order to search allItemsArray, the useState values, which are the location, section and box ids will replace the current item object properties. 
 
@@ -112,8 +119,19 @@ destinationId = selectedBoxInfo.box_id
 }
 
 // establishing the modified box name
-function applyBoxNameChange(newBoxName){
-    setModifiedBoxName(newBoxName)
+function applyBoxNameChange(modifiedName){
+    
+    if(modifiedName !== undefined || modifiedName !==''){
+        // check for existence of modified nam
+        console.log('modified name exists')
+        console.log(modifiedName)
+        setModifiedBoxName(modifiedName)
+        // setExistingDuplicates(0)
+    }
+        else{
+            // modified name isn't processing (find out why)
+            console.log('modified is undefined or missing')
+        }
 
 }
 
@@ -258,17 +276,16 @@ function processBoxItems(destSecId, destLocId){
     let originSectionName = sectionItems.parent_section_name
     let originSectionId = sectionItems.section_id
     let originLocationId = sectionItems.parent_container_id
-    let destinationLocationID = destLocId
-    let destinationSectionID = destSecId
     let boxItems = sectionItems.box_contents
     let thisBox;
     let boxID;
-    let originLocationIndex;
-    let originSectionIndex;
-    let originalBoxIndex;
-    let transferBox;
+    let originLocationIndex; // index of origin location
+    let originSectionIndex; // index of origin section
+    let originalBoxIndex; // index of origin box
 
 
+    console.log('line 284')
+console.log(originBoxName)
 
 
     // find box with map of box contents
@@ -277,21 +294,30 @@ function processBoxItems(destSecId, destLocId){
             thisBox = itemsOfBox
             boxID = itemsOfBox.parent_box_id
               // if a duplicate box name was previously found at the destination, then, after obtaining the box id using the old name, change theh originBoxName property the modified box name, so that it can be used to modify both the transfer box and item objects be in all items array that have the box id, as parent_box_id
-if(newBoxName !== ''){
-    originBoxName = newBoxName    
-}
+
+
         }
 
     })
 
-// get index of location and section indexes for destination which will be used to filter out the box from the section contents
+    if(modifiedBoxName == ''){ // if modified box name is an empty string (default)
+        console.log('no modified name present')
+        originBoxName = originBoxName    
+    }else{ // modified box name exists
+        originBoxName = modifiedBoxName
+console.log('line 304')
+console.log(' modified box name exists')
+console.log('modifiedBoxName: ' + originBoxName)
+    }
+
+// get origin location,  section and box indexes which will be used to filter out the box object from its original position
 testContainer.map((location, locationIndex) =>{
     if(location.id == originLocationId){
-        // get location index
+        // assign location index
         originLocationIndex = locationIndex
         location.location_contents.map((section, sectionIndex) =>{
             if(section.id == originSectionId){
-                // get section index
+                // assign section index
                 originSectionIndex = sectionIndex
                 section.section_contents.map((box, boxIndex)=>{
                     if(box.id == boxID){
@@ -304,31 +330,32 @@ testContainer.map((location, locationIndex) =>{
     }
 
 })
-// origin and destination locations/sections indexes
+
+// object containing origin and destination details of transfer box
 let transitObj ={
-    // previous location  index, name, id
+    // origin location  index, name, id
     "locA_index":originLocationIndex,
     "locA_name":locationName,
     "locA_id":originLocationId,
 
-    // previous location  index, name, id
+    // origin section  index, name, id
     "secA_index":originSectionIndex,
     "secA_name":originSectionName,
     "secA_id":originSectionId,
 
 
-        // previous box  index, name, id
+    // origin box  index, name, id (or new box name if one exists)
     "boxA_index":originalBoxIndex,
     "boxA_name":originBoxName,
     "boxA_id":boxID,
     
 
-    // new location // index, name, id
+    // destination location index, name, id
     "locB_index":selectedLocationInfo.location_index,
     "locB_name":selectedLocationInfo.location_name,
     "locB_id":selectedLocationInfo.location_id,
 
-    // new section index, name, id
+    // destination section index, name, id
     "secB_index":selectedSectionInfo.section_index,
     "secB_name":selectedSectionInfo.section_name,
     "secB_id":selectedSectionInfo.section_id,
@@ -337,94 +364,149 @@ let transitObj ={
     "origin":'', // origin section
     "destination":'', // destination section
     "box_details":'' // details of transfer box
+    
 }
+console.log('transitObj - line 363')
+console.log(transitObj)
 
-// original section check
+// get original section 
 transitObj.origin = testContainer[transitObj.locA_index].location_contents[transitObj.secA_index]
 
 // box details (as they are in the section) - 
 transitObj.box_details = testContainer[transitObj.locA_index].location_contents[transitObj.secA_index].section_contents[transitObj.boxA_index]
 
-// destination section
+// get destination section
 transitObj.destination = testContainer[transitObj.locB_index].location_contents[transitObj.secB_index]
  
-// create a new box object by spreading the contents of the old box object; that way the new can be mutated without affecting the old
+// create a new box object using 'spread' operator; that way it can be mutated without affecting the old box
 let newBoxDetails = {
-    ...transitObj.box_details,
+    "box_contents":'',
+    "box_name":transitObj.boxA_name, 
+    "id":transitObj.boxA_id,
+   "parent_container_id": transitObj.locB_id,
+    "parent_section_name": transitObj.secB_name
 }
 
-// change  original section id and name to destination section id and name
-newBoxDetails.parent_section_name = transitObj.secB_name // new section name
-newBoxDetails.section_id = transitObj.secB_id // new location id
-newBoxDetails.location_name = transitObj.locB_name // new location name 
-newBoxDetails.parent_container_id = transitObj.locB_id // new section id
-
-// this is done. Now you need to change the properties in all of the allItemsArray objects that have the same box id. 
 
 
+// to make sure that the items within box contents have the right box name after a name change due to a duplicate conflict,  you have to map through and change all of those, but I don't know if you can do it here.  
+// yes it can be done, just create a copy of the box_contents array, then map through, and for each item, give it the box name, which comes from the transit object, which automatically changes if there is a box name change due to a duplicate conflict. 
+// error, you can't do the above because the objects are read only, tried to map the box items but they are read-only objects so I couldn't change the parent_Box property.  
+
+// create a new array to hold new box items (as objects) which will be created in the map below, by giving the properties of the new items the value of the properties of the old items, but giving the parent_Box property the value of 'originName' which is will be a new name if a duplicate box was found at the destination, or the original name if no duplicate was found.  The other values, item id, item name and box id do not change. 
+let newBoxContents = []
+console.log('line 390')
+console.log(newBoxContents)
+
+transitObj.box_details.box_contents.map(contents =>{
+    // create object and assign property values
+let newItemObject = {
+
+"id": contents.id,
+"itemString": contents.itemString,
+"parent_Box": originBoxName, 
+"parent_box_id": contents.parent_box_id
+}
+
+// push object to newBoxContents
+newBoxContents.push(newItemObject)
+
+})
+
+console.log('box contents with updated parent_Box parameter for original or modified box name')
+console.log(newBoxContents)
+
+// then assign the new array to the box_contents property of the newbox
+newBoxDetails.box_contents = newBoxContents
+
+
+
+
+
+//change the properties in all of the allItemsArray objects that have a box id associated with the transfer box
+
+// create a new array with just objects associated with the transfer box
 let justBoxItems = testAllItemsArray.filter(object =>object.box_id == boxID)
 
 
-// get array without box items - will push altered items to this
+// create another array, but this time with objects associated with the transfer box removed from the array
 let arrayWithoutItems = testAllItemsArray.filter(object =>object.box_id !== boxID)
 
 
-
+// temporarary array to hold box objects updated with destination details
 let tempArray = []
 
-// map through box items
+// map through objects associated with the transfer box
 justBoxItems.map(item =>{
-// create a new item from old object but with updated section/location id
+// create a new item for each object, and update section and location details to match destination details
 let newItem;
-
-// if there is no modified box name then use the previous box name
-if(newBoxName == ''){
-     newItem = {
+if(modifiedBoxName !== undefined || modifiedBoxName !==''){
+    console.log('modified name exists')
+    console.log(modifiedBoxName)
+    newItem = {
         'item_name':item.item_name,
     'location_id':transitObj.locB_id, 
     'item_object':{
         'id':item.item_id,
         'itemString':item.item_name,
-        'parent_Box':item.item_object.parent_Box,
+        'parent_Box':modifiedBoxName,
         'parent_box_id': item.box_id,
     },
     'section_id': transitObj.secB_id,
     'box_id': item.box_id,
     'item_id':item.item_id
     }
-   
+
+
 }else{
-// otherwise, duplicate exists and box name has been modified so the property newItem.item_object.parent_Box needs to be given the modified box name 
-     newItem = {
+    console.log('modified name is undefined or missing')
+    newItem = {
         'item_name':item.item_name,
-    'location_id':transitObj.locB_id,
+    'location_id':transitObj.locB_id, 
     'item_object':{
         'id':item.item_id,
         'itemString':item.item_name,
-        'parent_Box':newBoxName, // name change of item parent box
+        'parent_Box':transitObj.boxA_name,
         'parent_box_id': item.box_id,
     },
     'section_id': transitObj.secB_id,
     'box_id': item.box_id,
     'item_id':item.item_id
     }
-    
+
 
 }
 
-// push to temp array
+//if no updated box name exists, use original, otherwise use updated
+
+
+console.log(newItem)
+
+    
+// push item to temp array
 tempArray.push(newItem)
 })
 
+// merge new array missing box item details with temp array containing the objects now altered. This will replace the original AllItemsArray
 let completedNewArray = [...arrayWithoutItems, ...tempArray]
 
-// checking for duplicates
-let duplicates = 0;
-let duplicateName;
 
-transitObj.destination = testContainer[transitObj.locB_index].location_contents[transitObj.secB_index].section_contents.map(boxes =>{
-    console.log(boxes)
-    // map the destination. If any of its box names is the same as the transfer box name, increment the 'duplicates' variable
+
+
+// checking for duplicates
+let duplicates = 0; // assume no duplicate exists
+let duplicateName; // variable for duplicate name (only one is needed to stop the process)
+
+console.log("transition box name line 499")
+console.log(transitObj.boxA_name)
+console.log('modified box name')
+console.log(modifiedBoxName)
+console.log("destination section contents line 499")
+console.log(transitObj.destination.section_contents)
+
+// map destination section
+transitObj.destination.section_contents.map(boxes =>{
+    //  If any of its box names matches the transfer box name, increment the 'duplicates' variable
     if(boxes.box_name == transitObj.boxA_name){
         console.log('duplicate box name found')
         duplicates +=1;
@@ -432,26 +514,25 @@ transitObj.destination = testContainer[transitObj.locB_index].location_contents[
     }
 })
 
-// if there is a duplicate
+// if a duplicate exists
 if(duplicates > 0){
-    setExistingDuplicates(1) // hides the 'apply transfer' button until issue is resolved. 
+    setExistingDuplicates(1) // hides the 'apply transfer' button and shows duplicate warning element. 
     setTransferApplied('no') // keep post-transfer navigation buttons hidden
     setDuplicateFound(duplicateName) // duplicate name string for display in warning
 }
+else{ // no duplicate exists
 
-
-if(existingDuplicates < 1){
-// BOX FUNTION
-
+    setNewBoxName('')
+    setModifiedBoxName('')
 setTestContainer(draft =>{
-    // push box to new section
+    // push box object to new section contents
     draft[transitObj.locB_index].location_contents[transitObj.secB_index].section_contents.push(newBoxDetails)
 
-    // filter box from origin section
+    // filter box object from origin section contents
     draft[transitObj.locA_index].location_contents[transitObj.secA_index].section_contents = 
     draft[transitObj.locA_index].location_contents[transitObj.secA_index].section_contents.filter(box => box.id !== boxID) 
 });
-// set new allItemsArray containing updated items in transferred box
+// replace original AllItemsArray with the new one where objects associated with the transferbox have had their details edited to match the destination details. 
 setTestAllItemsArray(completedNewArray)
 
 }
@@ -540,7 +621,7 @@ beginSelect == '' &&
         
 
 {    // TRANSFER BOX/ITEM DESTINATION DETAILS
-    <DestinationElement selectedLocationInfo={selectedLocationInfo} selectedSectionInfo={selectedSectionInfo} sectionItems={sectionItems} testContainer={testContainer} newBoxName={newBoxName} transferApplied={transferApplied} selectedBoxInfo={selectedBoxInfo}/> 
+    <DestinationElement selectedLocationInfo={selectedLocationInfo} selectedSectionInfo={selectedSectionInfo} sectionItems={sectionItems} testContainer={testContainer} newBoxName={newBoxName} transferApplied={transferApplied} selectedBoxInfo={selectedBoxInfo} modifiedBoxName={modifiedBoxName} existingDuplicates={existingDuplicates}/> 
     
 }
 
@@ -577,7 +658,14 @@ beginSelect == '' &&
 {// if transfer has been applied but duplicates do exist, show warning (transfer won't complete until this is resolved)
 existingDuplicates > 0  &&
 
-<DuplicateWarning duplicateFound={duplicateFound} newBoxName={newBoxName} setExistingDuplicates={setExistingDuplicates} applyBoxNameChange={applyBoxNameChange} setNewBoxName={setNewBoxName}/>
+<>
+
+<DuplicateWarning duplicateFound={duplicateFound} newBoxName={newBoxName} setExistingDuplicates={setExistingDuplicates} applyBoxNameChange={applyBoxNameChange} setNewBoxName={setNewBoxName} setTransferApplied={setTransferApplied}/>
+
+
+
+</>
+
 
 }
         

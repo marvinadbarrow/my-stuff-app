@@ -1,0 +1,35 @@
+Move items. 
+
+INTRO: 
+To move items is easy enough, just go into a box.  (come from a search)
+You can do two things with items, as you can see the green button is for moving an item; 
+but if you click the checkbox to the left of the item name the move button will disappear and the delete button will appear.  I've done it this way to prevent accidental deletions; you have to go to the other end of the screen first to reveal the button via the check box.  
+
+to move the item just click move item. 
+This is the transfer page, there's quite a bit going on here;
+at the top under the app name is a line telling you what you're attempting to transfer
+then below that you have a single large blue button which you use to begin selecting the new place for the item
+to the left of the button you have an element which displays the origin of the element, that is where you are transferring it from, it gives location, section and box of the item. 
+
+To the right you have the destination of the intended transfer.  As you select location, section and box destinations this will automatically update. 
+
+below these elements you have two buttons, the cancel transfer, for if you change you rmind anywhere in the process as long as you haven't applied the transfer, and the apply transfer button that you click when you're satisfied with the transfer location which will be shown in  the destination element above the button.  
+
+so let's try to transfer the soap. 
+
+
+TRANSFER ITEM: 
+click start location select and the button disappears revealing an element asking you to choose a location, click the dropdown menu and all locations show up in the menu: choose one
+
+once the location is chosen then a second select menu appears asking you to choose a section. But notice that on teh right, the destination element has recorded the destination location: choose a section from the dropdown menu. 
+
+notice that the choose a box menu has popped up, and, again, the name what you just selected, the section, apears on the right destination element:
+
+NOTE: you cannot choose a section without first choosingg a location, and you cannot choose a box without first choosing a section, AND, in order for the transfer to successfully apply you must have selected all three types of area, otherwise a warning will appear reminding you that you need to select from all three menus before proceding.  Once all menues have been selected you can hit the transfer button. 
+
+If the transfer succeeded you'll get a 'transfer successful' message between the origin and destination elements. 
+The previous cancel and apply transfer buttons will disappear and then a 'got to origin' and go to destination button will appear in their place so you can navigate to the destination or go back to the original box. let's check that our soap has actually moved. let's go back to the origin. We can use search to find it in the destination so we don't have to remember the new pathway. 
+
+DUPLICATE ITEM NAME: 
+
+

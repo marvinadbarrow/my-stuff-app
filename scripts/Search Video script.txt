@@ -1,0 +1,37 @@
+SEARCH: 
+
+You can sear from anywhere inside application. 
+You can search from the main page. 
+You can search from outside the locations. 
+You can search from inside an idividual location
+You can search from inside an idividual section
+You can search from inside an idividual box
+
+The search is not an exact search, which means that if the item contains the word you're searching for it will appear in the search results.  Here's an example: 
+USB search -  you can see that several results are returned. The bold, green highlighted text is the name of the search item, and the three lines below it show you the pathway to the object; which box the item is in, which section the box is in and which location the section is in.   You can go directly to the box containing the item by just clicking into the box of a result. 
+
+Go to Apple USB. From here you can choose to either delete the object or move it to another location.  As soon as you navigate away from the search page, the results are cleared. 
+
+
+If you're looking for a specific object, input the entire name (or at least most of it) and that will help narrow your search: 
+
+Example:
+Fuse chicken USB
+if I wanted to search for my travel USB power bank, I could search - 
+power bank  - I get 3 results
+Notice that I all of those items have the word 'USB' in them but because I searched 'power bank' instead, I got a much narrower result.  I can narrow the result even further by searching 'fuse chicken' 
+
+fuse chicken - knowing the name of the product got me the exact search item I wanted. 
+So you can use the search to your advantage, either to find an exact match by using as precise a description as you can, or by using a generic term which will return every object having that term in its name. 
+
+If the search does not find your any item, then a message in red will appear informing you that no such item exists in storage. 
+
+Reverse Navigation: 
+As well as being able to navigate directly to the search box, you can also navigate to the last area you looked at prior to opening the search page.  
+Depending on where you were when you hit the search button,  up to 3 back buttons will appear.  If you were inside a box, then the buttons for the box, section and location path will appear so that you can navigate back to anyone of those. 
+
+if you were inside a section, then buttons allowing you to return to that section and its parent location will appear. 
+
+If you were inside alocation, then, just one button will appear allowing you to return to that location. 
+ 
+if you search from anywhere else, the only other two places are the start page and the outside view of all locations, then only the button to return to these two places will appear since you were not inside any location when you activated search.  

@@ -1,0 +1,14 @@
+Sometimes you may just want to browse items you have in a particular section, just to see what's in there.  Maybe you're considering moving a few boxes around (it is possible to move boxes from one section to another), or you might want to move a few items out of a section, so a quick scan of the items might help you decide. 
+
+Well you're able to do this by navigating into a section, where you will find a 'view all of section' button.  Let's try this, by going into:
+wardrobe - 
+wardrobe hangin area -
+
+Notice the large grey button above the box elements, 
+Click on this and it will show you everything in the entire section, arranged into their parent boxes. 
+Box names are highlighted yellow and underlined. 
+
+From here, you can navigate back to the section view, or back up to the parent of the section, or to view all locations,  via the 3 buttons near the top of the page. 
+You can navigate to any of the boxes by just clicking on them. 
+Let's go to my puzzle box -
+And there were are all of the items in the box, because we are in a box now, you can navigate to all levels along the pathway to the box items, so you can go back into the section, which was the wardrobe hanging area, or back in to the main location which is the wardrobe, or back to view all locations from the outside.  And you can also search from this location. 

@@ -55,7 +55,7 @@ container.map((locations) =>{
 
         <>
 <div className="results-div" resultBoxId={idOfBox} onClick={()=>{openResultArea(locationName, sectionName, boxName, idOfBox, result.item_name, result.section_id, result.location_id )}}>
-   <p className="results-para"><em>{result.item_name}</em></p>
+   <p className="results-item-name"><em>{result.item_name}</em></p>
    <p className="results-para">Location: {locationName}</p>
    <p className="results-para">Section: {sectionName}</p>
    <p className="results-para">Box: {boxName}</p>

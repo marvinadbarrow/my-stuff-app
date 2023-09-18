@@ -1,6 +1,6 @@
-import { DisplayDestinationBtn } from "./DisplayDestinationBtn"
+import { DestinationBoxes } from "./DestinationBoxes"
 
-export const DestinationElement = ({selectedLocationInfo, selectedSectionInfo, sectionItems, testContainer, newBoxName, transferApplied, selectedBoxInfo}) =>{
+export const DestinationElement = ({selectedLocationInfo, selectedSectionInfo, sectionItems, testContainer, newBoxName, transferApplied, selectedBoxInfo, modifiedBoxName, existingDuplicates}) =>{
 
     
 console.log(selectedLocationInfo)
@@ -22,7 +22,7 @@ sectionItems.hasOwnProperty('parent_section_name') &&
 selectedSectionInfo.section_name &&
 
 
-<DisplayDestinationBtn testContainer={testContainer} selectedSectionInfo={selectedSectionInfo} selectedLocationInfo={selectedLocationInfo} sectionItems={sectionItems} newBoxName={newBoxName} transferApplied={transferApplied}/>
+<DestinationBoxes testContainer={testContainer} selectedSectionInfo={selectedSectionInfo} selectedLocationInfo={selectedLocationInfo} sectionItems={sectionItems} newBoxName={newBoxName} transferApplied={transferApplied} modifiedBoxName={modifiedBoxName} existingDuplicates={existingDuplicates}/>
 
 
    }

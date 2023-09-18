@@ -1,0 +1,36 @@
+
+INTRO: 
+To move boxes is not much more difficult than moving an item. There are a few significant differences though.  
+
+
+to move the box just click move box . 
+This is the transfer page, there's quite a bit going on here;
+elements: 
+what is moved
+button for select menus
+box origin element (this differs from the move item process because it not only lists the item you're moving, a box in other words, but also the contents of the box that you are moving - that's there just so you're sure you are happy with the move.  The box items are listed in alternate colours so as not to cause confusion when a long name spreads a cross two lines. if an item is yellow then the next item is colored white and vice versa. 
+
+
+Destination element. (which we will see also differs in look from the destination element in the move items process) 
+
+Below these elements you have two buttons, the cancel transfer, for if you change you rmind anywhere in the process as long as you haven't applied the transfer, and the apply transfer button that you click when you're satisfied with the transfer location which will be shown in  the destination element above the button. 
+
+So let's transfer the entire box. 
+
+
+TRANSFER BOX: 
+click start location select and the button disappears revealing an element asking you to choose a location, click the dropdown menu and all locations show up in the menu: choose one
+
+once the location is chosen then a second select menu appears asking you to choose a section. But notice that on teh right, the destination element has recorded the destination location: choose a section from the dropdown menu. 
+
+here is where the difference lies - 
+1. no box select menu appears, because we're transferring an entire box, and boxes lie in a section so it's a section we are transferring to so there's no need for the select box menu. 
+
+2.  The names of all of the boxes at the transfer location are also listed.  This box element will help alert the user to a duplicate box name before they try to transfer the box to the new location; we'll see that  there are two more precautions just ahead in case the user has not noticed the duplication and tries to apply the transfer. 
+
+let's apply the transfer and hopefully all will go well.  It does. let's navigate to the go back to the old place.  I'll note the location and setion of the destination and we'll go there after to try to move the box again, but to a place where a duplicate exists.  
+
+
+
+And secondly, as you can see on the right hand side a box
+
