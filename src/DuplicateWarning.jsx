@@ -4,9 +4,9 @@ export const DuplicateWarning = ({duplicateFound, newBoxName, setExistingDuplica
 
 
 console.log(duplicateFound, newBoxName)
-localStorage.setItem('modified_box_name',JSON.stringify(nameofNewBox))
-const processDuplicate = (nameofNewBox) =>{
 
+const processDuplicate = (nameofNewBox) =>{
+    localStorage.setItem('modified_box_name',JSON.stringify(nameofNewBox))
 // set newBoxName as the name of the box
 applyBoxNameChange(nameofNewBox)
   

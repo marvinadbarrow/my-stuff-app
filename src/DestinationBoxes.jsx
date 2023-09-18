@@ -50,24 +50,25 @@ if(localStorage.getItem('modified_box_name')){
             nameOfClass = "transfer-box-item"     
         }
 
-}else{ // no modification has occurred; so there are two existing cases. 1) there is a duplicate which means that  'existing duplicates < 1' is false
+}else{ // no modification has occurred; so there are two possible cases. 1) there is a duplicate which means that  'existing duplicates < 1' is false
     if(existingDuplicates > 0){
-        if(box.box_name == sectionItems.box_name){ // the evaluated box is causes a duplication conflict so color it red
+        if(box.box_name == sectionItems.box_name){ // the evaluated box is causes a duplication conflict so color it warning red
             nameOfClass = "transfer-box-item warning-red" 
+        }else{
+            // the evaluated box does not conflict with the transfer box so color it with regular colours
+            nameOfClass = "transfer-box-item"  
         }
 
+    }else{
+    // 'existingDuplicates < 1' so there is no duplication
+    if(box.box_name == sectionItems.box_name){ // the evaluated box is the tranferred box so color success green
+        nameOfClass = "transfer-box-item success-green" 
+
+    }else{ // the evaluated box is not the transfer box so color it regular
+        nameOfClass = "transfer-box-item" 
     }
-if(box.box_name == sectionItems.box_name){ // the evaluated box
-
-    nameOfClass = "transfer-box-item success-green" 
-    localStorage.removeItem('modified_box_name')  
-}else{ // none of the other boxes has new box name so color them normal
-    console.log('this is what is stored')
-    console.log(localStorage.getItem('modified_box_name'))
-    nameOfClass = "transfer-box-item" 
+    }
 }}
-
-}
    
 
 

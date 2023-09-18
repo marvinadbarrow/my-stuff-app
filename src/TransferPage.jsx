@@ -523,6 +523,10 @@ if(duplicates > 0){
 else{ // no duplicate exists
 
     setNewBoxName('')
+    if(localStorage.getItem('modified_box_name')){
+        itemName = JSON.parse(localStorage.getItem('modified_box_name'))
+    }
+
     setModifiedBoxName('')
 setTestContainer(draft =>{
     // push box object to new section contents
